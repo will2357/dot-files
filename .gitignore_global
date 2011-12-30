@@ -1,0 +1,6 @@
+tags
+.DS_Store
+tmp/
+.idea/
+*.iml
+*.orig
