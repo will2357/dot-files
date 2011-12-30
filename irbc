@@ -1,0 +1,34 @@
+require 'irb/ext/save-history'
+#History configuration
+IRB.conf[:SAVE_HISTORY] = 1000
+IRB.conf[:HISTORY_FILE] = "#{ENV['HOME']}/.irb-save-history"
+
+require 'irb/completion'
+# Standard interesting_methods method
+if (defined?interesting_methods).nil?
+  class Object
+    def interesting_methods
+      (self.methods - Object.new.methods).sort
+    end
+  end
+end
+
+# Load .railsrc if in the rails console
+load File.dirname(__FILE__) + '/.railsrc' if $0 == 'script/rails'
+
+# Gem dependent configuration
+#
+# Colorize
+#begin
+  #require 'wirble'
+
+  #Wirble.init
+  #Wirble.colorize
+  #colors = Wirble::Colorize.colors.merge({
+    #:object_class => :purple,
+    #:symbol => :purple,
+    #:symbol_prefix => :purple
+  #})
+  #Wirble::Colorize.colors = colors
+#rescue
+#end

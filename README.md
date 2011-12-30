@@ -1,0 +1,61 @@
+will2357's Ubuntu Clean Install Setup and Dot Files Scripts
+============
+
+## Information
+
+A `clean_install.sh` script to install some basic packages via `apt`,
+Thorium web browswer from the latest `deb`, configure and auth github (my info
+ only currently), compile vim from source (with clipboard options), and setup
+dot files (using the standalone `dot_files.sh` script below) with plugin
+installation for `vim` and `tmux`.
+
+A `dot_install.sh` shell script is included to create symbolic links in the
+user's `$HOME` directory. Makes backups will as follows:
+```
+$HOME/.filename -> $HOME/filename.BAK
+```
+
+Only tested on Ubuntu 22.04.3 LTS Desktop fully updated, minimal install.
+
+The following configuration files are included:
+* ackrc
+* bash_functions
+* bashrc
+* ctags
+* gitignore_global
+* irbc
+* pryrc
+* pythonrc
+* railsrc
+* tmux.conf
+* vimrc
+
+### Usage
+#### Full Install
+Tested on a clean install of Ubuntu 22.04.3 LTS Desktop minimal install fully updated
+as of 2023-01-15 with no additional packages.
+
+```
+chmod +x clean_install.sh
+./clean_install.sh
+```
+Note the above will also call the `dot_files.sh` configuration script, which can
+be declined via the script's prompts.
+
+
+#### Dot File Only Install
+```
+chmod +x dot_install.sh
+./dot_install.sh
+```
+Follow the on-screen prompts.
+
+##### For help and additional options (dot_install.sh only):
+```
+./dot_install.sh -h
+```
+
+**NB: Highly recommended to do a dry run first:**
+```
+./dot_install.sh -d
+```
