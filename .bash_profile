@@ -20,12 +20,12 @@ export SS='--app adaptly-self-serve'
 export AE='--app adaptly-edge'
 export AE2='--app adaptly-edge-2'
 export ES='--app ending-system'
-export CGT='--app wh-temp-cg-checker'
 
 export PRIVATE_KEY_PATH='~/.ssh/id_rsa'
 export PUBLIC_KEY_PATH='~/.ssh/id_rsa.pub'
 
-export LEIN_FAST_TRAMPOLINE=1
+# Android Studio pre v1.1
+export STUDIO_JDK='/Library/Java/JavaVirtualMachines/jdk1.7.0_51.jdk'
 
 export CLICOLOR=1
 export PATH="/usr/local/bin:/usr/local/sbin:$PATH"
@@ -36,10 +36,9 @@ export PATH=$PATH:/usr/local/sbin
 export PATH=/usr/local/bin:$PATH
 export PATH=$PATH:~/storm/bin
 export PATH=$PATH:/Users/will/.local/lib/aws/bin
+export PATH=$PATH:/Users/will/activator
 
 export CTAGS=--langmap=lisp:+.clj
-
-export DATABASE_READ_SLAVE_URL=postgres://u8ms5hp1ate84n:pm4j8ioaalone6glgaopbsd3dj@ec2-107-20-228-35.compute-1.amazonaws.com:5432/d6lh77ect576md
 
 if [[ `uname` == 'Darwin' ]]; then
   if [ -f `brew --prefix`/etc/bash_completion ]; then
@@ -55,16 +54,27 @@ fi
 # MacPorts Installer addition on 2012-12-07_at_19:44:59: adding an appropriate PATH variable for use with MacPorts.
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 # Finished adapting your PATH environment variable for use with MacPorts.
-export PATH="$HOME/.rbenv/bin:$PATH"
-export PATH="$HOME/.rbenv/shims:$PATH"
-eval "$(rbenv init -)"
+export RBENV_ROOT=/usr/local/var/rbenv
+if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 
 if [ -f ~/.git-completion.bash ]; then
   . ~/.git-completion.bash
 fi
 
-if [ -f ~/.cg-aggregator-credentials ]; then
-  . ~/.cg-aggregator-credentials
+if [ -e ~/.lein/bash_completion.bash ]; then
+  . ~/.lein/bash_completion.bash
+fi
+
+if [ -f ~/.aws-credentials ]; then
+  . ~/.aws-credentials
+fi
+
+if [ -f ~/.twitter-credentials ]; then
+  . ~/.twitter-credentials
+fi
+
+if [ -f $(brew --prefix)/etc/bash_completion ]; then
+  . $(brew --prefix)/etc/bash_completion
 fi
 
 source ~/.bashrc
@@ -86,3 +96,7 @@ export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 # Finished adapting your PATH environment variable for use with MacPorts.
 
+
+
+export GOROOT=/usr/local/go
+export PATH=$GOROOT/bin:$PATH

@@ -12,7 +12,12 @@ filetype indent on
 
 " Solarized Options
 "
-set background=dark
+"let iterm_profile = $ITERM_PROFILE
+"if iterm_profile == 'Outdoor'
+  "set background=light
+"else
+  set background=dark
+"endif
 "let g:solarized_termcolors = 256
 "let g:solarized_visibility = "high"
 "let g:solarized_contrast = "high"
@@ -111,6 +116,7 @@ au FileType sass map <leader>r :!sass -c %<cr>
 au BufNewFile,BufRead *.hive set filetype=sql
 au BufNewFile,BufRead *.sql set filetype=sql
 au BufNewFile,BufRead *.psql set filetype=sql
+au BufNewFile,BufRead *.hamlc set ft=haml
 
 " Pig Script Syntax
 "
@@ -145,16 +151,18 @@ set clipboard=unnamed
 
 " Code Folding Settings
 "
-set foldmethod=indent   "fold based on indent
-set foldnestmax=10      "deepest fold is 10 levels
-set nofoldenable        "dont fold by default
-set foldlevel=1         "this is just what i use
+"set foldmethod=indent   "fold based on indent
+"set foldnestmax=10      "deepest fold is 10 levels
+"set nofoldenable        "dont fold by default
+"set foldlevel=1         "this is just what i use
+set nofoldenable        "disable folding
 
 
 " Highlight over 80 characters
 "
 "highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 "match OverLength /\%81v.\+/
+set colorcolumn=80
 
 " Change cursor shape
 " tmux will only forward escape sequences to the terminal if surrounded by a DCS sequence
@@ -241,3 +249,11 @@ autocmd BufWritePre * :%s/\s\+$//e
 "Taglist Ctags with Clojure
 "
 let tlist_clojure_settings = 'lisp;f:function'
+
+"Neo Completeion with Cache for Scala autocomplete
+"
+let g:neocomplcache_enable_at_startup = 1
+
+"For crontab -e to work with vim
+"
+autocmd filetype crontab setlocal nobackup nowritebackup

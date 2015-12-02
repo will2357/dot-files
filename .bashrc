@@ -4,8 +4,15 @@ export HISTCONTROL=ignoredups:erasedups
 # append history entries..
 shopt -s histappend
 
+export PATH=~/.local/bin:$PATH
+
+source /usr/local/bin/virtualenvwrapper.sh
 # After each command, save and reload history
 export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
+
+alias lmf="(lein midje 2>&1) | grep -E 'FAIL'"
+
+complete -C aws_completer aws
 
 alias emr-new="/Users/will/emr-new/elastic-mapreduce"
 alias emr-old="/Users/will/emr-old/elastic-mapreduce"
@@ -122,3 +129,4 @@ source ~/.git-prompt.sh
 #export PROMPT_COMMAND='$PS1'
 #export PROMPT_COMMAND='PS1="[\u@\h \W$(__git_ps1 " (%s)")]\$ "'
 #export PROMPT_COMMAND='PS1="$(set_ps1)"'
+#`eval "$(boot2docker shellinit)"`

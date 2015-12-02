@@ -1,11 +1,6 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =9
-let g:netrw_dirhist_1='/Users/willhighducheck/adaptly/fetcher'
-let g:netrw_dirhist_2='/Users/willhighducheck/adaptly/campaign-grouper'
-let g:netrw_dirhist_3='/Users/will/adaptly/facebook-mirror'
-let g:netrw_dirhist_4='/Users/will/adaptly/fetcher'
-let g:netrw_dirhist_5='/Users/will/adaptly/async-amqp'
-let g:netrw_dirhist_6='/Users/will'
-let g:netrw_dirhist_7='/Users/will/adaptly/reporting-api/app/models'
-let g:netrw_dirhist_8='/Users/will/adaptly/facebook-mirror/lib'
-let g:netrw_dirhist_9='/Users/will/adaptly/formatted-reporting/resources/sql/mirror'
+let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_1='/Users/will/adaptly/schema-based-upserter/test/schema_based_upserter'
+let g:netrw_dirhist_2='/Users/will/adaptly/connector'
+let g:netrw_dirhist_3='/Users/will/adaptly/schema/src/schema'
+let g:netrw_dirhist_4='/Users/will/adaptly/data-executor/src/main/data_executor/accounts'
