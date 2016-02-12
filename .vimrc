@@ -205,8 +205,12 @@ au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
 
-" Indent support for Midje with vim-clojure-static
+" Indentation support for Midje with vim-clojure-static
 let g:clojure_fuzzy_indent_patterns = ['^with', '^def', '^let', '^facts', '^fact', '^go', '^go-loop']
+
+" Indentation for absurd Clojure style guide with vim-clojure-static
+let g:clojure_align_subforms = 1
+let g:clojure_align_multiline_strings = 1
 
 " Tmux conf for vim-slime
 let g:slime_target = "tmux"

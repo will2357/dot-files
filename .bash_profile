@@ -69,8 +69,8 @@ if [ -f ~/.aws-credentials ]; then
   . ~/.aws-credentials
 fi
 
-if [ -f ~/.twitter-credentials ]; then
-  . ~/.twitter-credentials
+if [ -f ~/.twitter-credentials.sh ]; then
+  . ~/.twitter-credentials.sh
 fi
 
 if [ -f $(brew --prefix)/etc/bash_completion ]; then
@@ -100,3 +100,12 @@ export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 
 export GOROOT=/usr/local/go
 export PATH=$GOROOT/bin:$PATH
+
+##
+# Your previous /Users/will/.bash_profile file was backed up as /Users/will/.bash_profile.macports-saved_2015-12-28_at_10:34:16
+##
+
+# MacPorts Installer addition on 2015-12-28_at_10:34:16: adding an appropriate PATH variable for use with MacPorts.
+export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
+# Finished adapting your PATH environment variable for use with MacPorts.
+
