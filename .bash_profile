@@ -57,6 +57,7 @@ export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 export RBENV_ROOT=/usr/local/var/rbenv
 if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
 
+
 if [ -f ~/.git-completion.bash ]; then
   . ~/.git-completion.bash
 fi
@@ -109,3 +110,6 @@ export PATH=$GOROOT/bin:$PATH
 export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
 # Finished adapting your PATH environment variable for use with MacPorts.
 
+export PATH="$HOME/.rbenv/bin:$PATH"
+
+eval "$(rbenv init -)"
