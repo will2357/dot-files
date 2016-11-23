@@ -1,4 +1,5 @@
 *
+*.orig
 !.ackrc
 !.bash_functions
 !.bash_profile

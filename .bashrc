@@ -1,3 +1,6 @@
+# Adaptly-Bone and Adaptly-Clj nonsense:
+export GOOGLE_DRIVE="/Users/will/Google Drive/env"
+
 # Save history across the board:
 # avoid duplicates..
 export HISTCONTROL=ignoredups:erasedups
@@ -6,11 +9,12 @@ shopt -s histappend
 
 export PATH=~/.local/bin:$PATH
 
-source /usr/local/bin/virtualenvwrapper.sh
 # After each command, save and reload history
 export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND$'\n'}history -a; history -c; history -r"
 
 alias lmf="(lein midje 2>&1) | grep -E 'FAIL'"
+
+alias rabbitmq-reset="rabbitmqctl stop_app && rabbitmqctl reset && rabbitmqctl start_app"
 
 complete -C aws_completer aws
 
@@ -130,3 +134,4 @@ source ~/.git-prompt.sh
 #export PROMPT_COMMAND='PS1="[\u@\h \W$(__git_ps1 " (%s)")]\$ "'
 #export PROMPT_COMMAND='PS1="$(set_ps1)"'
 #`eval "$(boot2docker shellinit)"`
+#[[ -f `brew --prefix 2>/dev/null`/etc/bash_completion ]] && . `brew --prefix`/etc/bash_completion

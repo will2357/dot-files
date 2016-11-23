@@ -1,3 +1,6 @@
+# lein trampoline repl
+export LEIN_FAST_TRAMPOLINE='y'
+
 # Heroku App Shortcuts
 export P='--app adaptly-production'
 export S='--app adaptly-showtime'
