@@ -1,7 +1,31 @@
-" Autoload Bundles
+" junegunn/vim-plug config
 "
-call pathogen#helptags()
-call pathogen#infect()
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+call plug#begin('~/.vim/bundle')
+Plug 'ajh17/VimCompletesMe'
+Plug 'altercation/vim-colors-solarized'
+Plug 'artur-shaik/vim-javacomplete2'
+Plug 'dragfire/Improved-Syntax-Highlighting-Vim'
+Plug 'henrik/vim-indexed-search'
+Plug 'junegunn/vim-plug'
+Plug 'kien/rainbow_parentheses.vim'
+Plug 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdtree'
+Plug 'tpope/vim-fugitive'
+
+" Clojure
+Plug 'guns/vim-clojure-highlight' "Requires tpope/vim-fireplace
+Plug 'tpope/vim-fireplace'
+Plug 'guns/vim-clojure-static'
+
+" S-expressions
+Plug 'guns/vim-sexp' "Soooo much faster
+call plug#end()
 
 " Filetype Configuration
 "
@@ -12,16 +36,16 @@ filetype indent on
 
 " Solarized Options
 "
-"let iterm_profile = $ITERM_PROFILE
-"if iterm_profile == 'Outdoor'
-  "set background=light
-"else
-  set background=dark
-"endif
-"let g:solarized_termcolors = 256
+set background=dark
+let g:solarized_termcolors = 256
+"let g:solarized_termcolors = 16
 "let g:solarized_visibility = "high"
 "let g:solarized_contrast = "high"
 colorscheme solarized
+
+" Set colors for Ubuntu
+"se t_Co=256
+"se t_Co=16
 
 " Reload ~/.vimrc on Change
 "
@@ -56,7 +80,7 @@ set hidden
 " Mouse Options
 "
 set mouse=a
-set ttymouse=xterm2
+"set ttymouse=xterm2
 
 " Allows Deletion with Backspace
 "
@@ -77,9 +101,9 @@ set tabstop=2 shiftwidth=2 expandtab
 " Cursor Options for Mac/GVim
 "
 "highlight Cursor guifg=white guibg=black
-highlight iCursor guifg=white guibg=red
+"highlight iCursor guifg=white guibg=red
 "set guicursor=n-v-c:block-Cursor
-set guicursor+=i:ver25-iCursor
+"set guicursor+=i:ver25-iCursor
 "set guicursor+=n-v-c:blinkon0
 "set guicursor+=i:blinkwait10
 
@@ -90,7 +114,7 @@ set whichwrap+=<,>,h,l,[,]
 " NerdTree Configuration
 "
 let NERDTreeIgnore=['\.pyc$', '\.orig$']
-noremap <unique> <Leader>; :NERDTreeToggle<CR>
+noremap <silent> <unique> <Leader>; :NERDTreeToggle<CR>
 
 " Swap Files
 "
@@ -163,21 +187,24 @@ set nofoldenable        "disable folding
 "highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 "match OverLength /\%81v.\+/
 set colorcolumn=80
+highlight ColorColumn ctermbg=green guibg=green
+"set columns=80
+
+"hi Visual term=reverse cterm=reverse guibg=Grey ctermbg=Grey
+"hi Visual guibg=White
+hi Visual term=reverse cterm=reverse guibg=White ctermbg=White
 
 " Change cursor shape
 " tmux will only forward escape sequences to the terminal if surrounded by a DCS sequence
 " http://sourceforge.net/mailarchive/forum.php?thread_name=AANLkTinkbdoZ8eNR1X2UobLTeww1jFrvfJxTMfKSq-L%2B%40mail.gmail.com&forum_name=tmux-users
 "
-if exists('$TMUX')
-  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-else
-  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-endif
-
-" Set colors for Ubuntu
-se t_Co=16
+"if exists('$TMUX')
+  "let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
+  "let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
+"else
+  "let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+  "let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+"endif
 
 " Rainbow parentheses
 "
@@ -204,6 +231,9 @@ au VimEnter * RainbowParenthesesToggle
 au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
+
+" Alternate Rainbow Parentheses
+"let g:rainbow_active = 1 "0 if you want to enable it later via :RainbowToggle
 
 " Indentation support for Midje with vim-clojure-static
 let g:clojure_fuzzy_indent_patterns = ['^with', '^def', '^let', '^facts', '^fact', '^go', '^go-loop']
@@ -250,14 +280,10 @@ match ExtraWhitespace /\s\+$\| \+\ze\t/
 "
 autocmd BufWritePre * :%s/\s\+$//e
 
-"Taglist Ctags with Clojure
-"
-let tlist_clojure_settings = 'lisp;f:function'
-
-"Neo Completeion with Cache for Scala autocomplete
-"
-let g:neocomplcache_enable_at_startup = 1
-
 "For crontab -e to work with vim
 "
 autocmd filetype crontab setlocal nobackup nowritebackup
+
+"For editing large data files
+"
+set synmaxcol=120
