@@ -1,11 +1,7 @@
 My Dot Files
 ============
 
- Stolen, yet personalized, from across the interwebs.
-
--
-
-Configuration files for the following are included:
+ Configuration files for the following are included:
 
 * Bash
 * IRB
@@ -13,5 +9,4 @@ Configuration files for the following are included:
 * Python
 * Rails
 * tmux
-* tmuxinator
 * Vim

@@ -1,7 +1,21 @@
-" Autoload Bundles
-"
-call pathogen#helptags()
-call pathogen#infect()
+" junegunn/vim-plug config
+
+call plug#begin('~/.vim/bundle')
+Plug 'ajh17/VimCompletesMe'
+Plug 'altercation/vim-colors-solarized'
+Plug 'artur-shaik/vim-javacomplete2'
+Plug 'dragfire/Improved-Syntax-Highlighting-Vim'
+Plug 'henrik/vim-indexed-search'
+Plug 'junegunn/vim-plug'
+Plug 'kien/rainbow_parentheses.vim'
+Plug 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdtree'
+Plug 'tpope/vim-fugitive'
+
+" Python
+Plug 'Vimjas/vim-python-pep8-indent'
+
+call plug#end()
 
 " Filetype Configuration
 "
@@ -12,16 +26,16 @@ filetype indent on
 
 " Solarized Options
 "
-"let iterm_profile = $ITERM_PROFILE
-"if iterm_profile == 'Outdoor'
-  "set background=light
-"else
-  set background=dark
-"endif
+set background=dark
 "let g:solarized_termcolors = 256
+"let g:solarized_termcolors = 16
 "let g:solarized_visibility = "high"
 "let g:solarized_contrast = "high"
 colorscheme solarized
+
+" Set colors for Ubuntu
+"se t_Co=256
+"se t_Co=16
 
 " Reload ~/.vimrc on Change
 "
@@ -56,7 +70,8 @@ set hidden
 " Mouse Options
 "
 set mouse=a
-set ttymouse=xterm2
+"set ttymouse=xterm2
+set ttymouse=sgr
 
 " Allows Deletion with Backspace
 "
@@ -74,15 +89,6 @@ endif
 "
 set tabstop=2 shiftwidth=2 expandtab
 
-" Cursor Options for Mac/GVim
-"
-"highlight Cursor guifg=white guibg=black
-highlight iCursor guifg=white guibg=red
-"set guicursor=n-v-c:block-Cursor
-set guicursor+=i:ver25-iCursor
-"set guicursor+=n-v-c:blinkon0
-"set guicursor+=i:blinkwait10
-
 " Allows Cursor Wrapping
 "
 set whichwrap+=<,>,h,l,[,]
@@ -90,13 +96,15 @@ set whichwrap+=<,>,h,l,[,]
 " NerdTree Configuration
 "
 let NERDTreeIgnore=['\.pyc$', '\.orig$']
-noremap <unique> <Leader>; :NERDTreeToggle<CR>
+noremap <silent> <unique> <Leader>; :NERDTreeToggle<CR>
 
 " Swap Files
 "
 "set noswapfile
-set backupdir=~/.vim_tmp,/var/tmp,/tmp
-set directory=~/.vim_tmp,/var/tmp,/tmp
+set swapfile
+set dir=~/.vim_tmp,~/tmp,/var/tmp,/tmp
+set backupdir=~/.vim_tmp,~/tmp,/var/tmp,/tmp
+set directory=~/.vim_tmp,~/tmp,/var/tmp,/tmp
 
 " Show Whitepace
 "
@@ -147,7 +155,7 @@ nmap <leader>t :TagbarToggle<CR>
 
 " Set Vim Clipboard to System
 "
-set clipboard=unnamed
+set clipboard=unnamedplus
 
 " Code Folding Settings
 "
@@ -163,21 +171,21 @@ set nofoldenable        "disable folding
 "highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 "match OverLength /\%81v.\+/
 set colorcolumn=80
+"highlight ColorColumn ctermbg=green guibg=green
+"set columns=80
 
-" Change cursor shape
-" tmux will only forward escape sequences to the terminal if surrounded by a DCS sequence
-" http://sourceforge.net/mailarchive/forum.php?thread_name=AANLkTinkbdoZ8eNR1X2UobLTeww1jFrvfJxTMfKSq-L%2B%40mail.gmail.com&forum_name=tmux-users
+
+"hi Visual term=reverse cterm=reverse guibg=Grey ctermbg=Grey
+"hi Visual guibg=White
 "
-if exists('$TMUX')
-  let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-  let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-else
-  let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-  let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-endif
+hi Visual term=reverse cterm=reverse guibg=White ctermbg=White
 
-" Set colors for Ubuntu
-se t_Co=16
+
+" Change cursor shape Gnome Terminal 3.x
+"
+let &t_SI = "\<Esc>[6 q"
+let &t_SR = "\<Esc>[4 q"
+let &t_EI = "\<Esc>[2 q"
 
 " Rainbow parentheses
 "
@@ -205,13 +213,6 @@ au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
 
-" Indentation support for Midje with vim-clojure-static
-let g:clojure_fuzzy_indent_patterns = ['^with', '^def', '^let', '^facts', '^fact', '^go', '^go-loop']
-
-" Indentation for absurd Clojure style guide with vim-clojure-static
-let g:clojure_align_subforms = 1
-let g:clojure_align_multiline_strings = 1
-
 " Tmux conf for vim-slime
 let g:slime_target = "tmux"
 
@@ -222,37 +223,9 @@ match ExtraWhitespace /\s\+$\| \+\ze\t/
 "highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
 
 
-"autocomplete Parenthesis
-"When you type an open brace, this will automatically
-"insert a closing brace on the same line, after the cursor.
-"If you quickly hit Enter after the open brace, (to begin
-"a code block), the closing brace will be inserted on the
-"line below the cursor. If you quickly press the open brace
-"key again after the open brace, Vim won't insert anything extra,
-" you'll just get a single open brace. Finally, if you quickly
-"type an open and close brace, Vim will not do anything special.
-"inoremap {      {}<Left>
-"inoremap {<CR>  {<CR>}<Esc>O
-"inoremap {{     {
-"inoremap {}     {}
-
-"inoremap (      ()<Left>
-"inoremap (<CR>  (<CR>)<Esc>O
-"inoremap ((     (
-"inoremap ()     ()
-
-"inoremap [      []<Left>
-"inoremap [<CR>  [<CR>]<Esc>O
-"inoremap [[     [
-"inoremap []     []
-
 "Automatically remove trailing whitespace
 "
 autocmd BufWritePre * :%s/\s\+$//e
-
-"Taglist Ctags with Clojure
-"
-let tlist_clojure_settings = 'lisp;f:function'
 
 "Neo Completeion with Cache for Scala autocomplete
 "
@@ -261,3 +234,7 @@ let g:neocomplcache_enable_at_startup = 1
 "For crontab -e to work with vim
 "
 autocmd filetype crontab setlocal nobackup nowritebackup
+
+"For editing large data files
+"
+set synmaxcol=160
