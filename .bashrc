@@ -110,7 +110,10 @@ if [ -f ~/.bash_functions ]; then
 fi
 
 # Solarized for WSL: https://github.com/seebi/dircolors-solarized
-eval `dircolors /home/will/dircolors-solarized/dircolors.256dark`
+#eval `dircolors /home/will/dircolors-solarized/dircolors.256dark`
+# Solarized for Ubuntu
+eval `dircolors /home/will/gnome-terminal-colors-solarized/dircolors`
+
 
 # For wsl-terminal
 #[[ -z "$TMUX" && -n "$USE_TMUX" ]] && {
