@@ -24,6 +24,7 @@ Plug 'tpope/vim-fireplace'
 Plug 'guns/vim-clojure-static'
 
 " S-expressions
+"Plug 'vim-scripts/paredit.vim' "SOOO SLOW!!!!
 Plug 'guns/vim-sexp' "Soooo much faster
 call plug#end()
 
@@ -279,6 +280,14 @@ match ExtraWhitespace /\s\+$\| \+\ze\t/
 "Automatically remove trailing whitespace
 "
 autocmd BufWritePre * :%s/\s\+$//e
+
+"Taglist Ctags with Clojure
+"
+let tlist_clojure_settings = 'lisp;f:function'
+
+"Neo Completeion with Cache for Scala autocomplete
+"
+let g:neocomplcache_enable_at_startup = 1
 
 "For crontab -e to work with vim
 "
