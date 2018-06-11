@@ -143,8 +143,15 @@ fi
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
+
+#export GOOGLE_DRIVE=${GOOGLE_DRIVE:-"$HOME/Google Drive/Technology/env"}
+export GOOGLE_DRIVE="/home/will/GoogleDriveManualEnv"
+#export GOOGLE_DRIVE="/home/will/Google Drive File Stream/My Drive/env"
+
 # X Term / X Client Config
 export DISPLAY=:0
+
+[[ -s "/home/will/adaptly/dockerfiles/scripts/aliases.sh" ]] && source "/home/will/adaptly/dockerfiles/scripts/aliases.sh"
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/home/will/.sdkman"
