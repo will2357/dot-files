@@ -1,10 +1,4 @@
 " junegunn/vim-plug config
-"
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
 
 call plug#begin('~/.vim/bundle')
 Plug 'ajh17/VimCompletesMe'
@@ -26,6 +20,13 @@ Plug 'guns/vim-clojure-static'
 " S-expressions
 "Plug 'vim-scripts/paredit.vim' "SOOO SLOW!!!!
 Plug 'guns/vim-sexp' "Soooo much faster
+
+" Looker junk
+Plug 'thalesmello/lkml.vim'
+
+" FE Junk
+Plug 'kchmck/vim-coffee-script'
+
 call plug#end()
 
 " Filetype Configuration
@@ -120,8 +121,10 @@ noremap <silent> <unique> <Leader>; :NERDTreeToggle<CR>
 " Swap Files
 "
 "set noswapfile
-set backupdir=~/.vim_tmp,/var/tmp,/tmp
-set directory=~/.vim_tmp,/var/tmp,/tmp
+set swapfile
+set dir=~/.vim_tmp,~/tmp,/var/tmp,/tmp
+set backupdir=~/.vim_tmp,~/tmp,/var/tmp,/tmp
+set directory=~/.vim_tmp,~/tmp,/var/tmp,/tmp
 
 " Show Whitepace
 "
@@ -172,7 +175,7 @@ nmap <leader>t :TagbarToggle<CR>
 
 " Set Vim Clipboard to System
 "
-set clipboard=unnamed
+set clipboard=unnamedplus
 
 " Code Folding Settings
 "
@@ -296,3 +299,4 @@ autocmd filetype crontab setlocal nobackup nowritebackup
 "For editing large data files
 "
 set synmaxcol=120
+

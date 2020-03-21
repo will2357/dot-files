@@ -16,8 +16,8 @@ HISTCONTROL=ignoreboth
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
+HISTSIZE=10000
+HISTFILESIZE=20000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -109,10 +109,15 @@ if [ -f ~/.bash_functions ]; then
     . ~/.bash_functions
 fi
 
+# Additional env vars
+if [ -f ~/.aws-credentials ]; then
+    . ~/.aws-credentials
+fi
+
 # Solarized for WSL: https://github.com/seebi/dircolors-solarized
 #eval `dircolors /home/will/dircolors-solarized/dircolors.256dark`
 # Solarized for Ubuntu
-eval `dircolors /home/will/gnome-terminal-colors-solarized/dircolors`
+eval `dircolors /home/will/gnome-terminal-colors-solarized/dircolors`;
 
 
 # For wsl-terminal
@@ -148,10 +153,21 @@ eval "$(rbenv init -)"
 export GOOGLE_DRIVE="/home/will/GoogleDriveManualEnv"
 #export GOOGLE_DRIVE="/home/will/Google Drive File Stream/My Drive/env"
 
+alias cvim='ctags -R . && vim .'
+
 # X Term / X Client Config
 export DISPLAY=:0
 
 [[ -s "/home/will/adaptly/dockerfiles/scripts/aliases.sh" ]] && source "/home/will/adaptly/dockerfiles/scripts/aliases.sh"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+export VIRTUAL_ENV="/home/will/python_environments/my_env"
+if [ -d "$VIRTUAL_ENV" ]; then
+  source $VIRTUAL_ENV/bin/activate;
+fi
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/home/will/.sdkman"
