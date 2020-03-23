@@ -10,7 +10,7 @@ esac
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
-HISTCONTROL=ignoreboth
+HISTCONTROL=ignoredups
 
 # append to the history file, don't overwrite it
 shopt -s histappend
@@ -114,24 +114,8 @@ if [ -f ~/.aws-credentials ]; then
     . ~/.aws-credentials
 fi
 
-# Solarized for WSL: https://github.com/seebi/dircolors-solarized
-#eval `dircolors /home/will/dircolors-solarized/dircolors.256dark`
 # Solarized for Ubuntu
-eval `dircolors /home/will/gnome-terminal-colors-solarized/dircolors`;
-
-
-# For wsl-terminal
-#[[ -z "$TMUX" && -n "$USE_TMUX" ]] && {
-    #[[ -n "$ATTACH_ONLY" ]] && {
-        #tmux a 2>/dev/null || {
-            #cd && exec tmux
-        #}
-        #exit
-    #}
-
-    #tmux new-window -c "$PWD" 2>/dev/null && exec tmux a
-    #exec tmux
-#}
+eval `dircolors /home/will/gnome-terminal-colors-solarized/dircolors`
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
@@ -148,6 +132,18 @@ fi
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
+# Pyenv Setup
+export PATH="/home/will/.pyenv/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)" #NB: Basically doens't allow deactivation
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+
+# CUDA Toolkit Setup - NB: Additional PATH is required for 10.2
+#export PATH="/usr/local/cuda-10.1/bin:$PATH"
+#export LD_LIBRARY_PATH"=/usr/local/cuda-10.1/lib64:$LD_LIBRARY_PATH"
+
+#export PATH="/usr/local/cuda-10.2/bin:$PATH"
+#export LD_LIBRARY_PATH="/usr/local/cuda-10.2/lib64:$LD_LIBRARY_PATH"
 
 #export GOOGLE_DRIVE=${GOOGLE_DRIVE:-"$HOME/Google Drive/Technology/env"}
 export GOOGLE_DRIVE="/home/will/GoogleDriveManualEnv"
@@ -163,11 +159,6 @@ export DISPLAY=:0
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-export VIRTUAL_ENV="/home/will/python_environments/my_env"
-if [ -d "$VIRTUAL_ENV" ]; then
-  source $VIRTUAL_ENV/bin/activate;
-fi
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/home/will/.sdkman"
