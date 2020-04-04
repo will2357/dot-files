@@ -83,6 +83,7 @@ set hidden
 "
 set mouse=a
 "set ttymouse=xterm2
+set ttymouse=sgr
 
 " Allows Deletion with Backspace
 "
