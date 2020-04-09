@@ -17,6 +17,9 @@ Plug 'guns/vim-clojure-highlight' "Requires tpope/vim-fireplace
 Plug 'tpope/vim-fireplace'
 Plug 'guns/vim-clojure-static'
 
+" Python
+Plug 'Vimjas/vim-python-pep8-indent'
+
 " S-expressions
 "Plug 'vim-scripts/paredit.vim' "SOOO SLOW!!!!
 Plug 'guns/vim-sexp' "Soooo much faster
@@ -101,15 +104,6 @@ endif
 "
 set tabstop=2 shiftwidth=2 expandtab
 
-" Cursor Options for Mac/GVim
-"
-"highlight Cursor guifg=white guibg=black
-"highlight iCursor guifg=white guibg=red
-"set guicursor=n-v-c:block-Cursor
-"set guicursor+=i:ver25-iCursor
-"set guicursor+=n-v-c:blinkon0
-"set guicursor+=i:blinkwait10
-
 " Allows Cursor Wrapping
 "
 set whichwrap+=<,>,h,l,[,]
@@ -192,24 +186,21 @@ set nofoldenable        "disable folding
 "highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 "match OverLength /\%81v.\+/
 set colorcolumn=80
-highlight ColorColumn ctermbg=green guibg=green
+"highlight ColorColumn ctermbg=green guibg=green
 "set columns=80
+
 
 "hi Visual term=reverse cterm=reverse guibg=Grey ctermbg=Grey
 "hi Visual guibg=White
+"
 hi Visual term=reverse cterm=reverse guibg=White ctermbg=White
 
-" Change cursor shape
-" tmux will only forward escape sequences to the terminal if surrounded by a DCS sequence
-" http://sourceforge.net/mailarchive/forum.php?thread_name=AANLkTinkbdoZ8eNR1X2UobLTeww1jFrvfJxTMfKSq-L%2B%40mail.gmail.com&forum_name=tmux-users
+
+" Change cursor shape Gnome Terminal 3.x
 "
-"if exists('$TMUX')
-  "let &t_SI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=1\x7\<Esc>\\"
-  "let &t_EI = "\<Esc>Ptmux;\<Esc>\<Esc>]50;CursorShape=0\x7\<Esc>\\"
-"else
-  "let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-  "let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-"endif
+let &t_SI = "\<Esc>[6 q"
+let &t_SR = "\<Esc>[4 q"
+let &t_EI = "\<Esc>[2 q"
 
 " Rainbow parentheses
 "
@@ -256,30 +247,6 @@ match ExtraWhitespace /\s\+$\| \+\ze\t/
 "highlight ExtraWhitespace ctermbg=darkgreen guibg=lightgreen
 "highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
 
-
-"autocomplete Parenthesis
-"When you type an open brace, this will automatically
-"insert a closing brace on the same line, after the cursor.
-"If you quickly hit Enter after the open brace, (to begin
-"a code block), the closing brace will be inserted on the
-"line below the cursor. If you quickly press the open brace
-"key again after the open brace, Vim won't insert anything extra,
-" you'll just get a single open brace. Finally, if you quickly
-"type an open and close brace, Vim will not do anything special.
-"inoremap {      {}<Left>
-"inoremap {<CR>  {<CR>}<Esc>O
-"inoremap {{     {
-"inoremap {}     {}
-
-"inoremap (      ()<Left>
-"inoremap (<CR>  (<CR>)<Esc>O
-"inoremap ((     (
-"inoremap ()     ()
-
-"inoremap [      []<Left>
-"inoremap [<CR>  [<CR>]<Esc>O
-"inoremap [[     [
-"inoremap []     []
 
 "Automatically remove trailing whitespace
 "
