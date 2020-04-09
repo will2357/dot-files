@@ -133,10 +133,12 @@ export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
 # Pyenv Setup
-export PATH="/home/will/.pyenv/bin:$PATH"
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)" #NB: Basically doens't allow deactivation
-export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+if hash pyenv 2>/dev/null; then
+  export PATH="/home/will/.pyenv/bin:$PATH"
+  eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)" #NB: Basically doens't allow deactivation
+  export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+fi
 
 # CUDA Toolkit Setup - NB: Additional PATH is required for 10.2
 #export PATH="/usr/local/cuda-10.1/bin:$PATH"
