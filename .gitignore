@@ -11,8 +11,6 @@
 !.pythonrc
 !.railsrc
 !.tmux.conf
-!.tmuxinator
-!.tmuxinator/*
 !.vim
 !.vim/*
 !.vim/**
