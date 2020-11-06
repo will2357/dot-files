@@ -266,5 +266,5 @@ autocmd filetype crontab setlocal nobackup nowritebackup
 
 "For editing large data files
 "
-set synmaxcol=120
+set synmaxcol=160
 

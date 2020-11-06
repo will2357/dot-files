@@ -147,16 +147,10 @@ fi
 #export PATH="/usr/local/cuda-10.2/bin:$PATH"
 #export LD_LIBRARY_PATH="/usr/local/cuda-10.2/lib64:$LD_LIBRARY_PATH"
 
-#export GOOGLE_DRIVE=${GOOGLE_DRIVE:-"$HOME/Google Drive/Technology/env"}
-export GOOGLE_DRIVE="/home/will/GoogleDriveManualEnv"
-#export GOOGLE_DRIVE="/home/will/Google Drive File Stream/My Drive/env"
-
 alias cvim='ctags -R . && vim .'
 
 # X Term / X Client Config
 export DISPLAY=:0
-
-[[ -s "/home/will/adaptly/dockerfiles/scripts/aliases.sh" ]] && source "/home/will/adaptly/dockerfiles/scripts/aliases.sh"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -165,3 +159,11 @@ export NVM_DIR="$HOME/.nvm"
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="/home/will/.sdkman"
 [[ -s "/home/will/.sdkman/bin/sdkman-init.sh" ]] && source "/home/will/.sdkman/bin/sdkman-init.sh"
+
+
+## NB: This is outdated - correct path is now autoadded to .bash_profile in Ubuntu 18.04
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+#export PATH="$PATH:$HOME/.rvm/bin"
+
+# Golang
+export PATH=$PATH:/usr/local/go/bin
