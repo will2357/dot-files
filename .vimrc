@@ -15,6 +15,9 @@ Plug 'tpope/vim-fugitive'
 " Python
 Plug 'Vimjas/vim-python-pep8-indent'
 
+" Go
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+
 call plug#end()
 
 " Filetype Configuration
