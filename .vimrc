@@ -12,11 +12,6 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-fugitive'
 
-" Clojure
-Plug 'guns/vim-clojure-highlight' "Requires tpope/vim-fireplace
-Plug 'tpope/vim-fireplace'
-Plug 'guns/vim-clojure-static'
-
 " Python
 Plug 'Vimjas/vim-python-pep8-indent'
 
@@ -228,16 +223,6 @@ au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
 
-" Alternate Rainbow Parentheses
-"let g:rainbow_active = 1 "0 if you want to enable it later via :RainbowToggle
-
-" Indentation support for Midje with vim-clojure-static
-let g:clojure_fuzzy_indent_patterns = ['^with', '^def', '^let', '^facts', '^fact', '^go', '^go-loop']
-
-" Indentation for absurd Clojure style guide with vim-clojure-static
-let g:clojure_align_subforms = 1
-let g:clojure_align_multiline_strings = 1
-
 " Tmux conf for vim-slime
 let g:slime_target = "tmux"
 
@@ -252,10 +237,6 @@ match ExtraWhitespace /\s\+$\| \+\ze\t/
 "
 autocmd BufWritePre * :%s/\s\+$//e
 
-"Taglist Ctags with Clojure
-"
-let tlist_clojure_settings = 'lisp;f:function'
-
 "Neo Completeion with Cache for Scala autocomplete
 "
 let g:neocomplcache_enable_at_startup = 1
@@ -267,4 +248,3 @@ autocmd filetype crontab setlocal nobackup nowritebackup
 "For editing large data files
 "
 set synmaxcol=160
-
