@@ -15,16 +15,6 @@ Plug 'tpope/vim-fugitive'
 " Python
 Plug 'Vimjas/vim-python-pep8-indent'
 
-" S-expressions
-"Plug 'vim-scripts/paredit.vim' "SOOO SLOW!!!!
-Plug 'guns/vim-sexp' "Soooo much faster
-
-" Looker junk
-Plug 'thalesmello/lkml.vim'
-
-" FE Junk
-Plug 'kchmck/vim-coffee-script'
-
 call plug#end()
 
 " Filetype Configuration
