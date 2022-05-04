@@ -40,7 +40,7 @@ colorscheme solarized
 "se t_Co=256
 "se t_Co=16
 
-" Reload ~/.vimrc on Change
+" Reload ~/.vimrc on change
 "
 autocmd! bufwritepost .vimrc source ~/.vimrc
 
