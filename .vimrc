@@ -1,7 +1,6 @@
 " junegunn/vim-plug config
 
 call plug#begin('~/.vim/bundle')
-Plug 'ajh17/VimCompletesMe'
 Plug 'altercation/vim-colors-solarized'
 Plug 'artur-shaik/vim-javacomplete2'
 Plug 'dragfire/Improved-Syntax-Highlighting-Vim'
@@ -11,12 +10,14 @@ Plug 'kien/rainbow_parentheses.vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-fugitive'
+"Plug 'ajh17/VimCompletesMe'
+Plug 'vim-scripts/VimCompletesMe'
 
 " Python
-Plug 'Vimjas/vim-python-pep8-indent'
+"Plug 'Vimjas/vim-python-pep8-indent'
 
 " Go
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+"Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 call plug#end()
 

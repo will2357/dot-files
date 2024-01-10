@@ -10,14 +10,14 @@ esac
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
-HISTCONTROL=ignoredups
+HISTCONTROL=ignoreboth
 
 # append to the history file, don't overwrite it
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=10000
-HISTFILESIZE=20000
+HISTSIZE=1000
+HISTFILESIZE=2000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -104,18 +104,41 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
+
 # Command prompt options
 if [ -f ~/.bash_functions ]; then
     . ~/.bash_functions
 fi
 
 # Additional env vars
-if [ -f ~/.aws-credentials ]; then
-    . ~/.aws-credentials
+if [ -f ~/.aws_credentials ]; then
+    . ~/.aws_credentials
 fi
 
-# Solarized for Ubuntu
-eval `dircolors /home/will/gnome-terminal-colors-solarized/dircolors`
+# Lazy alias
+alias cvim='ctags -R . && vim .'
+
+# Add local executables to PATH
+if [ -d "$HOME/bin" ] ; then
+  PATH="$PATH:$HOME/bin"
+fi
+
+if [ -d "$HOME/.local/bin" ] ; then
+  PATH="$PATH:$HOME/.local/bin"
+fi
+
+if [ -d "$HOME/go" ] ; then
+  PATH="$PATH:$HOME/go/bin"
+  export GOPATH="$HOME/go"
+fi
+
+if [ -d "/usr/local/go" ] ; then
+  PATH="$PATH:/usr/local/go/bin"
+  export GOROOT="/usr/local/go"
+fi
+
+# rbenv bin
+eval "$(/home/will/.rbenv/bin/rbenv init - bash)"
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
@@ -127,44 +150,3 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
-
-# Rbenv Setup
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
-
-# Pyenv Setup
-if hash pyenv 2>/dev/null; then
-  export PATH="/home/will/.pyenv/bin:$PATH"
-  eval "$(pyenv init -)"
-  eval "$(pyenv virtualenv-init -)" #NB: Basically doens't allow deactivation
-  export PYENV_VIRTUALENV_DISABLE_PROMPT=1
-fi
-
-# CUDA Toolkit Setup - NB: Additional PATH is required for 10.2
-#export PATH="/usr/local/cuda-10.1/bin:$PATH"
-#export LD_LIBRARY_PATH"=/usr/local/cuda-10.1/lib64:$LD_LIBRARY_PATH"
-
-#export PATH="/usr/local/cuda-10.2/bin:$PATH"
-#export LD_LIBRARY_PATH="/usr/local/cuda-10.2/lib64:$LD_LIBRARY_PATH"
-
-alias cvim='ctags -R . && vim .'
-
-# X Term / X Client Config
-export DISPLAY=:0
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
-export SDKMAN_DIR="/home/will/.sdkman"
-[[ -s "/home/will/.sdkman/bin/sdkman-init.sh" ]] && source "/home/will/.sdkman/bin/sdkman-init.sh"
-
-
-## NB: This is outdated - correct path is now autoadded to .bash_profile in Ubuntu 18.04
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-#export PATH="$PATH:$HOME/.rvm/bin"
-
-# Golang
-export GOPATH=$HOME/go
-export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
