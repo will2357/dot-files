@@ -1,14 +1,24 @@
 #!/bin/bash
 
 curr_dir=$PWD
-echo "$curr_dir"
+echo
+echo "curr directory: $curr_dir"
 
-target_dir=$HOME
-echo "$target_dir"
+targ_dir=$HOME
+echo "home directory: $targ_dir"
+echo
+
+
+link_file_with_backup () {
+    echo $1
+
+}
 
 link_dot_files () {
-    echo "Linking dot files (ln -sf $curr_dir/filename $target_dir/.filename)"
-    echo "Backups will be made as follows: .filename filenameBAK"
+    echo
+    printf 'Linking dot files (ln -sf %s/filename %s/.filename)\n' "$curr_dir" "$targ_dir"
+    printf 'Backups will be made as follows: %s/.filename %s/filename.BAK\n' "$targ_dir" "$targ_dir"
+    link_file_with_backup 'vimrc'
     #ln -sf $PWD/.ackrc                                 $HOME/.ackrc
     #ln -sf $PWD/.bash_functions                        $HOME/.bash_functions
     #ln -sf $PWD/.bash_profile                          $HOME/.bash_profile
@@ -34,7 +44,7 @@ link_dot_files () {
 
 
 while true; do
-    read -p "Do you wish to link your dot files to your home directory (yes/no)? " yn
+    read -r -p "Do you wish to link your dot files to your home directory (yes/no)? " yn
     case $yn in
         [Yy]* ) link_dot_files; break;;
         [Nn]* ) exit;;
