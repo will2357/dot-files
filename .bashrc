@@ -111,30 +111,37 @@ if [ -f ~/.bash_functions ]; then
 fi
 
 # Additional env vars
-if [ -f ~/.aws_credentials ]; then
-    . ~/.aws_credentials
+if [ -f ~/.awsenvvars.sh ]; then
+    . ~/.awsenvvars.sh
 fi
 
 # Lazy alias
 alias cvim='ctags -R . && vim .'
 
+# lazy function to unzip to folder of same name
+unzipd () {
+    zipfile="$1"
+    zipdir=${1%%.*}
+    unzip -d "$zipdir" "$zipfile"
+}
+
 # Add local executables to PATH
 if [ -d "$HOME/bin" ] ; then
-  PATH="$PATH:$HOME/bin"
+    PATH="$PATH:$HOME/bin"
 fi
 
 if [ -d "$HOME/.local/bin" ] ; then
-  PATH="$PATH:$HOME/.local/bin"
+    PATH="$PATH:$HOME/.local/bin"
 fi
 
 if [ -d "$HOME/go" ] ; then
-  PATH="$PATH:$HOME/go/bin"
-  export GOPATH="$HOME/go"
+    PATH="$PATH:$HOME/go/bin"
+    export GOPATH="$HOME/go"
 fi
 
 if [ -d "/usr/local/go" ] ; then
-  PATH="$PATH:/usr/local/go/bin"
-  export GOROOT="/usr/local/go"
+    PATH="$PATH:/usr/local/go/bin"
+    export GOROOT="/usr/local/go"
 fi
 
 # rbenv bin

@@ -14,19 +14,12 @@ Plug 'tpope/vim-fugitive'
 Plug 'vim-scripts/VimCompletesMe'
 
 " Python
-"Plug 'Vimjas/vim-python-pep8-indent'
+Plug 'Vimjas/vim-python-pep8-indent'
 
 " Go
-"Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 call plug#end()
-
-" Filetype Configuration
-"
-syntax on
-filetype on
-filetype plugin on
-filetype indent on
 
 " Solarized Options
 "
@@ -88,11 +81,6 @@ if has('gui_running')
   set noballooneval
 endif
 
-" Set 2 Space Tabs for Ruby
-" Overridden by FTPlugins
-"
-set tabstop=2 shiftwidth=2 expandtab
-
 " Allows Cursor Wrapping
 "
 set whichwrap+=<,>,h,l,[,]
@@ -115,6 +103,14 @@ set directory=~/.vim_tmp,~/tmp,/var/tmp,/tmp
 set listchars=tab:>-,trail:·,eol:$
 nmap <silent> <leader>s :set nolist!<CR>
 
+" Filetype Configuration
+"
+syntax on
+filetype on
+filetype plugin on
+filetype indent on
+filetype detect
+
 " Powder Key Bindings
 "
 au FileType ruby,ruby-sinatra,haml,sass,html,css map <leader>p :!powder restart<cr>
@@ -136,11 +132,29 @@ augroup filetypedetect
   au BufNewFile,BufRead *.pig set filetype=pig syntax=pig
 augroup END
 
+" Set 2 space tabs as default (for Ruby, etc.)
+" All are overridden by ftplugin/ folder
+"
+set tabstop=2 shiftwidth=2 expandtab
+
+" Default spacing for Golang
+"
+autocmd FileType go setlocal shiftwidth=4 tabstop=4 noexpandtab
+
+" Spacing for shell scripts
+"
+autocmd FileType sh setlocal shiftwidth=4 tabstop=4 expandtab
+
+"For crontab -e to work with vim
+"
+autocmd filetype crontab setlocal nobackup nowritebackup
+
+
 " Tagbar Toggle
 "
 nmap <leader>t :TagbarToggle<CR>
 " Change Tab and Pane Keys
-" Note: C = Control, M = Option, D = Command
+" NOTE: C = Control, M = Option, D = Command
 "
 ":map <S-C-left> :tabprevious<cr>
 ":map <S-C-right> :tabnext<cr>
@@ -234,10 +248,6 @@ autocmd BufWritePre * :%s/\s\+$//e
 "Neo Completeion with Cache for Scala autocomplete
 "
 let g:neocomplcache_enable_at_startup = 1
-
-"For crontab -e to work with vim
-"
-autocmd filetype crontab setlocal nobackup nowritebackup
 
 "For editing large data files
 "
