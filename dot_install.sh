@@ -10,14 +10,30 @@ echo
 
 
 link_file_with_backup () {
-    echo $1
+    filename=$1
+    printf 'Processing %s:\n' "$filename"
 
+    cp_cmd="cp $targ_dir/.$filename $targ_dir/$filename.BAK"
+    printf 'Running "%s"\n' "$cp_cmd"
+    eval "$cp_cmd"
+    printf "Done.\n"
+
+    #cp_cmd="cp $targ_dir/.$filename $targ_dir/$filename.BAK"
+    #printf 'Running "%s"\n' "$cp_cmd"
+    #eval "$cp_cmd"
+    #printf "Done.\n"
 }
 
 link_dot_files () {
+    if [ ! -d "$curr_dir/.git" ] ; then
+        echo "Not in git repo directory. Exiting now."
+        exit
+    fi
+
     echo
     printf 'Linking dot files (ln -sf %s/filename %s/.filename)\n' "$curr_dir" "$targ_dir"
     printf 'Backups will be made as follows: %s/.filename %s/filename.BAK\n' "$targ_dir" "$targ_dir"
+    echo
     link_file_with_backup 'vimrc'
     #ln -sf $PWD/.ackrc                                 $HOME/.ackrc
     #ln -sf $PWD/.bash_functions                        $HOME/.bash_functions
