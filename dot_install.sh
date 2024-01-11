@@ -103,12 +103,12 @@ link_dot_files () {
 
     if [ ${#file_array[@]} -eq 0  ]
     then
+        printf "No files specified with '-f SPACE SEPARATED LIST OF FILENAMES'.\n"
+        printf "Using default list.\n\n"
+
         file_array=("${default_file_array[@]}")
         files="${file_array[@]}"
     fi
-
-    printf "No files specified with '-f SPACE SEPARATED LIST OF FILENAMES'.\n"
-    printf "Using default list.\n\n"
 
     printf "List of %d files to process: %s\n" "${#file_array[@]}" "$files"
     get_input "Is this the correct list of files (yes/no)? "
