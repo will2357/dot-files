@@ -18,16 +18,18 @@ link_file_with_backup () {
     eval "$cp_cmd"
     printf "Done.\n"
 
-    #cp_cmd="cp $targ_dir/.$filename $targ_dir/$filename.BAK"
-    #printf 'Running "%s"\n' "$cp_cmd"
+    ln_cmd="ln -sf $curr_dir/$filename $targ_dir/.$filename"
+    printf 'Running "%s"\n' "$ln_cmd"
     #eval "$cp_cmd"
-    #printf "Done.\n"
+    printf "Done.\n"
+    echo
 }
 
 link_dot_files () {
-    if [ ! -d "$curr_dir/.git" ] ; then
+    if [ ! -d "$curr_dir/.git" ]
+    then
         echo "Not in git repo directory. Exiting now."
-        exit
+        exit 1
     fi
 
     echo
@@ -68,5 +70,4 @@ while true; do
     esac
 done
 
-
-
+exit 0
