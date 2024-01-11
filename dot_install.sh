@@ -1,7 +1,8 @@
 #!/bin/bash
 
 dry_run='false'
-files=''
+user_files='false'
+file_names=''
 file_array=()
 default_file_array=(
     'vimrc'
@@ -21,18 +22,18 @@ do
   case "${opt}" in
     d) dry_run='true' ;;
     h) print_options ; exit 0 ;;
-    f) files+="${OPTARG}" ;;
-    *) print_options; exit 1 ;;
+    f) user_files='true' ; file_names+="${OPTARG}" ;;
+    *) print_options ; exit 1 ;;
   esac
 done
 
 shift $(( OPTIND - 1 ));
-additional_files=$@
-files+=" $additional_files"
-file_array=( $files )
+additional_files=("$@")
+file_array+=("$file_names")
+file_array+=("${additional_files[@]}")
+file_names+=" ${additional_files[*]}"
 
 [ "$dry_run" = 'true' ] && printf "\n\n\n!!!DRY RUN!!!\n!!!DRY RUN!!!\n!!!DRY RUN!!!\n\n\n"
-
 
 curr_dir=$PWD
 echo
@@ -49,7 +50,7 @@ get_input () {
     do
         read -r -p "$message" yn
         case $yn in
-            [Yy]* ) echo $yn; break;;
+            [Yy]* ) echo "$yn"; break;;
             [Nn]* ) exit;;
             * ) echo "Please answer yes or no.";;
         esac
@@ -62,12 +63,12 @@ link_file_with_backup () {
     printf 'Processing %s...\n' "$filename"
 
     cp_cmd="cp $targ_dir/.$filename $targ_dir/$filename.BAK"
-    printf 'Running "%s"\n' "$cp_cmd"
+    printf "Running '%s'\n" "$cp_cmd"
     [ "$dry_run" = 'false' ] && eval "$cp_cmd"
     printf "Done.\n"
 
     ln_cmd="ln -sf $curr_dir/$filename $targ_dir/.$filename"
-    printf 'Running "%s"\n' "$ln_cmd"
+    printf "Running '%s'\n" "$ln_cmd"
     [ "$dry_run" = 'false' ] && eval "$ln_cmd"
     printf "Done.\n"
     echo
@@ -76,12 +77,12 @@ link_file_with_backup () {
 check_files_exist () {
     for file in "${file_array[@]}"
     do
-        file_with_path=$curr_dir/${file#.}
-        printf "\nChecking '%s'\n" $file_with_path
-        if [ -f $file_with_path ]; then
+        file_with_path="$curr_dir/${file#.}"
+        printf "\nChecking '%s'\n" "$file_with_path"
+        if [ -f "$file_with_path" ]; then
             printf "File exists.\n"
         else
-            printf "ERROR: File '%s' does not exist. Exiting.\n" $file_with_path
+            printf "ERROR: File '%s' does not exist. Exiting.\n" "$file_with_path"
             exit 1
         fi
     done
@@ -101,16 +102,16 @@ link_dot_files () {
     echo
 
 
-    if [ ${#file_array[@]} -eq 0  ]
+    if [ "$user_files" = 'false' ]
     then
         printf "No files specified with '-f SPACE SEPARATED LIST OF FILENAMES'.\n"
         printf "Using default list.\n\n"
 
         file_array=("${default_file_array[@]}")
-        files="${file_array[@]}"
+        file_names="${file_array[*]}"
     fi
 
-    printf "List of %d files to process: %s\n" "${#file_array[@]}" "$files"
+    printf "List of %d files to process: %s\n" "${#file_array[@]}" "$file_names"
     get_input "Is this the correct list of files (yes/no)? "
 
     check_files_exist
@@ -118,11 +119,12 @@ link_dot_files () {
     for file in "${file_array[@]}"
     do
         clean_name="${file#.}"
-        link_file_with_backup $clean_name
+        link_file_with_backup "$clean_name"
     done
 }
 
 answer=$(get_input "Do you wish to link your dot files to your home directory (yes/no)? ")
-[ ! -z "$answer" ] && link_dot_files
+[ -n "$answer" ] && link_dot_files
 
+printf "SUCCESS: Linked %d files to process: %s\n" "${#file_array[@]}" "$file_names"
 exit 0
