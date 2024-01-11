@@ -12,7 +12,7 @@ default_file_array=(
 print_options () {
   printf "Options:\n"
   printf "  -d Dry run\n"
-  printf "  -f List of files to link\n"
+  printf "  -f Space separated list of files to link\n"
   printf "  -h This help screen\n"
 }
 
@@ -26,9 +26,7 @@ do
   esac
 done
 
-
 shift $(( OPTIND - 1 ));
-echo "@: $@"
 additional_files=$@
 files+=" $additional_files"
 file_array=( $files )
@@ -79,7 +77,7 @@ check_files_exist () {
     for file in "${file_array[@]}"
     do
         file_with_path=$curr_dir/${file#.}
-        printf "Checking '%s'\n" $file_with_path
+        printf "\nChecking '%s'\n" $file_with_path
         if [ -f $file_with_path ]; then
             printf "File exists.\n"
         else
@@ -87,7 +85,7 @@ check_files_exist () {
             exit 1
         fi
     done
-    printf "Done.\n"
+    printf "Done.\n\n"
 }
 
 link_dot_files () {
@@ -109,8 +107,10 @@ link_dot_files () {
         files="${file_array[@]}"
     fi
 
-    printf 'List of %d files to process: %s\n' "${#file_array[@]}" "$files"
-    echo
+    printf "No files specified with '-f SPACE SEPARATED LIST OF FILENAMES'.\n"
+    printf "Using default list.\n\n"
+
+    printf "List of %d files to process: %s\n" "${#file_array[@]}" "$files"
     get_input "Is this the correct list of files (yes/no)? "
 
     check_files_exist
@@ -120,26 +120,9 @@ link_dot_files () {
         clean_name="${file#.}"
         link_file_with_backup $clean_name
     done
-    #link_file_with_backup 'tmux.conf'
-    #ln -sf $PWD/.ackrc                                 $HOME/.ackrc
-    #ln -sf $PWD/.bash_functions                        $HOME/.bash_functions
-    #ln -sf $PWD/.bash_profile                          $HOME/.bash_profile
-    #ln -sf $PWD/.bashrc                                $HOME/.bashrc
-    #ln -sf $PWD/.ctags                                 $HOME/.ctags
-    #ln -sf $PWD/.git-prompt.sh                         $HOME/.git-prompt.sh
-    #ln -sf $PWD/.gitignore                             $HOME/.gitignore
-    #ln -sf $PWD/.gitignore_global                      $HOME/.gitignore_global
-    #ln -sf $PWD/.gitmodules                            $HOME/.gitmodules
-    #ln -sf $PWD/.irbrc                                 $HOME/.irbrc
-    #ln -sf $PWD/.midje.clj                             $HOME/.midje.clj
-    #ln -sf $PWD/.pryrc                                 $HOME/.pryrc
-    #ln -sf $PWD/.pythonrc                              $HOME/.pythonrc
-    #ln -sf $PWD/.railsrc                               $HOME/.railsrc
-    #ln -sf $PWD/.tmux.conf                             $HOME/.tmux.conf
-    #ln -sf $PWD/.vimrc                                 $HOME/.vimrc
 }
 
 answer=$(get_input "Do you wish to link your dot files to your home directory (yes/no)? ")
-[ ! -z $answer ] && link_dot_files
+[ ! -z "$answer" ] && link_dot_files
 
 exit 0
