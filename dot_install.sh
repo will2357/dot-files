@@ -8,6 +8,8 @@ default_file_array=(
     'vimrc'
     'tmux.conf'
     'bashrc'
+    'bash_functions'
+    'gitignore_global'
 )
 
 print_options () {
@@ -51,8 +53,8 @@ get_input () {
         read -r -p "$message" yn
         case $yn in
             [Yy]* ) echo "$yn"; break;;
-            [Nn]* ) exit;;
-            * ) echo "Please answer yes or no.";;
+            [Nn]* ) exit 0;;
+            * ) exit 0;;
         esac
     done
 }
@@ -112,7 +114,7 @@ link_dot_files () {
     fi
 
     printf "List of %d files to process: %s\n" "${#file_array[@]}" "$file_names"
-    get_input "Is this the correct list of files (yes/no)? "
+    get_input "Is this the correct list of files (yes/No)? "
 
     check_files_exist
 
@@ -123,8 +125,8 @@ link_dot_files () {
     done
 }
 
-answer=$(get_input "Do you wish to link your dot files to your home directory (yes/no)? ")
+answer=$(get_input "Do you wish to link your dot files to your home directory (yes/No)? ")
 [ -n "$answer" ] && link_dot_files
 
-printf "SUCCESS: Linked %d files to process: %s\n" "${#file_array[@]}" "$file_names"
+printf "\nSUCCESS: Ran script without error.\n\n\n"
 exit 0

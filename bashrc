@@ -16,8 +16,8 @@ HISTCONTROL=ignoredups
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
-HISTFILESIZE=2000
+HISTSIZE=10000
+HISTFILESIZE=20000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -124,6 +124,10 @@ unzipd () {
     zipdir=${1%%.*}
     unzip -d "$zipdir" "$zipfile"
 }
+
+alias speed-test='curl -s \
+    https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py \
+    | python -'
 
 # Add local executables to PATH
 if [ -d "$HOME/bin" ] ; then

@@ -1,16 +1,18 @@
 " junegunn/vim-plug config
 
 call plug#begin('~/.vim/bundle')
+" This plugin manager
+Plug 'junegunn/vim-plug'
+
 Plug 'altercation/vim-colors-solarized'
 Plug 'artur-shaik/vim-javacomplete2'
+Plug 'cakebaker/scss-syntax.vim'
 Plug 'dragfire/Improved-Syntax-Highlighting-Vim'
 Plug 'henrik/vim-indexed-search'
-Plug 'junegunn/vim-plug'
 Plug 'kien/rainbow_parentheses.vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-fugitive'
-"Plug 'ajh17/VimCompletesMe'
 Plug 'vim-scripts/VimCompletesMe'
 
 " Python
@@ -36,7 +38,7 @@ colorscheme solarized
 
 " Reload ~/.vimrc on change
 "
-autocmd! bufwritepost .vimrc source ~/.vimrc
+"autocmd! bufwritepost .vimrc source ~/.vimrc
 
 " General Options
 "
