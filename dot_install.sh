@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source "_shared_functions.sh"
+
 dry_run='false'
 user_files='false'
 file_names=''
@@ -45,24 +47,9 @@ targ_dir=$HOME
 echo "home directory: $targ_dir"
 echo
 
-get_input () {
-    [ -z "$1" ] && printf "Must include a message for the user. Exiting.\n" && exit 1
-    message=$1
-    while true
-    do
-        read -r -p "$message" yn
-        case $yn in
-            [Yy]* ) echo "$yn"; break;;
-            [Nn]* ) exit 0;;
-            * ) exit 0;;
-        esac
-    done
-}
-
-
 link_file_with_backup () {
     filename=$1
-    printf 'Processing %s...\n' "$filename"
+    prn_note "Processing '$filename'... "
 
     cp_cmd="cp $targ_dir/.$filename $targ_dir/$filename.BAK"
     printf "Running '%s'\n" "$cp_cmd"
@@ -84,7 +71,8 @@ check_files_exist () {
         if [ -f "$file_with_path" ]; then
             printf "File exists.\n"
         else
-            printf "ERROR: File '%s' does not exist. Exiting.\n" "$file_with_path"
+            missing_file_message="ERROR: File '$file_with_path' does not exist. Exiting."
+            prn_error "$missing_file_message"
             exit 1
         fi
     done
@@ -94,7 +82,7 @@ check_files_exist () {
 link_dot_files () {
     if [ ! -d "$curr_dir/.git" ]
     then
-        echo "ERROR: Not in git repo directory. Exiting."
+        prn_error "ERROR: Not in git repo directory. Exiting."
         exit 1
     fi
 
@@ -114,9 +102,14 @@ link_dot_files () {
     fi
 
     printf "List of %d files to process: %s\n" "${#file_array[@]}" "$file_names"
-    get_input "Is this the correct list of files (yes/No)? "
+    resp=$(get_confirmation "Is this the correct list of files?")
 
-    check_files_exist
+    if [ -n "$resp" ]
+    then
+        check_files_exist
+    else
+        exit 1
+    fi
 
     for file in "${file_array[@]}"
     do
@@ -125,8 +118,11 @@ link_dot_files () {
     done
 }
 
-answer=$(get_input "Do you wish to link your dot files to your home directory (yes/No)? ")
-[ -n "$answer" ] && link_dot_files
+resp=$(get_confirmation "Do you wish to link your dot files to your home directory?")
+if [ -n "$resp" ]
+then
+    link_dot_files
+    prn_success "SUCCESS: Ran 'dot_install.sh' script without errors."
+fi
 
-printf "\nSUCCESS: Ran script without error.\n\n\n"
 exit 0

@@ -27,6 +27,7 @@ The following configuration files are included:
 * pryrc
 * pythonrc
 * railsrc
+* shellcheckrc
 * tmux.conf
 * vimrc
 
@@ -59,3 +60,13 @@ Follow the on-screen prompts.
 ```
 ./dot_install.sh -d
 ```
+
+
+### Testing
+Currently, only tested via `shellcheck`:
+```
+shellcheck _shared_functions.sh dot_install.sh clean_install.sh
+
+```
+
+TODO: Add unit tests via either [bats-core](https://github.com/bats-core/bats-core) or [shunit2](https://github.com/kward/shunit2)
