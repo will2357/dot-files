@@ -23,7 +23,7 @@ prn_note () {
 get_confirmation () {
     [ -z "$1" ] && prn_error "Must include a message for the user. Exiting." && exit 1
     message=$1
-    bold_message="$(tput bold)$message (yes/No) ${color_normal}"
+    bold_message="$(tput bold)$message (y/N) ${color_normal}"
 
     read -r -p "$bold_message" yn
     case $yn in

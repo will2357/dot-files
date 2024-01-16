@@ -51,9 +51,9 @@ link_file_with_backup () {
     filename=$1
     prn_note "Processing '$filename'... "
 
-    cp_cmd="cp $targ_dir/.$filename $targ_dir/$filename.BAK"
-    printf "Running '%s'\n" "$cp_cmd"
-    [ "$dry_run" = 'false' ] && eval "$cp_cmd"
+    mv_cmd="mv $targ_dir/.$filename $targ_dir/$filename.BAK"
+    printf "Running '%s'\n" "$mv_cmd"
+    [ "$dry_run" = 'false' ] && eval "$mv_cmd"
     printf "Done.\n"
 
     ln_cmd="ln -sf $curr_dir/$filename $targ_dir/.$filename"

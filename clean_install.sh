@@ -7,6 +7,7 @@ if [ ! "$(uname)" == "Linux" ]; then prn_error "Must be on a debian based Linux 
 curr_dir=$PWD
 home_dir=$HOME
 temp_dir=/tmp/tmp_install
+server="false"
 
 # Switch to tmp dir
 if pwd | grep -q /tmp_install$ ;then
@@ -18,7 +19,7 @@ else
 fi
 
 # Get latest package lists
-sudo apt-get update
+sudo apt update
 
 # Don't bother with silly legal agreements on ubuntu-restricted-extras
 export DEBIAN_FRONTEND=noninteractive
@@ -47,6 +48,7 @@ sudo apt install -y ack \
     tmux  \
     ubuntu-restricted-addons \
     ubuntu-restricted-extras \
+    unzip \
     xclip \
     zlib1g \
     zlib1g-dev
@@ -56,15 +58,32 @@ prn_success "Installed basic packages via apt."
 prn_note "Installing rbenv via rbenv-installer script."
 curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
 
-# Install thorium browser
-if [ -z "$(which thorium-browser)" ]; then
+if [ -n "$(uname -a | grep aws)" ] || [ $USER == "ubuntu" ] || [ hostname | grep -e "^ip" ]
+then
+    server="true"
+fi
+
+install_thorium () {
     thorium_deb=$(curl -s https://api.github.com/repos/Alex313031/Thorium/releases/latest | grep "browser_download_url.*amd64\.deb" | awk '{print $2}' | tr -d \")
     wget "$thorium_deb"
     sudo dpkg -i thorium-browser*amd64.deb
+}
+# Install thorium browser
+if [ -z "$(which thorium-browser)" ]
+then
+    if [ "$server" == "true" ]
+    then
+        resp=$(get_confirmation "You appear to be on a server. Do you wish to install 'thorium-browser'?")
+        if [ -n "$resp" ]
+        then
+            install_thorium
+        fi
+    else
+        install_thorium
+    fi
 else
     prn_note "'thorium-browser' already installed. Skipping."
 fi
-
 
 prn_note "Configuring git."
 

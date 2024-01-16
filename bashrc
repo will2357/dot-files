@@ -148,8 +148,9 @@ if [ -d "/usr/local/go" ] ; then
     export GOROOT="/usr/local/go"
 fi
 
-# rbenv bin
-eval "$(/home/will/.rbenv/bin/rbenv init - bash)"
+if [ -d "$HOME/.rbenv/bin" ] ; then
+    eval "$($HOME/.rbenv/bin/rbenv init - bash)"
+fi
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
