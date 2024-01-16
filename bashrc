@@ -68,6 +68,25 @@ case "$TERM" in
 xterm*|rxvt*)
     PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
     ;;
+linux*)
+    echo -en "\e]P0073642" #black
+    echo -en "\e]P8002b36" #brblack
+    echo -en "\e]P1dc322f" #red
+    echo -en "\e]P9cb4b16" #brred
+    echo -en "\e]P2859900" #green
+    echo -en "\e]PA586e75" #brgreen
+    echo -en "\e]P3b58900" #yellow
+    echo -en "\e]PB657b83" #bryellow
+    echo -en "\e]P4268bd2" #blue
+    echo -en "\e]PC839496" #brblue
+    echo -en "\e]P5d33682" #magenta
+    echo -en "\e]PD6c71c4" #brmagenta
+    echo -en "\e]P62aa198" #cyan
+    echo -en "\e]PE93a1a1" #brcyan
+    echo -en "\e]P7eee8d5" #white
+    echo -en "\e]PFfdf6e3" #brwhite
+    clear #for background artifacting
+    ;;
 *)
     ;;
 esac
@@ -101,18 +120,21 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 # ~/.bash_aliases, instead of adding them here directly.
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
+if [ -f "$HOME/.bash_aliases" ] || [ -h "$HOME/.bash_aliases" ]
+then
+    source "$HOME/.bash_aliases"
 fi
 
 # Command prompt options
-if [ -f ~/.bash_functions ]; then
-    . ~/.bash_functions
+if [ -f "$HOME/.bash_functions" ] || [ -h "$HOME/.bash_functions" ]
+then
+    source "$HOME/.bash_functions"
 fi
 
 # Additional env vars
-if [ -f ~/.awsenvvars.sh ]; then
-    . ~/.awsenvvars.sh
+if [ -f "$HOME/.awsenvvars.sh" ] || [ -h "$HOME/.awsenvvars.sh" ]
+then
+    source "$HOME/.awsenvvars.sh"
 fi
 
 # Lazy alias
@@ -148,8 +170,9 @@ if [ -d "/usr/local/go" ] ; then
     export GOROOT="/usr/local/go"
 fi
 
-# rbenv bin
-eval "$(/home/will/.rbenv/bin/rbenv init - bash)"
+if [ -d "$HOME/.rbenv/bin" ] ; then
+    eval "$($HOME/.rbenv/bin/rbenv init - bash)"
+fi
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile

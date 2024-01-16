@@ -23,13 +23,13 @@ prn_note () {
 get_confirmation () {
     [ -z "$1" ] && prn_error "Must include a message for the user. Exiting." && exit 1
     message=$1
-    bold_message="$(tput bold)$message (yes/No) ${color_normal}"
+    bold_message="$(tput bold)$message (y/N) ${color_normal}"
 
     read -r -p "$bold_message" yn
     case $yn in
         [Yy]* ) printf "Response: %s\n" "$yn"; return 0;;
-        [Nn]* ) return 1;;
-        * ) return 1;;
+        [Nn]* ) ;;
+        * ) ;;
     esac
 }
 
@@ -43,6 +43,7 @@ get_input () {
         read -r -p "$message" input
         if [ -z "$input" ]; then input=$default_input; fi
         ref=$input
+        export ref
         resp=$(get_confirmation "Is this correct: '$input'?")
         if [ -n "$resp" ]
         then

@@ -37,6 +37,9 @@ _* Installed by default_
 Tested on a clean install of Ubuntu 22.04.3 LTS Desktop minimal install with no additional packages.
 
 ```
+wget https://github.com/will2357/dot_files/archive/refs/heads/master.tar.gz
+tar xvf master.tar.gz
+cd dot_files-master
 chmod +x clean_install.sh
 ./clean_install.sh
 ```
@@ -68,6 +71,6 @@ Currently, only tested via `shellcheck`:
 shellcheck _shared_functions.sh dot_install.sh clean_install.sh
 ```
 
-TODO: Add unit tests via either [bats-core](https://github.com/bats-core/bats-core) or [shunit2](https://github.com/kward/shunit2). 
+TODO: Add unit tests via either [bats-core](https://github.com/bats-core/bats-core) or [shunit2](https://github.com/kward/shunit2).
 
 Why? Because tests are awesome, and I've never written tests for shell scripts.

@@ -1,12 +1,16 @@
 #!/bin/bash
 
-source "_shared_functions.sh"
+set -e
+
+script_dir="$(dirname "$(readlink -f "$0")")"
+source "$script_dir/_shared_functions.sh"
 
 if [ ! "$(uname)" == "Linux" ]; then prn_error "Must be on a debian based Linux system."; exit 1; fi
 
 curr_dir=$PWD
 home_dir=$HOME
 temp_dir=/tmp/tmp_install
+server="false"
 
 # Switch to tmp dir
 if pwd | grep -q /tmp_install$ ;then
@@ -18,7 +22,7 @@ else
 fi
 
 # Get latest package lists
-sudo apt-get update
+sudo apt update
 
 # Don't bother with silly legal agreements on ubuntu-restricted-extras
 export DEBIAN_FRONTEND=noninteractive
@@ -26,6 +30,7 @@ echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select tr
 # Install basic requirements via apt
 sudo apt install -y ack \
     autoconf \
+    bash-completion \
     build-essential \
     exuberant-ctags \
     checkinstall \
@@ -41,12 +46,17 @@ sudo apt install -y ack \
     libxml2-dev \
     libxslt-dev \
     libyaml-dev \
+    open-vm-tools \
+    python-is-python3 \
+    python3 \
     python3-dev \
+    python3-pip \
     shellcheck \
     ssh \
     tmux  \
     ubuntu-restricted-addons \
     ubuntu-restricted-extras \
+    unzip \
     xclip \
     zlib1g \
     zlib1g-dev
@@ -56,27 +66,55 @@ prn_success "Installed basic packages via apt."
 prn_note "Installing rbenv via rbenv-installer script."
 curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
 
-# Install thorium browser
-if [ -z "$(which thorium-browser)" ]; then
+if [ -z "$(dpkg -l ubuntu-desktop)" ]
+then
+    server="true"
+fi
+
+install_thorium () {
     thorium_deb=$(curl -s https://api.github.com/repos/Alex313031/Thorium/releases/latest | grep "browser_download_url.*amd64\.deb" | awk '{print $2}' | tr -d \")
     wget "$thorium_deb"
     sudo dpkg -i thorium-browser*amd64.deb
+}
+# Install thorium browser
+if [ -z "$(which thorium-browser)" ]
+then
+    if [ "$server" == "true" ]
+    then
+        resp=$(get_confirmation "You appear to be on a server. Do you wish to install 'thorium-browser'?")
+        if [ -n "$resp" ]
+        then
+            install_thorium
+        fi
+    else
+        install_thorium
+    fi
 else
     prn_note "'thorium-browser' already installed. Skipping."
 fi
-
+if which thorium-browser
+then
+    BROWSER="$(which thorium-browser)"
+    export BROWSER
+fi
 
 prn_note "Configuring git."
 
-git_user_name=""
-get_input "Enter git user.name (blank for default of 'will2357'): " \
-    git_user_name "will2357"
-git config --global user.name "$git_user_name"
+if ! git config user.name
+then
+    git_user_name=""
+    get_input "Enter git user.name (blank for default of 'will2357'): " \
+        git_user_name "will2357"
+    git config --global user.name "$git_user_name"
+fi
 
-git_user_email=""
-get_input "Enter git user.email (blank for default of 'will@highducheck.org'): " \
-    git_user_email "will@highducheck.org"
-git config --global user.email "$git_user_email"
+if ! git config user.email
+then
+    git_user_email=""
+    get_input "Enter git user.email (blank for default of 'will@highducheck.org'): " \
+        git_user_email "will@highducheck.org"
+    git config --global user.email "$git_user_email"
+fi
 
 git config --global push.default simple
 git config --global core.excludesfile "$home_dir/.gitignore_global"
@@ -144,8 +182,8 @@ fi
 
 prn_note "Running 'dot_install.sh' script with default options."
 
-chmod +wrx dot_install.sh
-./dot_install.sh
+chmod +wrx "$script_dir/dot_install.sh"
+"$script_dir/dot_install.sh"
 
 cd "$src_dir" || exit 1
 
@@ -179,6 +217,22 @@ tmux start-server
 tmux new-session -d
 prn_note "Installing tmux plugins."
 "$tmux_plugin_man_dir/scripts/install_plugins.sh"
+
+# Install AWS CLI
+if which yum; then sudo yum remove awscli; fi
+sudo apt purge awscli
+cd "$temp_dir" || exit 1
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip -q awscliv2.zip
+if which aws
+then
+    sudo ./aws/install --update
+else
+    sudo ./aws/install
+fi
+prn_success "Installed AWS CLI."
+
+sudo rm -rf "$temp_dir"
 
 prn_success "SUCCESS: Ran 'clean_install.sh' script without errors."
 
