@@ -65,6 +65,17 @@ prn_success "Installed basic packages via apt."
 
 prn_note "Installing rbenv via rbenv-installer script."
 curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
+prn_success "Installed rbenv."
+
+prn_note "Installing nvm via nvm-sh installer script."
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
+prn_success "Installed nvm."
+
+if [ -d "$HOME/.pyenv" ]; then rm -rf "$HOME/.pyenv" ;fi
+prn_note "Installing pyenv via installer script."
+curl https://pyenv.run | bash
+prn_success "Installed pyenv."
+
 
 if [ -z "$(dpkg -l ubuntu-desktop)" ]
 then

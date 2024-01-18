@@ -5,3 +5,4 @@ tmp/
 *.iml
 *.orig
 *.sw*
+.irb_history
