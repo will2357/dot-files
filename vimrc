@@ -15,6 +15,9 @@ Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-fugitive'
 Plug 'vim-scripts/VimCompletesMe'
 
+" Ruby
+Plug 'vim-ruby/vim-ruby'
+
 " Python
 Plug 'Vimjas/vim-python-pep8-indent'
 
@@ -91,6 +94,7 @@ set whichwrap+=<,>,h,l,[,]
 "
 let NERDTreeIgnore=['\.pyc$', '\.orig$']
 noremap <silent> <unique> <Leader>; :NERDTreeToggle<CR>
+let NERDTreeShowHidden=1
 
 " Swap Files
 "
