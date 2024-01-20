@@ -1,6 +1,7 @@
 --type-add=ruby=.haml,.rake,.rsel,.scss,.coffee,.sass,.cfg
---ignore-file=match:.lein-repl-history
---ignore-file=match:tags
---ignore-file=ext:orig
---ignore-dir=vcr_cassettes
 --ignore-dir=tmp
+--ignore-dir=vcr_cassettes
+--ignore-file=ext:orig
+--ignore-file=match:.lein-repl-history
+--ignore-file=match:irb_history
+--ignore-file=match:tags

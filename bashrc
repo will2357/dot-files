@@ -147,6 +147,35 @@ unzipd () {
     unzip -d "$zipdir" "$zipfile"
 }
 
+# Should probably just do this manually... but...
+recurse-replace () {
+    old_val=$1
+    new_val=$2
+    if type ack > /dev/null; then
+        color_normal=$(tput sgr0)
+        color_blue=$(tput setaf 4)
+        color_red=$(tput setaf 1)
+        color_bold=$(tput bold)
+
+        cmd="ack $old_val | grep -e '^\w' | cut -d: -f1 | xargs sed -i 's/$old_val/$new_val/g'"
+        printf "%sAbout to run:\n%s" "$color_blue" "$color_normal"
+        echo "${color_bold}$cmd${color_normal}"
+        printf "\n%sThis will replace the following:\n%s" "$color_blue" "$color_normal"
+        ack "$old_val"
+        echo
+
+        bold_message="${color_bold}Are you sure? (y/N)${color_normal}"
+        read -r -p "$bold_message" yn
+        case $yn in
+            [Yy]* ) printf "\nRunning replace command.\n"; eval "$cmd"; return 0;;
+            [Nn]* ) return 1;;
+            * ) return 1;;
+        esac
+    else
+        printf "%sERROR: 'ack' not found\n%s" "$color_red" "$color_normal"
+    fi
+}
+
 alias speed-test='curl -s \
     https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py \
     | python -'

@@ -10,11 +10,12 @@ user_files='false'
 file_names=''
 file_array=()
 default_file_array=(
-    'vimrc'
-    'tmux.conf'
-    'bashrc'
+    'ackrc'
     'bash_functions'
+    'bashrc'
     'gitignore_global'
+    'tmux.conf'
+    'vimrc'
 )
 
 print_options () {
