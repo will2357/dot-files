@@ -128,6 +128,7 @@ then
 fi
 
 git config --global push.default simple
+git config --global color.ui auto
 git config --global core.excludesfile "$home_dir/.gitignore_global"
 git config --global core.editor vim
 git config --global merge.tool vim

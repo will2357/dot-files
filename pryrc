@@ -1,2 +1,2 @@
-Pry.config.prompt = [proc { "input> " },
-		     proc { "     | " }]
+#Pry.config.prompt = [proc { "input> " },
+#		     proc { "     | " }]
