@@ -4,9 +4,9 @@ will2357's Ubuntu Clean Install Setup and Dot Files Scripts
 ## Information
 
 A `clean_install.sh` script to install some basic packages via `apt`,
-Thorium web browser from the latest `deb`, configure git, compile vim from source (with clipboard options), and setup
-dot files (using the standalone `dot_files.sh` script below) with plugin
-installation for `vim` and `tmux`.
+Thorium web browser from the latest `deb`, configure git, compile vim from
+source (with clipboard options), and setup dot files (using the standalone
+`dot_files.sh` script below) with plugin installation for `vim` and `tmux`.
 
 A `dot_install.sh` shell script is included to create symbolic links in the
 user's `$HOME` directory. Makes backups will as follows:
@@ -34,7 +34,8 @@ _* Installed by default_
 
 ### Usage
 #### Full Install
-Tested on a clean install of Ubuntu 22.04.3 LTS Desktop minimal install with no additional packages.
+Tested on a clean install of Ubuntu 22.04.3 LTS Desktop and Server editions
+minimal install with no additional packages.
 
 ```
 wget https://github.com/will2357/dot_files/archive/refs/heads/master.tar.gz
@@ -63,7 +64,6 @@ Follow the on-screen prompts.
 ```
 ./dot_install.sh -d
 ```
-
 
 ### Testing
 Currently, only tested via `shellcheck`:

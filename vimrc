@@ -24,6 +24,13 @@ Plug 'Vimjas/vim-python-pep8-indent'
 " Go
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
+" Github Copilot
+"Plug 'github/copilot.vim'
+"Installed via:
+"git clone https://github.com/github/copilot.vim \
+"    ~/.vim/pack/github/start/copilot.vim
+"per https://github.com/github/copilot.vim
+
 call plug#end()
 
 " Solarized Options
@@ -34,7 +41,6 @@ set background=dark
 "let g:solarized_visibility = "high"
 "let g:solarized_contrast = "high"
 colorscheme solarized
-
 " Set colors for Ubuntu
 "se t_Co=256
 "se t_Co=16
