@@ -125,7 +125,19 @@ then
     source "$HOME/.bash_aliases"
 fi
 
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if ! shopt -oq posix; then
+  if [ -f /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+  elif [ -f /etc/bash_completion ]; then
+    . /etc/bash_completion
+  fi
+fi
+
 # Command prompt options
+# NB: Keep bash completion before this so that __git_ps1 is defined
 if [ -f "$HOME/.bash_functions" ] || [ -h "$HOME/.bash_functions" ]
 then
     source "$HOME/.bash_functions"
@@ -215,15 +227,4 @@ if [ -d "$HOME/.pyenv" ]; then
     eval "$(pyenv init -)"
     # Load pyenv-virtualenv automatically by adding
     eval "$(pyenv virtualenv-init -)"
-fi
-
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
-if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
-  fi
 fi

@@ -17,7 +17,7 @@ $HOME/.filename -> $HOME/filename.BAK
 Only tested on Ubuntu 22.04.3 LTS Desktop fully updated, minimal install.
 
 The following configuration files are included:
-* ackrc
+* ackrc*
 * bash_functions*
 * bashrc*
 * ctags
