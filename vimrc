@@ -33,6 +33,10 @@ Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 call plug#end()
 
+" Disable Github Copilot
+"
+autocmd VimEnter * Copilot disable
+
 " Solarized Options
 "
 set background=dark
