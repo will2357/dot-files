@@ -14,6 +14,8 @@ default_file_array=(
     'bash_functions'
     'bashrc'
     'ctags'
+    'ctags.d/scala.ctags'
+    'ctags.d/tsx.ctags'
     'gitignore_global'
     'tmux.conf'
     'vimrc'
@@ -62,6 +64,11 @@ link_file_with_backup () {
     elif [ -f "$path_filename" ]
     then
         cp_cmd="cp $path_filename $backup"
+    fi
+
+    if [[ "$path_filename" == *\/* ]]
+    then
+        mkdir -p ${path_filename%/*}
     fi
 
     printf "Running '%s'\n" "$cp_cmd"

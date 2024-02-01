@@ -20,7 +20,9 @@ The following configuration files are included:
 * ackrc*
 * bash_functions*
 * bashrc*
-* ctags
+* ctags*
+* ctags.d/scala.ctags*
+* ctags.d/tsx.ctags*
 * gitignore_global*
 * irbc
 * pryrc

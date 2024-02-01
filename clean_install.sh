@@ -32,7 +32,6 @@ sudo apt install -y ack \
     autoconf \
     bash-completion \
     build-essential \
-    exuberant-ctags \
     checkinstall \
     curl  \
     git  \
@@ -62,6 +61,36 @@ sudo apt install -y ack \
     zlib1g-dev
 
 prn_success "Installed basic packages via apt."
+
+prn_note "Installing universal-ctags from source."
+if which ctags
+then
+    sudo apt purge -y exuberant-ctags
+    sudo dpkg --purge --force-all exuberant-ctags
+fi
+compile_ctags () {
+    cd "$temp_dir" || exit 1
+    sudo rm -rf ctags
+    git clone https://github.com/universal-ctags/ctags.git
+    cd ctags
+    ./autogen.sh
+    ./configure
+    make
+    sudo checkinstall -y
+    prn_success "Installed universal-ctags."
+}
+if ctags --version | grep Universal
+then
+    prn_note "Universal Ctags is already installed."
+    resp=$(get_confirmation "Are you sure you wish to compile it from source?")
+    if [ -n "$resp" ]
+    then
+        sudo dpkg --purge --force-all ctags
+        compile_ctags
+    fi
+else
+    compile_ctags
+fi
 
 prn_note "Installing rbenv via rbenv-installer script."
 curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
