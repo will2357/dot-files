@@ -231,19 +231,48 @@ prn_note "Installing tmux plugins."
 "$tmux_plugin_man_dir/scripts/install_plugins.sh"
 
 # Install AWS CLI
+# Remove yum and apt versions of AWS CLI if exist
 if which yum; then sudo yum remove awscli; fi
 sudo apt purge awscli
 cd "$temp_dir" || exit 1
-curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-unzip -q awscliv2.zip
+
+prn_note "Installing AWS CLI from AmazonAWS.com."
 if which aws
 then
-    sudo ./aws/install --update
-else
-    sudo ./aws/install
-fi
-prn_success "Installed AWS CLI."
+    prn_note "AWS CLI already installed."
+    resp=$(get_confirmation "Do you wish to update the AWS CLI?")
 
+    if [ -n "$resp" ]
+    then
+        curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+        unzip -q awscliv2.zip
+        sudo ./aws/install --update
+        prn_success "Updated AWS CLI."
+    fi
+else
+    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+    unzip -q awscliv2.zip
+    sudo ./aws/install
+    prn_success "Installed AWS CLI."
+fi
+
+# Install Terraform CLI
+if which terraform
+then
+    prn_note "Terraform CLI already installed."
+else
+    prn_note "Installing Terraform CLI."
+    cd "$temp_dir" || exit 1
+    wget -O- https://apt.releases.hashicorp.com/gpg | \
+        sudo gpg --batch --yes --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+    echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
+        sudo tee /etc/apt/sources.list.d/hashicorp.list
+    sudo apt update && sudo apt install terraform
+    prn_success "Installed Terraform CLI."
+fi
+
+# Cleanup
+cd "$home_dir" || exit 1
 sudo rm -rf "$temp_dir"
 
 prn_success "SUCCESS: Ran 'clean_install.sh' script without errors."
