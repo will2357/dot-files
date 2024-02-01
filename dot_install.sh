@@ -13,6 +13,7 @@ default_file_array=(
     'ackrc'
     'bash_functions'
     'bashrc'
+    'ctags'
     'gitignore_global'
     'tmux.conf'
     'vimrc'

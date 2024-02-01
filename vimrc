@@ -5,16 +5,18 @@ call plug#begin('~/.vim/bundle')
 Plug 'junegunn/vim-plug'
 
 Plug 'altercation/vim-colors-solarized'
-Plug 'artur-shaik/vim-javacomplete2'
-Plug 'cakebaker/scss-syntax.vim'
 Plug 'dragfire/Improved-Syntax-Highlighting-Vim'
 Plug 'henrik/vim-indexed-search'
 Plug 'kien/rainbow_parentheses.vim'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-fugitive'
-Plug 'vim-scripts/VimCompletesMe'
+Plug 'lifepillar/vim-mucomplete'
+"Plug 'roxma/nvim-completion-manager' "Needs updates to install script
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""" Language Specific """""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""
 " Ruby
 Plug 'vim-ruby/vim-ruby'
 
@@ -23,6 +25,15 @@ Plug 'Vimjas/vim-python-pep8-indent'
 
 " Go
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+
+" JavaScript
+Plug 'pangloss/vim-javascript'
+
+" TypeScript
+Plug 'leafgarland/typescript-vim'
+
+" SCSS
+Plug 'cakebaker/scss-syntax.vim'
 
 " Github Copilot
 "Plug 'github/copilot.vim'
