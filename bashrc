@@ -228,3 +228,5 @@ if [ -d "$HOME/.pyenv" ]; then
     # Load pyenv-virtualenv automatically by adding
     eval "$(pyenv virtualenv-init -)"
 fi
+
+export DOCKER_HOST=unix:///run/user/1000/docker.sock

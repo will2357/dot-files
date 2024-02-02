@@ -8,13 +8,10 @@ Plug 'altercation/vim-colors-solarized'
 Plug 'dragfire/Improved-Syntax-Highlighting-Vim'
 Plug 'henrik/vim-indexed-search'
 Plug 'kien/rainbow_parentheses.vim'
+Plug 'lifepillar/vim-mucomplete'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-fugitive'
-Plug 'lifepillar/vim-mucomplete'
-Plug 'prettier/vim-prettier', {
-  \ 'do': 'yarn install --frozen-lockfile --production',
-  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html'] }
 
 """""""""""""""""""""""""""""""""""""""""""""""""""
 """"""""""""""" Language Specific """""""""""""""""
@@ -33,6 +30,7 @@ Plug 'pangloss/vim-javascript'
 
 " TypeScript
 Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
 
 " SCSS
 Plug 'cakebaker/scss-syntax.vim'
