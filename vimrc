@@ -12,7 +12,9 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-fugitive'
 Plug 'lifepillar/vim-mucomplete'
-"Plug 'roxma/nvim-completion-manager' "Needs updates to install script
+Plug 'prettier/vim-prettier', {
+  \ 'do': 'yarn install --frozen-lockfile --production',
+  \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'svelte', 'yaml', 'html'] }
 
 """""""""""""""""""""""""""""""""""""""""""""""""""
 """"""""""""""" Language Specific """""""""""""""""
