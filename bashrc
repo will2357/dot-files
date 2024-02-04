@@ -206,6 +206,10 @@ if [ -d "$HOME/go" ] ; then
     export GOPATH="$HOME/go"
 fi
 
+if [ -d "/usr/local/android-studio/jbr/bin" ] ; then
+    PATH="$PATH:/usr/local/android-studio/jbr/bin"
+fi
+
 if [ -d "/usr/local/go" ] ; then
     PATH="$PATH:/usr/local/go/bin"
     export GOROOT="/usr/local/go"
