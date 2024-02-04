@@ -229,4 +229,6 @@ if [ -d "$HOME/.pyenv" ]; then
     eval "$(pyenv virtualenv-init -)"
 fi
 
-export DOCKER_HOST=unix:///run/user/1000/docker.sock
+export DOCKER_HOST="unix:///run/user/1000/docker.sock"
+export ANDROID_SDK_ROOT="$HOME/Android/Sdk"
+export ANDROID_HOME="$HOME/Android/Sdk"
