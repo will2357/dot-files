@@ -180,6 +180,9 @@ autocmd FileType sh setlocal shiftwidth=4 tabstop=4 expandtab
 "
 autocmd filetype crontab setlocal nobackup nowritebackup
 
+"Highlighting for systemd .service files
+"
+autocmd BufNewFile,BufRead *.service* set ft=systemd
 
 " Tagbar Toggle
 "
