@@ -207,6 +207,11 @@ if [ -d "$HOME/go" ] ; then
     export GOPATH="$HOME/go"
 fi
 
+# Add bin for flutter to PATH
+if [ -d "$HOME/.pub-cache/bin" ]; then
+    PATH="$PATH":"$HOME/.pub-cache/bin"
+fi
+
 if [ -d "/usr/local/android-studio/jbr" ] ; then
     export JAVA_HOME="/usr/local/android-studio/jbr"
     PATH="$PATH:$JAVA_HOME/bin"
