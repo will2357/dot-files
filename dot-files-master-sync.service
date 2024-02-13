@@ -1,0 +1,14 @@
+[Unit]
+Description=Sync current directory with master branch of github.com repo
+
+[Service]
+Type=simple
+ExecStart=/home/will/dot-files-master/systemd-sync-master.sh
+ExecReload=/bin/kill -1 -- $MAINPID
+ExecStop=/bin/kill -- $MAINPID
+Restart=on-failure
+User=will
+Group=1000
+
+[Install]
+WantedBy=default.target
