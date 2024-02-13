@@ -207,8 +207,9 @@ if [ -d "$HOME/go" ] ; then
     export GOPATH="$HOME/go"
 fi
 
-if [ -d "/usr/local/android-studio/jbr/bin" ] ; then
-    PATH="$PATH:/usr/local/android-studio/jbr/bin"
+if [ -d "/usr/local/android-studio/jbr" ] ; then
+    export JAVA_HOME="/usr/local/android-studio/jbr"
+    PATH="$PATH:$JAVA_HOME/bin"
 fi
 
 if [ -d "/usr/local/go" ] ; then
@@ -235,5 +236,9 @@ if ! type pyenv >&/dev/null && [ -d "$HOME/.pyenv" ]; then
 fi
 
 export DOCKER_HOST="unix:///run/user/1000/docker.sock"
-export ANDROID_SDK_ROOT="$HOME/Android/Sdk"
-export ANDROID_HOME="$HOME/Android/Sdk"
+
+if [ -d "$HOME/Android/Sdk" ] ; then
+    export ANDROID_SDK_ROOT="$HOME/Android/Sdk"
+    export ANDROID_HOME="$HOME/Android/Sdk"
+    PATH="$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools"
+fi

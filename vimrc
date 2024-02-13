@@ -25,6 +25,10 @@ Plug 'Vimjas/vim-python-pep8-indent'
 " Go
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
+" Flutter (Dart also recommended)
+Plug 'dart-lang/dart-vim-plugin'
+Plug 'thosakwe/vim-flutter'
+
 " JavaScript
 Plug 'pangloss/vim-javascript'
 
