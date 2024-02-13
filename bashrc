@@ -109,6 +109,7 @@ fi
 # some more ls aliases
 alias ll='ls -alF --full-time'
 alias la='ls -A'
+alias lv='ls -A | xargs printf "%s\n"'
 alias l='ls -CF'
 
 # Add an "alert" alias for long running commands.  Use like so:
