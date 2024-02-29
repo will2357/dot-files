@@ -50,7 +50,7 @@ call plug#end()
 
 " Disable Github Copilot
 "
-autocmd VimEnter * Copilot disable
+"autocmd VimEnter * Copilot disable
 
 " Solarized Options
 "

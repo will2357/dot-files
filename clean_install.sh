@@ -37,6 +37,7 @@ sudo apt install -y ack \
     git  \
     gh \
     htop \
+    jq \
     libcurl3-gnutls \
     libcurl4-openssl-dev \
     libncurses5-dev \
@@ -46,6 +47,7 @@ sudo apt install -y ack \
     libxslt-dev \
     libyaml-dev \
     open-vm-tools \
+    pkg-config \
     python-is-python3 \
     python3 \
     python3-dev \
@@ -63,13 +65,15 @@ sudo apt install -y ack \
 prn_success "Installed basic packages via apt."
 
 prn_note "Installing universal-ctags from source."
-if which ctags
-then
-    sudo apt purge -y exuberant-ctags
-    sudo dpkg --purge --force-all exuberant-ctags
-fi
 compile_ctags () {
     cd "$temp_dir" || exit 1
+    if which ctags
+    then
+        sudo apt purge -y exuberant-ctags
+        sudo dpkg --purge --force-all exuberant-ctags
+        sudo apt purge -y ctags
+        sudo dpkg --purge --force-all ctags
+    fi
     sudo rm -rf ctags
     git clone https://github.com/universal-ctags/ctags.git
     cd ctags
@@ -85,7 +89,6 @@ then
     resp=$(get_confirmation "Are you sure you wish to compile it from source?")
     if [ -n "$resp" ]
     then
-        sudo dpkg --purge --force-all ctags
         compile_ctags
     fi
 else
@@ -112,9 +115,9 @@ then
 fi
 
 install_thorium () {
-    thorium_deb=$(curl -s https://api.github.com/repos/Alex313031/Thorium/releases/latest | grep "browser_download_url.*amd64\.deb" | awk '{print $2}' | tr -d \")
+    thorium_deb=$(curl -s https://api.github.com/repos/Alex313031/Thorium/releases/latest | jq -r '.assets[0].browser_download_url')
     wget "$thorium_deb"
-    sudo dpkg -i thorium-browser*amd64.deb
+    sudo dpkg -i thorium-browser*.deb
 }
 # Install thorium browser
 if [ -z "$(which thorium-browser)" ]
