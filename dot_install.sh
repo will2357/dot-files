@@ -55,7 +55,7 @@ printf "\ntarget directory: '%s'\n" "$targ_dir"
 link_file_with_backup () {
     filename=$1
     path_filename="$targ_dir/.$filename"
-    backup="$targ_dir/$filename.BAK"
+    backup="$targ_dir/.$filename.BAK"
     prn_note "Processing '$filename'... "
     cp_cmd=""
     if [ -h "$path_filename" ]

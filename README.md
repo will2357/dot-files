@@ -11,7 +11,7 @@ source (with clipboard options), and setup dot files (using the standalone
 A `dot_install.sh` shell script is included to create symbolic links in the
 user's `$HOME` directory. Makes backups will as follows:
 ```
-$HOME/.filename -> $HOME/filename.BAK
+$HOME/.filename -> $HOME/.filename.BAK
 ```
 
 Only tested on Ubuntu 22.04.3 LTS Desktop fully updated, minimal install.
