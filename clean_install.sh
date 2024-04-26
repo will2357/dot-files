@@ -114,6 +114,11 @@ then
     server="true"
 fi
 
+if [ "$server" != "true"  ]
+then
+    sudo apt -y install ddccontrol gddccontrol ddccontrol-db i2c-tools
+fi
+
 install_thorium () {
     thorium_deb=$(curl -s https://api.github.com/repos/Alex313031/Thorium/releases/latest | jq -r '.assets[0].browser_download_url')
     wget "$thorium_deb"
