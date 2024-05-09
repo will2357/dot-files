@@ -107,7 +107,13 @@ fi
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # some more ls aliases
-alias ll='ls -alF --full-time'
+if [ "$(uname)" == "Linux" ]
+then
+  alias ll='ls -alF --full-time'
+elif [ "$(uname)" == "Darwin" ]
+then
+  alias ll='ls -alFT'
+fi
 alias la='ls -A'
 alias lv='ls -A | xargs printf "%s\n"'
 alias l='ls -CF'
