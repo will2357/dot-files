@@ -143,6 +143,20 @@ if ! shopt -oq posix; then
   fi
 fi
 
+
+#MacOS git completion and prompt
+# curl -o ~/.git-completion.bash https://github.com/git/git/raw/master/contrib/completion/git-completion.bash
+# curl -o ~/.git-prompt.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
+if [ "$(uname)" == "Darwin" ]; then
+  if [ -f "$HOME/.git-completion.bash" ]; then # MacOS
+    .  "$HOME/.git-completion.bash"
+  fi
+  if [ -f "$HOME/.git-prompt.sh" ]; then # MacOS
+    .  "$HOME/.git-prompt.sh"
+  fi
+fi
+
+
 # Command prompt options
 # NB: Keep bash completion before this so that __git_ps1 is defined
 if [ -f "$HOME/.bash_functions" ] || [ -h "$HOME/.bash_functions" ]
