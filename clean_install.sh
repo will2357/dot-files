@@ -109,7 +109,7 @@ curl https://pyenv.run | bash
 prn_success "Installed pyenv."
 
 
-if [ -z "$(dpkg -l ubuntu-desktop)" ]
+if [ -z "$(which xset)" ]
 then
     server="true"
 fi
@@ -169,7 +169,10 @@ git config --global color.ui auto
 git config --global core.excludesfile "$home_dir/.gitignore_global"
 git config --global core.editor vim
 git config --global merge.tool vim
-gh auth login
+
+if ! gh auth status; then
+    gh auth login
+fi
 
 src_dir="$home_dir/src"
 printf "Changing directory to '%s'" "$src_dir"
@@ -180,20 +183,31 @@ compile_vim () {
     prn_note "Compiling vim from source."
     sudo apt purge -y vim
     sudo dpkg --purge --force-all vim
-    sudo rm -rf vim
     cd "$src_dir" || exit 1
+    sudo rm -rf vim
     git clone https://github.com/vim/vim.git
     cd vim/src/ || exit 1
-    sudo sed -i 's/\#\ deb\-src/deb-src/g' /etc/apt/sources.list
+    if grep ubuntu.sources /etc/apt/sources.list; then
+        if ! grep deb-src /etc/apt/sources.list.d/ubuntu.sources; then
+            echo "
+Types: deb-src
+URIs: http://us.archive.ubuntu.com/ubuntu/
+Suites: noble noble-updates noble-backports noble-proposed
+Components: main restricted universe multiverse
+Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg" | sudo tee -a  /etc/apt/sources.list.d/ubuntu.sources
+        fi
+    else
+        sudo sed -i 's/\#\ deb\-src/deb-src/g' /etc/apt/sources.list
+    fi
     sudo apt update
-    sudo apt build-dep -y vim-gtk vim-gtk3
+    sudo apt build-dep -y vim
     sudo ./configure --with-features=huge --enable-multibyte \
         --enable-rubyinterp=yes --enable-python3interp=yes \
         --with-python3-config-dir="$(python3-config --configdir)" \
         --enable-perlinterp=yes --enable-luainterp=yes --enable-gui=gtk2 \
         --enable-cscope --enable-gui --with-x
     sudo make
-    sudo checkinstall -y
+    sudo make install
     prn_success "Finished compiling vim from source."
 }
 

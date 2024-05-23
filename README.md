@@ -40,9 +40,9 @@ Tested on a clean install of Ubuntu 22.04.3 LTS Desktop and Server editions
 minimal install with no additional packages.
 
 ```
-wget https://github.com/will2357/dot_files/archive/refs/heads/master.tar.gz
+wget https://github.com/will2357/dot-files/archive/refs/heads/master.tar.gz
 tar xvf master.tar.gz
-cd dot_files-master
+cd dot-files-master
 chmod +x clean_install.sh
 ./clean_install.sh
 ```
