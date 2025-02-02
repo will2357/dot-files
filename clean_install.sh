@@ -119,31 +119,38 @@ then
     sudo apt -y install ddccontrol gddccontrol ddccontrol-db i2c-tools
 fi
 
-install_thorium () {
-    thorium_deb=$(curl -s https://api.github.com/repos/Alex313031/Thorium/releases/latest | jq -r '.assets[0].browser_download_url')
-    wget "$thorium_deb"
-    sudo dpkg -i thorium-browser*.deb
-}
-# Install thorium browser
-if [ -z "$(which thorium-browser)" ]
+################################################################################
+################### Thorium no longer actively maintained ######################
+################################################################################
+prn_note "Thorium web browser is no longer actively maintained."
+resp=$(get_confirmation "Are you sure you wish to install Thorium?")
+if [ -n "$resp" ]
 then
-    if [ "$server" == "true" ]
+    install_thorium () {
+        thorium_deb=$(curl -s https://api.github.com/repos/Alex313031/Thorium/releases/latest | jq -r '.assets[0].browser_download_url')
+        wget "$thorium_deb"
+        sudo dpkg -i thorium-browser*.deb
+    }
+    if [ -z "$(which thorium-browser)" ]
     then
-        resp=$(get_confirmation "You appear to be on a server. Do you wish to install 'thorium-browser'?")
-        if [ -n "$resp" ]
+        if [ "$server" == "true" ]
         then
+            resp=$(get_confirmation "You appear to be on a server. Do you wish to install 'thorium-browser'?")
+            if [ -n "$resp" ]
+            then
+                install_thorium
+            fi
+        else
             install_thorium
         fi
     else
-        install_thorium
+        prn_note "'thorium-browser' already installed. Skipping."
     fi
-else
-    prn_note "'thorium-browser' already installed. Skipping."
-fi
-if which thorium-browser
-then
-    BROWSER="$(which thorium-browser)"
-    export BROWSER
+    if which thorium-browser
+    then
+        BROWSER="$(which thorium-browser)"
+        export BROWSER
+    fi
 fi
 
 prn_note "Configuring git."
