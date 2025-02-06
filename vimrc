@@ -41,16 +41,16 @@ Plug 'cakebaker/scss-syntax.vim'
 
 call plug#end()
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-""""""""""""""""""""""""""""""" Github Copilot """"""""""""""""""""""""""""""""
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""" Github Copilot """"""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " per https://github.com/github/copilot.vim
 " Installed via:
 " git clone https://github.com/github/copilot.vim \
 "   ~/.vim/pack/github/start/copilot.vim
 "
 " Disable Github Copilot
-"autocmd VimEnter * Copilot disable
+autocmd VimEnter * Copilot disable
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Solarized Options
