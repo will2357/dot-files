@@ -50,7 +50,9 @@ call plug#end()
 "   ~/.vim/pack/github/start/copilot.vim
 "
 " Disable Github Copilot
-autocmd VimEnter * Copilot disable
+if exists("*Copilot")
+  autocmd VimEnter * Copilot disable
+endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Solarized Options

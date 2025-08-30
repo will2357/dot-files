@@ -152,6 +152,14 @@ then
         export BROWSER
     fi
 fi
+################################################################################
+
+prn_note "Installing Chrome web browser."
+chrome_deb="google-chrome-stable_current_amd64.deb"
+chrome_deb_url="https://dl.google.com/linux/direct/$chrome_deb"
+wget "$chrome_deb_url"
+sudo dpkg -i "$chrome_deb"
+google-chrome
 
 prn_note "Configuring git."
 
@@ -166,8 +174,8 @@ fi
 if ! git config user.email
 then
     git_user_email=""
-    get_input "Enter git user.email (blank for default of 'will@highducheck.org'): " \
-        git_user_email "will@highducheck.org"
+    get_input "Enter git user.email (blank for default of 'will.highducheck@gmail.com'): " \
+        git_user_email "will.highducheck@gmail.com"
     git config --global user.email "$git_user_email"
 fi
 
