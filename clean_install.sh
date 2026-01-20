@@ -108,7 +108,6 @@ prn_note "Installing pyenv via installer script."
 curl https://pyenv.run | bash
 prn_success "Installed pyenv."
 
-
 if [ -z "$(which xset)" ]
 then
     server="true"
@@ -119,50 +118,46 @@ then
     sudo apt -y install ddccontrol gddccontrol ddccontrol-db i2c-tools
 fi
 
-################################################################################
-################### Thorium no longer actively maintained ######################
-################################################################################
-prn_note "Thorium web browser is no longer actively maintained."
-resp=$(get_confirmation "Are you sure you wish to install Thorium?")
+prn_note "Installing Google Chrome web browser."
+resp=$(get_confirmation "Are you sure you wish to install Google Chrome?")
 if [ -n "$resp" ]
 then
-    install_thorium () {
-        thorium_deb=$(curl -s https://api.github.com/repos/Alex313031/Thorium/releases/latest | jq -r '.assets[0].browser_download_url')
-        wget "$thorium_deb"
-        sudo dpkg -i thorium-browser*.deb
+    install_chrome () {
+        google_list="/etc/apt/sources.list.d/google.list"
+
+        wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo tee /etc/apt/trusted.gpg.d/google.asc >/dev/null
+
+        if ! grep -q 'dl.google.com' "$google_list"
+        then
+            sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> '"$google_list"
+        fi
+
+        sudo apt update
+        sudo apt install google-chrome-stable
     }
-    if [ -z "$(which thorium-browser)" ]
+    if [ -z "$(which google-chrome-stable)" ]
     then
         if [ "$server" == "true" ]
         then
-            resp=$(get_confirmation "You appear to be on a server. Do you wish to install 'thorium-browser'?")
+            resp=$(get_confirmation "You appear to be on a server. Do you wish to install 'google-chrome-stable'?")
             if [ -n "$resp" ]
             then
-                install_thorium
+                install_chrome
             fi
         else
-            install_thorium
+            install_chrome
         fi
     else
-        prn_note "'thorium-browser' already installed. Skipping."
+        prn_note "'google-chome-stable' already installed. Skipping."
     fi
-    if which thorium-browser
+    if which google-chrome-stable
     then
-        BROWSER="$(which thorium-browser)"
+        BROWSER="$(which google-chrome-stable)"
         export BROWSER
     fi
 fi
-################################################################################
-
-prn_note "Installing Chrome web browser."
-chrome_deb="google-chrome-stable_current_amd64.deb"
-chrome_deb_url="https://dl.google.com/linux/direct/$chrome_deb"
-wget "$chrome_deb_url"
-sudo dpkg -i "$chrome_deb"
-google-chrome
 
 prn_note "Configuring git."
-
 if ! git config user.name
 then
     git_user_name=""
