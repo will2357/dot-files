@@ -95,19 +95,6 @@ else
     compile_ctags
 fi
 
-prn_note "Installing rbenv via rbenv-installer script."
-curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
-prn_success "Installed rbenv."
-
-prn_note "Installing nvm via nvm-sh installer script."
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
-prn_success "Installed nvm."
-
-if [ -d "$HOME/.pyenv" ]; then rm -rf "$HOME/.pyenv" ;fi
-prn_note "Installing pyenv via installer script."
-curl https://pyenv.run | bash
-prn_success "Installed pyenv."
-
 if [ -z "$(which xset)" ]
 then
     server="true"
@@ -254,6 +241,18 @@ chmod +wrx "$dot_dir/dot_install.sh"
 "$dot_dir/dot_install.sh"
 
 cd "$src_dir" || exit 1
+
+prn_note "Installing rbenv via rbenv-installer script."
+curl -fsSL https://github.com/rbenv/rbenv-installer/raw/HEAD/bin/rbenv-installer | bash
+prn_success "Installed rbenv."
+
+prn_note "Installing nvm via nvm-sh installer script."
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
+prn_success "Installed nvm."
+
+prn_note "Installing uv via installer script."
+curl -LsSf https://astral.sh/uv/install.sh | sh
+prn_success "Installed uv."
 
 if which vim
 then

@@ -252,14 +252,6 @@ if ! type nvm >&/dev/null && [ -d "$HOME/.nvm" ]; then
     [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 fi
 
-if ! type pyenv >&/dev/null && [ -d "$HOME/.pyenv" ]; then
-    export PYENV_ROOT="$HOME/.pyenv"
-    [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-    eval "$(pyenv init -)"
-    # Load pyenv-virtualenv automatically by adding
-    eval "$(pyenv virtualenv-init -)"
-fi
-
 export DOCKER_HOST="unix:///run/user/1000/docker.sock"
 
 if [ -d "$HOME/Android/Sdk" ] ; then
@@ -267,3 +259,5 @@ if [ -d "$HOME/Android/Sdk" ] ; then
     export ANDROID_HOME="$HOME/Android/Sdk"
     PATH="$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools"
 fi
+
+. "$HOME/.local/bin/env"
