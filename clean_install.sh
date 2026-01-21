@@ -33,6 +33,7 @@ sudo apt install -y ack \
     bash-completion \
     build-essential \
     checkinstall \
+    cmake \
     curl  \
     git  \
     gh \
@@ -269,6 +270,35 @@ then
         git clone https://github.com/altercation/vim-colors-solarized.git "$vim_solar_dir"
     fi
     vim +'PlugInstall --sync' +qa
+fi
+
+cd "$curr_dir" || exit 1
+
+compile_tmux_mem_cpu () {
+    prn_note "Compiling tmux-mem-cpu-load from source."
+
+    cd "$src_dir" || exit 1
+    rm -rf "$src_dir/tmux-mem-cpu-load"
+    git clone https://github.com/thewtex/tmux-mem-cpu-load.git
+    cd tmux-mem-cpu-load || exit 1
+
+    cmake .
+    make
+    sudo make install
+
+    prn_success "Finished compiling tmux-mem-cpu-load from source."
+}
+
+if which tmux-mem-cpu-load
+then
+    prn_note "Latest tmux-mem-cpu-load already installed."
+    resp=$(get_confirmation "Are you sure you wish to continue?")
+    if [ -n "$resp" ]
+    then
+        compile_tmux_mem_cpu
+    fi
+else
+    compile_tmux_mem_cpu
 fi
 
 cd "$curr_dir" || exit 1

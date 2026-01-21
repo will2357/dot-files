@@ -6,7 +6,7 @@ will2357's Ubuntu Clean Install Setup and Dot Files Scripts
 A `clean_install.sh` script to install some basic packages via `apt`,
 Thorium web browser from the latest `deb`, configure git, compile vim from
 source (with clipboard options), and setup dot files (using the standalone
-`dot_files.sh` script below) with plugin installation for `vim` and `tmux`.
+`dot_install.sh` script below) with plugin installation for `vim` and `tmux`.
 
 A `dot_install.sh` shell script is included to create symbolic links in the
 user's `$HOME` directory. Makes backups will as follows:
@@ -46,7 +46,7 @@ cd dot-files-master
 chmod +x clean_install.sh
 ./clean_install.sh
 ```
-Note the above will also call the `dot_files.sh` configuration script, which can
+Note the above will also call the `dot_install.sh` configuration script, which can
 be declined via the script's prompts.
 
 
