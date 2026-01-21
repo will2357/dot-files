@@ -241,22 +241,17 @@ else
 fi
 
 cd "$src_dir" || exit 1
+dot_dir="$src_dir/dot-files"
 
-if [ ! -d "$src_dir/dot_files" ]; then
-    git clone https://github.com/will2357/dot_files.git "$src_dir/dot_files"
+if [ ! -d "$dot_dir" ]; then
+    git clone https://github.com/will2357/dot-files.git "$src_dir/dot-files"
 fi
-cd dot_files || exit 1
-if [ "$(git branch -l | grep linux | awk '{print $2}')" ]; then
-    prn_note "Using linux branch in dot_files repo."
-    git checkout linux
-else
-    prn_note "No branch named linux in dot_files repo. Using master."
-fi
+cd "$dot_dir" || exit 1
 
 prn_note "Running 'dot_install.sh' script with default options."
 
-chmod +wrx "$script_dir/dot_install.sh"
-"$script_dir/dot_install.sh"
+chmod +wrx "$dot_dir/dot_install.sh"
+"$dot_dir/dot_install.sh"
 
 cd "$src_dir" || exit 1
 
