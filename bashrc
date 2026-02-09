@@ -252,8 +252,6 @@ if ! type nvm >&/dev/null && [ -d "$HOME/.nvm" ]; then
     [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 fi
 
-export DOCKER_HOST="unix:///run/user/1000/docker.sock"
-
 if [ -d "$HOME/Android/Sdk" ] ; then
     export ANDROID_SDK_ROOT="$HOME/Android/Sdk"
     export ANDROID_HOME="$HOME/Android/Sdk"
