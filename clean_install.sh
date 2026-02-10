@@ -30,6 +30,7 @@ echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select tr
 # Install basic requirements via apt
 sudo apt install -y ack \
     autoconf \
+    automake \
     bash-completion \
     build-essential \
     checkinstall \
@@ -185,8 +186,8 @@ compile_vim () {
     sudo rm -rf vim
     git clone https://github.com/vim/vim.git
     cd vim/src/ || exit 1
-    if grep ubuntu.sources /etc/apt/sources.list; then
-        if ! grep deb-src /etc/apt/sources.list.d/ubuntu.sources; then
+    if grep sources.list.d.ubuntu.sources /etc/apt/sources.list; then
+        if ! grep -i '^Types: deb-src' /etc/apt/sources.list.d/ubuntu.sources; then
             echo "
 Types: deb-src
 URIs: http://us.archive.ubuntu.com/ubuntu/
@@ -235,6 +236,18 @@ if [ ! -d "$dot_dir" ]; then
     git clone https://github.com/will2357/dot-files.git "$src_dir/dot-files"
 fi
 cd "$dot_dir" || exit 1
+
+if [[ $(git status --porcelain) ]]; then
+    prn_error "Changes in local git repo. Exiting now."
+    exit 1
+fi
+
+prn_note "All branches in this repo: "
+git branch -a
+
+get_input "Enter branch for dot files installation (blank for default of 'master'): " \
+    git_dot_files_branch "master"
+git checkout "$git_dot_files_branch"
 
 prn_note "Running 'dot_install.sh' script with default options."
 
@@ -339,21 +352,6 @@ else
     unzip -q awscliv2.zip
     sudo ./aws/install
     prn_success "Installed AWS CLI."
-fi
-
-# Install Terraform CLI
-if which terraform
-then
-    prn_note "Terraform CLI already installed."
-else
-    prn_note "Installing Terraform CLI."
-    cd "$temp_dir" || exit 1
-    wget -O- https://apt.releases.hashicorp.com/gpg | \
-        sudo gpg --batch --yes --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
-    echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
-        sudo tee /etc/apt/sources.list.d/hashicorp.list
-    sudo apt update && sudo apt install terraform
-    prn_success "Installed Terraform CLI."
 fi
 
 # Cleanup

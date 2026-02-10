@@ -13,6 +13,7 @@ default_file_array=(
     'ackrc'
     'bash_functions'
     'bashrc'
+    'config/nvim/init.vim'
     'ctags'
     'ctags.d/scala.ctags'
     'ctags.d/tsx.ctags'

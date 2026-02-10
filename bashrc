@@ -258,4 +258,10 @@ if [ -d "$HOME/Android/Sdk" ] ; then
     PATH="$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin:$ANDROID_HOME/platform-tools"
 fi
 
+# opencode
+export PATH=/home/will/.opencode/bin:$PATH
+
+# uv Python env manager bash completion
+eval "$(uv generate-shell-completion bash)"
+
 . "$HOME/.local/bin/env"

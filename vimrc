@@ -5,6 +5,7 @@ call plug#begin('~/.vim/bundle')
 Plug 'junegunn/vim-plug'
 
 Plug 'altercation/vim-colors-solarized'
+Plug 'Tsuzat/NeoSolarized.nvim', { 'branch': 'master' }
 Plug 'dragfire/Improved-Syntax-Highlighting-Vim'
 Plug 'henrik/vim-indexed-search'
 Plug 'kien/rainbow_parentheses.vim'
@@ -73,6 +74,8 @@ colorscheme solarized
 
 " General Options
 "
+scriptencoding utf-8
+set encoding=utf-8
 set number	    " Show line numbers
 set ruler	    " Show ruler
 "set autoindent	    " Simple autoindentation
@@ -101,7 +104,7 @@ set hidden
 "
 set mouse=a
 "set ttymouse=xterm2
-set ttymouse=sgr
+"set ttymouse=sgr
 
 " Allows Deletion with Backspace
 "
