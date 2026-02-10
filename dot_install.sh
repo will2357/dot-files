@@ -67,9 +67,9 @@ link_file_with_backup () {
         cp_cmd="cp $path_filename $backup"
     fi
 
-    if [[ "$path_filename" == *\/* ]]
+    if [[ "$path_filename" == "*\/*" ]]
     then
-        mkdir -p ${path_filename%/*}
+        mkdir -p "${path_filename%/*}"
     fi
 
     printf "Running '%s'\n" "$cp_cmd"

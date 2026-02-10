@@ -229,6 +229,36 @@ else
     compile_vim
 fi
 
+
+compile_neovim () {
+    prn_note "Compiling neovim from source."
+    sudo apt purge -y neovim
+    sudo dpkg --purge --force-all neovim
+
+    cd "$src_dir" || exit 1
+    sudo rm -rf neovim
+    git clone https://github.com/neovim/neovim.git
+    cd neovim/ || exit 1
+    git checkout stable
+
+    make CMAKE_BUILD_TYPE=RelWithDebInfo
+    sudo make install
+    prn_success "Finished compiling neovim from source."
+}
+
+
+if which nvim
+then
+    prn_note "Neovim already installed."
+    resp=$(get_confirmation "Are you sure you wish to continue?")
+    if [ -n "$resp" ]
+    then
+        compile_neovim
+    fi
+else
+    compile_neovim
+fi
+
 cd "$src_dir" || exit 1
 dot_dir="$src_dir/dot-files"
 
@@ -245,6 +275,7 @@ fi
 prn_note "All branches in this repo: "
 git branch -a
 
+git_dot_files_branch=""
 get_input "Enter branch for dot files installation (blank for default of 'master'): " \
     git_dot_files_branch "master"
 git checkout "$git_dot_files_branch"
@@ -283,6 +314,11 @@ then
         git clone https://github.com/altercation/vim-colors-solarized.git "$vim_solar_dir"
     fi
     vim +'PlugInstall --sync' +qa
+
+    if which nvim
+    then
+        nvim +'PlugInstall --sync' +qa
+    fi
 fi
 
 cd "$curr_dir" || exit 1
