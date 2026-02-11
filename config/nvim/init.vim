@@ -4,5 +4,5 @@ source ~/.vimrc
 
 " Vim Script
 colorscheme NeoSolarized
-hi StatusLine guibg=White ctermfg=15 guifg=Black ctermbg=0
-hi StatusLineNC guibg=Black ctermfg=0 guifg=White ctermbg=15
+hi StatusLine guibg=#586e75 guifg=#002b36 ctermbg=0 ctermfg=7
+hi StatusLineNC guibg=#002b36 guifg=#586e75 ctermbg=7 ctermfg=0
