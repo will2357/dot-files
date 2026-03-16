@@ -8,6 +8,7 @@ source "$script_dir/_shared_functions.sh"
 dry_run='false'
 user_files='false'
 file_names=''
+copy_files='false'
 file_array=()
 default_file_array=(
     'ackrc'
@@ -24,14 +25,16 @@ default_file_array=(
 
 print_options () {
   printf "Options:\n"
+  printf "  -c Copy files instead of creating symbolic links\n"
   printf "  -d Dry run\n"
   printf "  -f Space separated list of files to link\n"
   printf "  -h This help screen\n"
 }
 
-while getopts 'dhf:' opt
+while getopts 'cdhf:' opt
 do
   case "${opt}" in
+    c) copy_files='true' ;;
     d) dry_run='true' ;;
     h) print_options ; exit 0 ;;
     f) user_files='true' ; file_names+="${OPTARG}" ;;
@@ -47,11 +50,9 @@ file_names+=" ${additional_files[*]}"
 
 [ "$dry_run" = 'true' ] && printf "\n\n\n!!!DRY RUN!!!\n!!!DRY RUN!!!\n!!!DRY RUN!!!\n\n\n"
 
-
-printf "\nscript directory: '%s'\n" "$script_dir"
-
 targ_dir=$HOME
-printf "\ntarget directory: '%s'\n" "$targ_dir"
+printf "$(tput bold)\nScript source directory:\t'%s'\n" "$script_dir"
+printf "Target destination directory:\t'%s'\n${color_normal}" "$targ_dir"
 
 link_file_with_backup () {
     filename=$1
@@ -76,7 +77,14 @@ link_file_with_backup () {
     [ "$dry_run" = 'false' ] && eval "$cp_cmd"
     printf "Done.\n"
 
-    ln_cmd="ln -sf $script_dir/$filename $path_filename"
+    ln_cmd=''
+    if [ "$copy_files" == 'true' ]
+    then
+        ln_cmd="cp --remove-destination $script_dir/$filename $path_filename"
+    else
+        ln_cmd="ln -sf $script_dir/$filename $path_filename"
+    fi
+
     printf "Running '%s'\n" "$ln_cmd"
     [ "$dry_run" = 'false' ] && eval "$ln_cmd"
     printf "Done.\n"
@@ -129,7 +137,17 @@ link_dot_files () {
     done
 }
 
-resp=$(get_confirmation "Do you wish to link your dot files to your home directory?")
+resp=$(get_confirmation "Do you wish to link your dot files to these directories?")
+
+if [ "$copy_files" == 'false' ]
+then
+    copy_resp=$(get_confirmation "Would you like to copy the files instead of creating symbolic links?")
+    if [ -n "$copy_resp" ]
+    then
+        copy_files='true'
+    fi
+fi
+
 if [ -n "$resp" ]
 then
     link_dot_files
