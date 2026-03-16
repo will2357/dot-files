@@ -80,7 +80,7 @@ link_file_with_backup () {
     ln_cmd=''
     if [ "$copy_files" == 'true' ]
     then
-        ln_cmd="cp --remove-destination $script_dir/$filename $path_filename"
+        ln_cmd="rm -f $path_filename && cp $script_dir/$filename $path_filename"
     else
         ln_cmd="ln -sf $script_dir/$filename $path_filename"
     fi
