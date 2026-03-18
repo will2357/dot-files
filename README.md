@@ -4,9 +4,10 @@ will2357's Ubuntu Clean Install Setup and Dot Files Scripts
 ## Information
 
 A `clean_install.sh` script to install some basic packages via `apt`,
-Thorium web browser from the latest `deb`, configure git, compile vim from
-source (with clipboard options), and setup dot files (using the standalone
-`dot_install.sh` script below) with plugin installation for `vim` and `tmux`.
+Google Chrome web browser from the latest `deb`, configure git, compile vim from
+source (with clipboard options), compile neovim from source, and setup dot files
+(using the standalone `dot_install.sh` script below) with plugin installation
+for `vim` and `tmux`.
 
 A `dot_install.sh` shell script is included to create symbolic links in the
 user's `$HOME` directory. Makes backups will as follows:
@@ -20,6 +21,7 @@ The following configuration files are included:
 * ackrc*
 * bash_functions*
 * bashrc*
+* config/nvim/init.vim*
 * ctags*
 * ctags.d/scala.ctags*
 * ctags.d/tsx.ctags*
@@ -93,6 +95,9 @@ make integration
 # Run all tests (syntax + unit)
 make test
 
+# Run all tests including integration
+make all
+
 # Show help
 make help
 ```
@@ -101,10 +106,11 @@ make help
 
 | Command | Description | Runtime |
 |---------|-------------|---------|
-| `make syntax` | shellcheck + bash -n on all scripts | ~5 sec |
-| `make unit` | bats-core unit tests for functions/logic | ~30 sec |
-| `make integration` | Full clean_install.sh in Docker container | ~30 min |
-| `make test` | Runs syntax + unit tests | ~35 sec |
+| `make syntax` | shellcheck + bash -n on all scripts | ~15 sec |
+| `make unit` | bats-core unit tests for functions/logic | ~15 sec |
+| `make integration` | Full clean_install.sh in Docker container | ~1 min |
+| `make test` | Runs syntax + unit tests | ~30 sec |
+| `make all` | Runs syntax + unit + integration tests | ~2 min |
 
 #### CI
 
