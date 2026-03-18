@@ -72,9 +72,50 @@ Follow the on-screen prompts.
 ```
 
 ### Testing
-Currently, only tested via `shellcheck`:
-```
-shellcheck _shared_functions.sh dot_install.sh clean_install.sh
+
+This project uses [bats-core](https://github.com/bats-core/bats-core) for testing.
+
+#### Running Tests Locally
+
+```bash
+# Install dependencies
+apt install bats shellcheck  # or: brew install bats-core
+
+# Syntax checks only (fast - ~5 seconds)
+make syntax
+
+# Unit tests (~30 seconds)
+make unit
+
+# Integration tests in Docker (~30 minutes)
+make integration
+
+# Run all tests (syntax + unit)
+make test
+
+# Show help
+make help
 ```
 
-TODO: Add unit tests via either [bats-core](https://github.com/bats-core/bats-core) or [shunit2](https://github.com/kward/shunit2).
+#### Test Types
+
+| Command | Description | Runtime |
+|---------|-------------|---------|
+| `make syntax` | shellcheck + bash -n on all scripts | ~5 sec |
+| `make unit` | bats-core unit tests for functions/logic | ~30 sec |
+| `make integration` | Full clean_install.sh in Docker container | ~30 min |
+| `make test` | Runs syntax + unit tests | ~35 sec |
+
+#### CI
+
+Tests run automatically on GitHub Actions:
+- **syntax**: Every push/PR to main
+- **unit**: Every push/PR to main
+- **integration**: Every push/PR to main + weekly schedule
+
+#### Dependencies for Testing
+
+- `bash` - Shell interpreter
+- `bats-core` - Bash automated testing framework
+- `shellcheck` - Static analysis for shell scripts
+- `docker` - For integration tests
