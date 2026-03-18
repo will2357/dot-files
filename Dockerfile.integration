@@ -3,7 +3,8 @@ FROM ubuntu:22.04
 ENV DEBIAN_FRONTEND=noninteractive
 ENV IN_DOCKER=true
 
-RUN apt-get update && apt-get install -y \
+RUN echo 'Acquire::Retries "3";' > /etc/apt/apt.conf.d/80retries && \
+    apt-get update && apt-get install -y \
     bats \
     bash \
     bash-completion \
