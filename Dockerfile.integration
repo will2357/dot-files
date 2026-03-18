@@ -1,0 +1,34 @@
+FROM ubuntu:22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV IN_DOCKER=true
+
+RUN apt-get update && apt-get install -y \
+    bats \
+    bash \
+    bash-completion \
+    curl \
+    git \
+    sudo \
+    debianutils \
+    make \
+    gcc \
+    cmake \
+    python3 \
+    shellcheck \
+    tmux \
+    unzip \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN useradd -m -s /bin/bash testuser && \
+    echo 'testuser ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
+COPY --chown=testuser:testuser . /home/testuser/dot-files
+
+USER testuser
+WORKDIR /home/testuser/dot-files
+
+RUN git config --global user.email "test@example.com" && \
+    git config --global user.name "Test User"
+
+CMD ["/bin/bash"]

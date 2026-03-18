@@ -1,0 +1,56 @@
+.PHONY: syntax unit integration test all help
+
+SHELL := /bin/bash
+SCRIPTS := _shared_functions.sh dot_install.sh clean_install.sh
+TEST_FILES := tests/shared_functions.bats tests/dot_install.bats tests/clean_install.bats
+
+help:
+	@echo "Testing targets for dot-files"
+	@echo ""
+	@echo "  make syntax       - Run shellcheck and bash -n on all scripts"
+	@echo "  make unit         - Run bats-core unit tests"
+	@echo "  make integration  - Run integration tests in Docker"
+	@echo "  make test         - Run syntax and unit tests"
+	@echo "  make all          - Run syntax, unit, and integration tests"
+	@echo "  make help         - Show this help message"
+
+syntax:
+	@echo "Running syntax checks..."
+	@if ! command -v shellcheck >/dev/null 2>&1; then \
+		echo "Error: shellcheck is not installed. Install with: apt install shellcheck"; \
+		exit 1; \
+	fi
+	@shellcheck --exclude=SC1001 $(SCRIPTS)
+	@echo "Running bash -n on all scripts..."
+	@for script in $(SCRIPTS); do \
+		echo "Checking $$script..."; \
+		bash -n "$$script"; \
+	done
+	@echo "Syntax checks passed."
+
+unit:
+	@echo "Running unit tests..."
+	@if ! command -v bats >/dev/null 2>&1; then \
+		echo "Error: bats-core is not installed."; \
+		echo "Install with: apt install bats"; \
+		echo "Or: brew install bats-core"; \
+		exit 1; \
+	fi
+	@bats tests/shared_functions.bats tests/dot_install.bats
+
+integration:
+	@echo "Running integration tests in Docker..."
+	@if ! command -v docker >/dev/null 2>&1; then \
+		echo "Error: docker is not installed."; \
+		exit 1; \
+	fi
+	@docker build -f Dockerfile.integration -t dot-files-test .
+	@docker run --rm dot-files-test bats tests/clean_install.bats
+
+test: syntax unit
+	@echo ""
+	@echo "All tests passed!"
+
+all: syntax unit integration
+	@echo ""
+	@echo "All tests passed!"

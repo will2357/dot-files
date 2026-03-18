@@ -1,0 +1,25 @@
+name: Unit Tests
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install bats-core
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y bats
+
+      - name: Run unit tests
+        env:
+          TERM: xterm
+        run: |
+          make unit
