@@ -20,7 +20,7 @@ syntax:
 		echo "Error: shellcheck is not installed. Install with: apt install shellcheck"; \
 		exit 1; \
 	fi
-	@shellcheck --exclude=SC1001 $(SCRIPTS)
+	@shellcheck $(SCRIPTS)
 	@echo "Running bash -n on all scripts..."
 	@for script in $(SCRIPTS); do \
 		echo "Checking $$script..."; \
