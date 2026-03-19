@@ -15,7 +15,7 @@ user's `$HOME` directory. Makes backups will as follows:
 $HOME/.filename -> $HOME/.filename.BAK
 ```
 
-Only tested on Ubuntu 22.04.3 LTS Desktop fully updated, minimal install.
+Tested on Ubuntu 22.04 and 24.04 LTS Desktop (fully updated, minimal install).
 
 The following configuration files are included:
 * ackrc*
@@ -38,8 +38,8 @@ _* Installed by default_
 
 ### Usage
 #### Full Install
-Tested on a clean install of Ubuntu 22.04.3 LTS Desktop and Server editions
-minimal install with no additional packages.
+Tested on clean installs of Ubuntu 22.04 and 24.04 LTS (Desktop and Server)
+with minimal install and no additional packages.
 
 Clone this repo and run `./clean_install.sh`.
 
@@ -108,9 +108,9 @@ make help
 |---------|-------------|---------|
 | `make syntax` | shellcheck + bash -n on all scripts | ~15 sec |
 | `make unit` | bats-core unit tests for functions/logic | ~15 sec |
-| `make integration` | Full clean_install.sh in Docker container | ~2 min |
+| `make integration` | Full clean_install.sh in Docker (22.04 + 24.04) | ~4 min |
 | `make test` | Runs syntax + unit tests | ~30 sec |
-| `make all` | Runs syntax + unit + integration tests | ~2 min |
+| `make all` | Runs syntax + unit + integration tests | ~4 min |
 
 #### CI
 
