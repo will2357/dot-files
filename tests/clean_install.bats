@@ -77,6 +77,7 @@ teardown_file() {
 }
 
 @test "integration - apt packages can be installed" {
+    if [ -z "$CI" ] && [ -z "$IN_DOCKER" ]; then skip "Skipping in local unit tests"; fi
     which apt-get
     run sudo apt-get update
     [ "$status" -eq 0 ]
@@ -119,6 +120,7 @@ teardown_file() {
 }
 
 @test "integration - Docker environment variables are set" {
+    if [ -z "$CI" ] && [ -z "$IN_DOCKER" ]; then skip "Skipping in local unit tests"; fi
     [ -n "$CI" ] || [ -n "$IN_DOCKER" ]
 }
 

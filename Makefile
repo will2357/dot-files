@@ -36,7 +36,7 @@ unit:
 		echo "Or: brew install bats-core"; \
 		exit 1; \
 	fi
-	@bats tests/shared_functions.bats tests/dot_install.bats
+	@bats tests/shared_functions.bats tests/dot_install.bats tests/clean_install.bats
 
 integration:
 	@echo "Running integration tests in Docker..."
