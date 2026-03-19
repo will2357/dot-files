@@ -294,9 +294,10 @@ fi
 prn_note "All branches in this repo: "
 git branch -a
 
+current_branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "master")
 git_dot_files_branch=""
-get_input "Enter branch for dot files installation (blank for default of 'master'): " \
-    git_dot_files_branch "master"
+get_input "Enter branch for dot files installation (blank for default of '$current_branch'): " \
+    git_dot_files_branch "$current_branch"
 git checkout "$git_dot_files_branch"
 
 prn_note "Running 'dot_install.sh' script with default options."
