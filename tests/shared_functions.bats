@@ -90,3 +90,44 @@ stub_get_confirmation_always_no() {
     [ "$status" -eq 1 ]
     [[ "$output" == *"Response: n"* ]]
 }
+
+@test "get_confirmation exits with 1 when no message provided" {
+    source "$PROJECT_ROOT/_shared_functions.sh"
+    run get_confirmation ""
+    [ "$status" -eq 1 ]
+}
+
+@test "get_confirmation returns 0 for default empty response" {
+    run bash -c 'source "$1"; echo "" | get_confirmation "Continue?"' _ "$PROJECT_ROOT/_shared_functions.sh"
+    [ "$status" -eq 0 ]
+}
+
+@test "prn_error returns 0" {
+    source "$PROJECT_ROOT/_shared_functions.sh"
+    run prn_error "error"
+    [ "$status" -eq 0 ]
+}
+
+@test "prn_success returns 0" {
+    source "$PROJECT_ROOT/_shared_functions.sh"
+    run prn_success "success"
+    [ "$status" -eq 0 ]
+}
+
+@test "prn_note returns 0" {
+    source "$PROJECT_ROOT/_shared_functions.sh"
+    run prn_note "note"
+    [ "$status" -eq 0 ]
+}
+
+@test "get_input exits when no arguments provided" {
+    source "$PROJECT_ROOT/_shared_functions.sh"
+    run get_input ""
+    [ "$status" -eq 1 ]
+}
+
+@test "get_input requires second argument" {
+    source "$PROJECT_ROOT/_shared_functions.sh"
+    run get_input "message only"
+    [ "$status" -ne 0 ]
+}
