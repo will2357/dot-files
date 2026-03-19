@@ -124,3 +124,37 @@ teardown() {
     [ "$status" -eq 1 ]
     [[ "$output" == *"Options:"* ]]
 }
+
+@test "dot_install.sh backs up existing symlink target" {
+    echo "original content" > "$TEST_PROJECT/bashrc"
+    echo "symlink target content" > "$TEST_HOME/.bashrc_link_target"
+    ln -sf "$TEST_HOME/.bashrc_link_target" "$TEST_HOME/.bashrc"
+
+    run bash "$TEST_PROJECT/dot_install.sh" -f bashrc <<< $'y\ny\ny'
+    [ "$status" -eq 0 ]
+
+    [ -f "$TEST_HOME/.bashrc.BAK" ]
+}
+
+@test "dot_install.sh overwrites existing symlink" {
+    echo "test bashrc content" > "$TEST_PROJECT/bashrc"
+    echo "old target content" > "$TEST_HOME/.bashrc_old_target"
+    ln -sf "$TEST_HOME/.bashrc_old_target" "$TEST_HOME/.bashrc"
+
+    run bash "$TEST_PROJECT/dot_install.sh" -f bashrc <<< $'y\nn\ny'
+    [ "$status" -eq 0 ]
+
+    [ -L "$TEST_HOME/.bashrc" ]
+    [ "$(readlink "$TEST_HOME/.bashrc")" == "$TEST_PROJECT/bashrc" ]
+}
+
+@test "dot_install.sh outputs backup message" {
+    echo "existing content" > "$TEST_HOME/.bashrc"
+    echo "new content" > "$TEST_PROJECT/bashrc"
+
+    run bash "$TEST_PROJECT/dot_install.sh" -f bashrc <<< $'y\nn\ny'
+    [ "$status" -eq 0 ]
+
+    [[ "$output" == *"Running 'cp"* ]]
+    [[ "$output" == *"Running 'ln -sf"* ]]
+}
