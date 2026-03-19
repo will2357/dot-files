@@ -3,7 +3,7 @@
 SHELL := /bin/bash
 SCRIPTS := _shared_functions.sh dot_install.sh clean_install.sh
 TEST_FILES := tests/shared_functions.bats tests/dot_install.bats tests/clean_install.bats
-UBUNTU_VERSIONS := 22.04 24.04
+UBUNTU_VERSIONS := 22.04 24.04 26.04
 
 help:
 	@echo "Testing targets for dot-files"
