@@ -3,6 +3,7 @@
 SHELL := /bin/bash
 SCRIPTS := _shared_functions.sh dot_install.sh clean_install.sh
 TEST_FILES := tests/shared_functions.bats tests/dot_install.bats tests/clean_install.bats
+UBUNTU_VERSIONS := 22.04 24.04
 
 help:
 	@echo "Testing targets for dot-files"
@@ -37,6 +38,8 @@ unit:
 		exit 1; \
 	fi
 	@bats tests/shared_functions.bats tests/dot_install.bats tests/clean_install.bats
+	@echo ""
+	@echo "All tests passed!"
 
 integration:
 	@echo "Running integration tests in Docker..."
@@ -44,8 +47,19 @@ integration:
 		echo "Error: docker is not installed."; \
 		exit 1; \
 	fi
-	@docker build -f Dockerfile.integration -t dot-files-test .
-	@docker run --rm dot-files-test bats tests/clean_install.bats
+	@for version in $(UBUNTU_VERSIONS); do \
+		echo "=========================================="; \
+		echo "Testing Ubuntu $$version..."; \
+		echo "=========================================="; \
+		docker build --build-arg UBUNTU_VERSION=$$version \
+			-f Dockerfile.integration -t dot-files-test:$$version .; \
+		docker run --rm dot-files-test:$$version \
+			bash -c "bats tests/clean_install.bats" \
+			&& docker rmi dot-files-test:$$version \
+			|| { docker rmi dot-files-test:$$version 2>/dev/null; exit 1; }; \
+	done
+	@echo ""
+	@echo "All tests passed!"
 
 test: syntax unit
 	@echo ""

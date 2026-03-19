@@ -10,6 +10,10 @@ on:
 
 jobs:
   integration:
+    strategy:
+      matrix:
+        ubuntu_version: [22.04, 24.04]
+      fail-fast: true
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
@@ -25,9 +29,10 @@ jobs:
           context: .
           file: ./Dockerfile.integration
           load: true
-          tags: dot-files-test:latest
+          tags: dot-files-test:${{ matrix.ubuntu_version }}
+          build-args: UBUNTU_VERSION=${{ matrix.ubuntu_version }}
 
       - name: Run integration tests
         run: |
-          docker run --rm dot-files-test \
+          docker run --rm dot-files-test:${{ matrix.ubuntu_version }} \
             bash -c "bats tests/clean_install.bats"

@@ -108,7 +108,7 @@ make help
 |---------|-------------|---------|
 | `make syntax` | shellcheck + bash -n on all scripts | ~15 sec |
 | `make unit` | bats-core unit tests for functions/logic | ~15 sec |
-| `make integration` | Full clean_install.sh in Docker container | ~1 min |
+| `make integration` | Full clean_install.sh in Docker container | ~2 min |
 | `make test` | Runs syntax + unit tests | ~30 sec |
 | `make all` | Runs syntax + unit + integration tests | ~2 min |
 
