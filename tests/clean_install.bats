@@ -51,16 +51,16 @@ teardown_file() {
 }
 
 @test "all required dot files exist" {
-    [ -f "$PROJECT_ROOT/bashrc" ]
-    [ -f "$PROJECT_ROOT/bash_functions" ]
-    [ -f "$PROJECT_ROOT/vimrc" ]
-    [ -f "$PROJECT_ROOT/tmux.conf" ]
+    [ -f "$PROJECT_ROOT/dotfiles/bashrc" ]
+    [ -f "$PROJECT_ROOT/dotfiles/bash_functions" ]
+    [ -f "$PROJECT_ROOT/dotfiles/vimrc" ]
+    [ -f "$PROJECT_ROOT/dotfiles/tmux.conf" ]
     [ -f "$PROJECT_ROOT/_shared_functions.sh" ]
     [ -f "$PROJECT_ROOT/clean_install.sh" ]
     [ -f "$PROJECT_ROOT/dot_install.sh" ]
-    [ -f "$PROJECT_ROOT/gitignore_global" ]
-    [ -f "$PROJECT_ROOT/ackrc" ]
-    [ -f "$PROJECT_ROOT/ctags" ]
+    [ -f "$PROJECT_ROOT/dotfiles/gitignore_global" ]
+    [ -f "$PROJECT_ROOT/dotfiles/ackrc" ]
+    [ -f "$PROJECT_ROOT/dotfiles/ctags" ]
 }
 
 @test "config/nvim/init.vim exists" {
@@ -68,7 +68,7 @@ teardown_file() {
 }
 
 @test "ctags.d directory exists with config files" {
-    [ -d "$PROJECT_ROOT/ctags.d" ]
+    [ -d "$PROJECT_ROOT/dotfiles/ctags.d" ]
 }
 
 @test "clean_install.sh - runs without immediate syntax errors" {
@@ -128,9 +128,9 @@ teardown_file() {
     export HOME="$TEST_HOME"
     mkdir -p "$HOME/.config/nvim"
 
-    ln -sf "$PROJECT_ROOT/bashrc" "$HOME/.bashrc"
-    ln -sf "$PROJECT_ROOT/vimrc" "$HOME/.vimrc"
-    ln -sf "$PROJECT_ROOT/tmux.conf" "$HOME/.tmux.conf"
+    ln -sf "$PROJECT_ROOT/dotfiles/bashrc" "$HOME/.bashrc"
+    ln -sf "$PROJECT_ROOT/dotfiles/vimrc" "$HOME/.vimrc"
+    ln -sf "$PROJECT_ROOT/dotfiles/tmux.conf" "$HOME/.tmux.conf"
     ln -sf "$PROJECT_ROOT/config/nvim/init.vim" "$HOME/.config/nvim/init.vim"
 
     [ -L "$HOME/.bashrc" ]

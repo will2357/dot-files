@@ -5,6 +5,8 @@ set -eu
 script_dir="$(dirname "$(readlink -f "$0")")"
 source "$script_dir/_shared_functions.sh"
 
+dotfiles_dir="$script_dir/dotfiles"
+
 # Global configuration flags - intentionally global for function access
 # These are set from CLI arguments and read by helper functions
 dry_run='false'
@@ -13,16 +15,16 @@ file_names=''
 copy_files='false'
 file_array=()
 default_file_array=(
-    'ackrc'
-    'bash_functions'
-    'bashrc'
+    'dotfiles/ackrc'
+    'dotfiles/bash_functions'
+    'dotfiles/bashrc'
     'config/nvim/init.vim'
-    'ctags'
-    'ctags.d/scala.ctags'
-    'ctags.d/tsx.ctags'
-    'gitignore_global'
-    'tmux.conf'
-    'vimrc'
+    'dotfiles/ctags'
+    'dotfiles/ctags.d/scala.ctags'
+    'dotfiles/ctags.d/tsx.ctags'
+    'dotfiles/gitignore_global'
+    'dotfiles/tmux.conf'
+    'dotfiles/vimrc'
 )
 
 print_options () {
@@ -57,9 +59,17 @@ printf "$(tput bold)\nScript source directory:\t'%s'\n" "$script_dir"
 printf "Target destination directory:\t'%s'\n${color_normal}" "$targ_dir"
 
 link_file_with_backup () {
-    local filename=$1
-    local path_filename="$targ_dir/.$filename"
-    local backup="$targ_dir/.$filename.BAK"
+    local file_path=$1
+    local filename="${file_path##*/}"
+    if [[ "$file_path" == */* ]]; then
+        local source_file="$script_dir/$file_path"
+        local path_dir="$targ_dir/.${file_path%/*}"
+        local path_filename="$path_dir/$filename"
+    else
+        local source_file="$dotfiles_dir/$file_path"
+        local path_filename="$targ_dir/.$filename"
+    fi
+    local backup="$path_filename.BAK"
     prn_note "Processing '$filename'... "
 
     if [ -h "$path_filename" ]; then
@@ -76,11 +86,11 @@ link_file_with_backup () {
     fi
 
     if [ "$copy_files" = 'true' ]; then
-        printf "Running 'rm -f %s && cp %s %s'\n" "$path_filename" "$script_dir/$filename" "$path_filename"
-        [ "$dry_run" = 'false' ] && rm -f "$path_filename" && cp "$script_dir/$filename" "$path_filename"
+        printf "Running 'rm -f %s && cp %s %s'\n" "$path_filename" "$source_file" "$path_filename"
+        [ "$dry_run" = 'false' ] && rm -f "$path_filename" && cp "$source_file" "$path_filename"
     else
-        printf "Running 'ln -sf %s %s'\n" "$script_dir/$filename" "$path_filename"
-        [ "$dry_run" = 'false' ] && ln -sf "$script_dir/$filename" "$path_filename"
+        printf "Running 'ln -sf %s %s'\n" "$source_file" "$path_filename"
+        [ "$dry_run" = 'false' ] && ln -sf "$source_file" "$path_filename"
     fi
     printf "Done.\n"
     echo
@@ -89,12 +99,16 @@ link_file_with_backup () {
 check_files_exist () {
     for file in "${file_array[@]}"
     do
-        local file_with_path="$script_dir/${file#.}"
-        printf "\nChecking '%s'\n" "$file_with_path"
-        if [ -f "$file_with_path" ]; then
+        if [[ "$file" == */* ]]; then
+            local source_path="$script_dir/$file"
+        else
+            local source_path="$dotfiles_dir/$file"
+        fi
+        printf "\nChecking '%s'\n" "$source_path"
+        if [ -f "$source_path" ]; then
             printf "File exists.\n"
         else
-            local missing_file_message="ERROR: File '$file_with_path' does not exist. Exiting."
+            local missing_file_message="ERROR: File '$source_path' does not exist. Exiting."
             prn_error "$missing_file_message"
             exit 1
         fi
@@ -127,8 +141,7 @@ link_dot_files () {
 
     for file in "${file_array[@]}"
     do
-        local clean_name="${file#.}"
-        link_file_with_backup "$clean_name"
+        link_file_with_backup "$file"
     done
 }
 

@@ -46,7 +46,7 @@ teardown() {
 }
 
 @test "dot_install.sh -d does dry-run without making changes" {
-    echo "test bashrc content" > "$TEST_PROJECT/bashrc"
+    echo "test bashrc content" > "$TEST_PROJECT/dotfiles/bashrc"
 
     run bash "$TEST_PROJECT/dot_install.sh" -d -f bashrc <<< $'y\nn\ny'
     [ "$status" -eq 0 ]
@@ -56,7 +56,7 @@ teardown() {
 }
 
 @test "dot_install.sh parses -c flag for copy mode" {
-    echo "test bashrc content" > "$TEST_PROJECT/bashrc"
+    echo "test bashrc content" > "$TEST_PROJECT/dotfiles/bashrc"
 
     run bash "$TEST_PROJECT/dot_install.sh" -c -f bashrc <<< $'y\ny\ny'
     [ "$status" -eq 0 ]
@@ -66,7 +66,7 @@ teardown() {
 }
 
 @test "dot_install.sh creates symlink by default" {
-    echo "test bashrc content" > "$TEST_PROJECT/bashrc"
+    echo "test bashrc content" > "$TEST_PROJECT/dotfiles/bashrc"
 
     run bash "$TEST_PROJECT/dot_install.sh" -f bashrc <<< $'y\nn\ny'
     [ "$status" -eq 0 ]
@@ -76,7 +76,7 @@ teardown() {
 
 @test "dot_install.sh creates backup of existing file" {
     echo "existing content" > "$TEST_HOME/.bashrc"
-    echo "new content" > "$TEST_PROJECT/bashrc"
+    echo "new content" > "$TEST_PROJECT/dotfiles/bashrc"
 
     run bash "$TEST_PROJECT/dot_install.sh" -f bashrc <<< $'y\nn\ny'
     [ "$status" -eq 0 ]
@@ -109,8 +109,8 @@ teardown() {
 }
 
 @test "dot_install.sh accepts multiple files with -f" {
-    echo "bashrc" > "$TEST_PROJECT/bashrc"
-    echo "vimrc" > "$TEST_PROJECT/vimrc"
+    echo "bashrc" > "$TEST_PROJECT/dotfiles/bashrc"
+    echo "vimrc" > "$TEST_PROJECT/dotfiles/vimrc"
 
     run bash "$TEST_PROJECT/dot_install.sh" -f bashrc -- vimrc <<< $'y\nn\ny'
     [ "$status" -eq 0 ]
@@ -126,7 +126,7 @@ teardown() {
 }
 
 @test "dot_install.sh backs up existing symlink target" {
-    echo "original content" > "$TEST_PROJECT/bashrc"
+    echo "original content" > "$TEST_PROJECT/dotfiles/bashrc"
     echo "symlink target content" > "$TEST_HOME/.bashrc_link_target"
     ln -sf "$TEST_HOME/.bashrc_link_target" "$TEST_HOME/.bashrc"
 
@@ -137,7 +137,7 @@ teardown() {
 }
 
 @test "dot_install.sh overwrites existing symlink" {
-    echo "test bashrc content" > "$TEST_PROJECT/bashrc"
+    echo "test bashrc content" > "$TEST_PROJECT/dotfiles/bashrc"
     echo "old target content" > "$TEST_HOME/.bashrc_old_target"
     ln -sf "$TEST_HOME/.bashrc_old_target" "$TEST_HOME/.bashrc"
 
@@ -145,12 +145,12 @@ teardown() {
     [ "$status" -eq 0 ]
 
     [ -L "$TEST_HOME/.bashrc" ]
-    [ "$(readlink "$TEST_HOME/.bashrc")" == "$TEST_PROJECT/bashrc" ]
+    [ "$(readlink "$TEST_HOME/.bashrc")" == "$TEST_PROJECT/dotfiles/bashrc" ]
 }
 
 @test "dot_install.sh outputs backup message" {
     echo "existing content" > "$TEST_HOME/.bashrc"
-    echo "new content" > "$TEST_PROJECT/bashrc"
+    echo "new content" > "$TEST_PROJECT/dotfiles/bashrc"
 
     run bash "$TEST_PROJECT/dot_install.sh" -f bashrc <<< $'y\nn\ny'
     [ "$status" -eq 0 ]

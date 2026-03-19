@@ -18,6 +18,10 @@ install_git() {
         install_prerequisites
     fi
 
+    local git_script_dir
+    git_script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+    dotfiles_dir="$git_script_dir/dotfiles"
+
     prn_note "Configuring git."
 
     if ! git config user.name 2>/dev/null; then
@@ -49,6 +53,10 @@ install_git() {
     git config --global push.default simple
     git config --global color.ui auto
     git config --global core.excludesfile "$home_dir/.gitignore_global"
+
+    if [[ -f "$dotfiles_dir/gitignore_global" ]]; then
+        cp "$dotfiles_dir/gitignore_global" "$home_dir/.gitignore_global"
+    fi
     git config --global core.editor vim
     git config --global merge.tool vim
 
