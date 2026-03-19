@@ -10,7 +10,7 @@ source (with clipboard options), compile neovim from source, and setup dot files
 for `vim` and `tmux`.
 
 A `dot_install.sh` shell script is included to create symbolic links in the
-user's `$HOME` directory. Makes backups will as follows:
+user's `$HOME` directory. Backups are made as follows:
 ```
 $HOME/.filename -> $HOME/.filename.BAK
 ```
@@ -35,6 +35,14 @@ The following configuration files are included:
 * vimrc*
 
 _* Installed by default_
+
+## Features
+
+- **Automated setup** - One command installs packages, compiles vim/neovim, and configures git
+- **Safe** - Creates backups (`.BAK`) before overwriting existing files
+- **Dry run mode** - Preview changes without making them (`-d` flag)
+- **Copy or link** - Choose between symlinks or copies (`-c` flag)
+- **Tested** - Unit tests (bats-core) and integration tests (Docker)
 
 ### Usage
 #### Full Install
@@ -110,7 +118,7 @@ make help
 | `make unit` | bats-core unit tests for functions/logic | ~15 sec |
 | `make integration` | Full clean_install.sh in Docker (22.04 + 24.04 + 26.04) | ~6 min |
 | `make test` | Runs syntax + unit tests | ~30 sec |
-| `make all` | Runs syntax + unit + integration tests | ~6 min |
+| `make all` | Runs syntax, unit, and integration tests | ~6 min |
 
 #### CI
 
@@ -125,3 +133,37 @@ Tests run automatically on GitHub Actions:
 - `bats-core` - Bash automated testing framework
 - `shellcheck` - Static analysis for shell scripts
 - `docker` - For integration tests
+
+### Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `GIT_USER_NAME` | `will2357` | Git user.name |
+| `GIT_USER_EMAIL` | `will.highducheck@gmail.com` | Git user.email |
+
+Set these before running to override defaults:
+
+```bash
+export GIT_USER_NAME="your-name"
+export GIT_USER_EMAIL="your-email@example.com"
+./clean_install.sh
+```
+
+### Troubleshooting
+
+#### Must be on a debian based Linux system
+`clean_install.sh` only supports Debian/Ubuntu. Use `dot_install.sh` directly for dot file installation on other distros.
+
+#### Git credentials are requested every time
+Set `GIT_USER_NAME` and `GIT_USER_EMAIL` environment variables (see above).
+
+#### Docker build fails
+Ensure Docker is installed and running:
+
+```bash
+docker --version
+docker ps
+```
+
+#### Integration tests take a long time
+The full integration test suite runs on 3 Ubuntu versions (22.04, 24.04, 26.04).
