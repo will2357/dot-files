@@ -39,7 +39,7 @@ unit:
 	fi
 	@bats tests/shared_functions.bats tests/dot_install.bats tests/clean_install.bats
 	@echo ""
-	@echo "All tests passed!"
+	@echo "All unit tests passed!"
 
 integration:
 	@echo "Running integration tests in Docker..."
@@ -59,7 +59,7 @@ integration:
 			|| { docker rmi dot-files-test:$$version 2>/dev/null; exit 1; }; \
 	done
 	@echo ""
-	@echo "All tests passed!"
+	@echo "All integration tests passed!"
 
 test: syntax unit
 	@echo ""
