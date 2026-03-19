@@ -146,3 +146,17 @@ teardown_file() {
 @test "integration - tmux plugins can be installed" {
     which git
 }
+
+@test "clean_install.sh git credentials use environment variable fallbacks" {
+    export GIT_USER_NAME="testuser"
+    export GIT_USER_EMAIL="test@example.com"
+
+    run bash -c '
+        source "$PROJECT_ROOT/_shared_functions.sh"
+        GIT_USER_NAME="${GIT_USER_NAME:-will2357}"
+        GIT_USER_EMAIL="${GIT_USER_EMAIL:-will.highducheck@gmail.com}"
+        [ "$GIT_USER_NAME" = "testuser" ]
+        [ "$GIT_USER_EMAIL" = "test@example.com" ]
+    '
+    [ "$status" -eq 0 ]
+}

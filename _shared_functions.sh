@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -eu
+
 color_normal=$(tput sgr0)
 
 prn_error () {
@@ -35,9 +37,9 @@ get_confirmation () {
 
 get_input () {
     [ -z "$1" ] && printf "Must include a message for the user. Exiting.\n" && exit 1
-    message=$1
-    local -n ref=$2
-    default_input=$3
+    local message=$1
+    local -n ref=${2:?}
+    local default_input=${3:-}
     while true
     do
         read -r -p "$message" input
