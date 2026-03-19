@@ -27,8 +27,10 @@ RUN useradd -m -s /bin/bash testuser && \
 
 COPY --chown=testuser:testuser . /home/testuser/dot-files
 
-USER testuser
 WORKDIR /home/testuser/dot-files
+RUN chmod +x clean_install.sh dot_install.sh modules/*.sh
+
+USER testuser
 
 RUN git config --global user.email "test@example.com" && \
     git config --global user.name "Test User"

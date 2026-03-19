@@ -1,2 +1,7 @@
 # Allow opening any 'source'd file, even if not specified as input
 external-sources=true
+
+# Disable warnings for modular script setup
+disable=SC2154
+disable=SC1090
+disable=SC2153
