@@ -1,4 +1,4 @@
-will2357's Ubuntu Clean Install Setup and Dot Files Scripts
+Clean Install and Dot Files Setup Scripts
 ============
 
 ## Information
