@@ -137,7 +137,7 @@ then
             install_chrome
         fi
     else
-        prn_note "'google-chome-stable' already installed. Skipping."
+        prn_note "'google-chrome-stable' already installed. Skipping."
     fi
     if which google-chrome-stable
     then
