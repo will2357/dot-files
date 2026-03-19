@@ -1,9 +1,12 @@
 #!/bin/bash
 
-set -e
+set -eu
 
 script_dir="$(dirname "$(readlink -f "$0")")"
 source "$script_dir/_shared_functions.sh"
+
+GIT_USER_NAME="${GIT_USER_NAME:-will2357}"
+GIT_USER_EMAIL="${GIT_USER_EMAIL:-will.highducheck@gmail.com}"
 
 if [ ! "$(uname)" == "Linux" ]; then prn_error "Must be on a debian based Linux system."; exit 1; fi
 
@@ -149,18 +152,30 @@ fi
 prn_note "Configuring git."
 if ! git config user.name
 then
-    git_user_name=""
-    get_input "Enter git user.name (blank for default of 'will2357'): " \
-        git_user_name "will2357"
-    git config --global user.name "$git_user_name"
+    while true; do
+        git_user_name=""
+        get_input "Enter git user.name (blank for default of '$GIT_USER_NAME'): " \
+            git_user_name "$GIT_USER_NAME"
+        if [ -n "$git_user_name" ]; then
+            git config --global user.name "$git_user_name"
+            break
+        fi
+        prn_error "Git user.name cannot be empty."
+    done
 fi
 
 if ! git config user.email
 then
-    git_user_email=""
-    get_input "Enter git user.email (blank for default of 'will.highducheck@gmail.com'): " \
-        git_user_email "will.highducheck@gmail.com"
-    git config --global user.email "$git_user_email"
+    while true; do
+        git_user_email=""
+        get_input "Enter git user.email (blank for default of '$GIT_USER_EMAIL'): " \
+            git_user_email "$GIT_USER_EMAIL"
+        if [ -n "$git_user_email" ]; then
+            git config --global user.email "$git_user_email"
+            break
+        fi
+        prn_error "Git user.email cannot be empty."
+    done
 fi
 
 git config --global push.default simple
@@ -170,7 +185,11 @@ git config --global core.editor vim
 git config --global merge.tool vim
 
 if ! gh auth status; then
-    gh auth login
+    prn_note "Logging in to GitHub CLI..."
+    if ! gh auth login; then
+        prn_error "GitHub CLI authentication failed."
+        exit 1
+    fi
 fi
 
 src_dir="$home_dir/src"
@@ -282,7 +301,7 @@ git checkout "$git_dot_files_branch"
 
 prn_note "Running 'dot_install.sh' script with default options."
 
-chmod +wrx "$dot_dir/dot_install.sh"
+chmod u+x "$dot_dir/dot_install.sh"
 "$dot_dir/dot_install.sh"
 
 cd "$src_dir" || exit 1
