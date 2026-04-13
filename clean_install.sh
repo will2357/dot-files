@@ -100,7 +100,7 @@ else
     compile_ctags
 fi
 
-if [ -z "$(which xset)" ]
+if [ -z "$(dpkg -l ubuntu-desktop)" ]
 then
     server="true"
 fi
