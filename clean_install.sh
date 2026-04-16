@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -eu
+set -euo pipefail
 
 script_dir="$(dirname "$(readlink -f "$0")")"
 source "$script_dir/_shared_functions.sh"
