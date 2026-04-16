@@ -53,8 +53,8 @@ file_names+=" ${additional_files[*]}"
 [ "$dry_run" = 'true' ] && printf "\n\n\n!!!DRY RUN!!!\n!!!DRY RUN!!!\n!!!DRY RUN!!!\n\n\n"
 
 targ_dir=$HOME
-printf "$(tput bold)\nScript source directory:\t'%s'\n" "$script_dir"
-printf "Target destination directory:\t'%s'\n${color_normal}" "$targ_dir"
+printf "%s\nScript source directory:\t'%s'\n" "$(tput bold)" "$script_dir"
+printf "Target destination directory:\t'%s'\n%s" "$targ_dir" "${color_normal}"
 
 link_file_with_backup () {
     local filename=$1
