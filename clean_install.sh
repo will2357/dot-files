@@ -91,9 +91,7 @@ compile_ctags () {
 if ctags --version | grep Universal
 then
     prn_note "Universal Ctags is already installed."
-    resp=$(get_confirmation "Are you sure you wish to compile it from source?")
-    if [ -n "$resp" ]
-    then
+    if get_confirmation "Are you sure you wish to compile it from source?"; then
         compile_ctags
     fi
 else
@@ -110,9 +108,7 @@ then
 fi
 
 prn_note "Installing Google Chrome web browser."
-resp=$(get_confirmation "Are you sure you wish to install Google Chrome?")
-if [ -n "$resp" ]
-then
+if get_confirmation "Are you sure you wish to install Google Chrome?"; then
     install_chrome () {
         google_list="/etc/apt/sources.list.d/google.list"
 
@@ -130,9 +126,7 @@ then
     then
         if [ "$server" == "true" ]
         then
-            resp=$(get_confirmation "You appear to be on a server. Do you wish to install 'google-chrome-stable'?")
-            if [ -n "$resp" ]
-            then
+            if get_confirmation "You appear to be on a server. Do you wish to install 'google-chrome-stable'?"; then
                 install_chrome
             fi
         else
@@ -239,9 +233,7 @@ latest_vv=$(curl -s https://api.github.com/repos/vim/vim/tags | grep "name.*v" |
 if [ "$latest_vv" == "$installed_vv" ]
 then
     prn_note "Latest version ($latest_vv) of vim already installed."
-    resp=$(get_confirmation "Are you sure you wish to continue?")
-    if [ -n "$resp" ]
-    then
+    if get_confirmation "Are you sure you wish to continue?"; then
         compile_vim
     fi
 else
@@ -269,9 +261,7 @@ compile_neovim () {
 if which nvim
 then
     prn_note "Neovim already installed."
-    resp=$(get_confirmation "Are you sure you wish to continue?")
-    if [ -n "$resp" ]
-    then
+    if get_confirmation "Are you sure you wish to continue?"; then
         compile_neovim
     fi
 else
@@ -361,9 +351,7 @@ compile_tmux_mem_cpu () {
 if which tmux-mem-cpu-load
 then
     prn_note "Latest tmux-mem-cpu-load already installed."
-    resp=$(get_confirmation "Are you sure you wish to continue?")
-    if [ -n "$resp" ]
-    then
+    if get_confirmation "Are you sure you wish to continue?"; then
         compile_tmux_mem_cpu
     fi
 else
@@ -394,10 +382,7 @@ prn_note "Installing AWS CLI from AmazonAWS.com."
 if which aws
 then
     prn_note "AWS CLI already installed."
-    resp=$(get_confirmation "Do you wish to update the AWS CLI?")
-
-    if [ -n "$resp" ]
-    then
+    if get_confirmation "Do you wish to update the AWS CLI?"; then
         curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
         unzip -q awscliv2.zip
         sudo ./aws/install --update

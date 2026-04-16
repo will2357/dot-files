@@ -34,9 +34,8 @@ get_confirmation () {
     read -r -p "$bold_message" yn
     case $yn in
         [Yy]* ) printf "Response: %s\n" "$yn"; return 0;;
-        [Nn]* ) ;;
-        * ) ;;
     esac
+    return 1
 }
 
 get_input () {
@@ -50,9 +49,7 @@ get_input () {
         if [ -z "$input" ]; then input=$default_input; fi
         ref=$input
         export ref
-        resp=$(get_confirmation "Is this correct: '$input'?")
-        if [ -n "$resp" ]
-        then
+        if get_confirmation "Is this correct: '$input'?"; then
             break
         fi
     done
