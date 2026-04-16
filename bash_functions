@@ -38,12 +38,10 @@ set_ps1()
   fi
 
   # PS1="\[\033[1;34m\]\u@\h:\w$\[\033[0m\] "
-  if [[ $PWD =~ src/[^/]*  ||  $PWD =~ personal/[^/]* ]]; then
-	  c_path='\[\e[0;31m\]'
-  elif [[ $PWD =~ src/[^/]*   ||  $PWD =~ personal/[^/]* ]]; then
-	  c_path='\[\e[0;35m\]'
-  elif [[ $PWD =~ src/[^/]*t.st  ||  $PWD =~ personal/[^/]*t.st ]]; then
+  if [[ $PWD =~ src/[^/]*t.st ||  $PWD =~ personal/[^/]*t.st ]]; then
 	  c_path='\[\e[0;36m\]'
+  elif [[ $PWD =~ src/[^/]* ||  $PWD =~ personal/[^/]* ]]; then
+	  c_path='\[\e[0;31m\]'
   else
 	  c_path='\[\e[0;37m\]'
   fi
