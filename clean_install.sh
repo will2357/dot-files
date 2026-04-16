@@ -207,12 +207,13 @@ compile_vim () {
     cd vim/src/ || exit 1
     if grep sources.list.d.ubuntu.sources /etc/apt/sources.list; then
         if ! grep -i '^Types: deb-src' /etc/apt/sources.list.d/ubuntu.sources; then
+            codename=$(. /etc/os-release && echo "$UBUNTU_CODENAME")
             echo "
 Types: deb-src
 URIs: http://us.archive.ubuntu.com/ubuntu/
-Suites: noble noble-updates noble-backports noble-proposed
+Suites: $codename ${codename}-updates ${codename}-backports ${codename}-proposed
 Components: main restricted universe multiverse
-Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg" | sudo tee -a  /etc/apt/sources.list.d/ubuntu.sources
+Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg" | sudo tee -a /etc/apt/sources.list.d/ubuntu.sources
         fi
     else
         sudo sed -i 's/\#\ deb\-src/deb-src/g' /etc/apt/sources.list
