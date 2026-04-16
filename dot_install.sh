@@ -116,10 +116,7 @@ link_dot_files () {
     fi
 
     printf "List of %d files to process: %s\n" "${#file_array[@]}" "$file_names"
-    resp=$(get_confirmation "Is this the correct list of files?")
-
-    if [ -n "$resp" ]
-    then
+    if get_confirmation "Is this the correct list of files?"; then
         check_files_exist
     else
         exit 1
@@ -132,19 +129,13 @@ link_dot_files () {
     done
 }
 
-resp=$(get_confirmation "Do you wish to link your dot files to these directories?")
-
-if [ "$copy_files" == 'false' ]
-then
-    copy_resp=$(get_confirmation "Would you like to copy the files instead of creating symbolic links?")
-    if [ -n "$copy_resp" ]
-    then
-        copy_files='true'
+if get_confirmation "Do you wish to link your dot files to these directories?"; then
+    if [ "$copy_files" == 'false' ]; then
+        if get_confirmation "Would you like to copy the files instead of creating symbolic links?"; then
+            copy_files='true'
+        fi
     fi
-fi
 
-if [ -n "$resp" ]
-then
     link_dot_files
     prn_success "SUCCESS: Ran 'dot_install.sh' script without errors."
 fi
