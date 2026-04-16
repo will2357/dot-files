@@ -23,10 +23,16 @@ set_ps1()
     vim="VIM-"
   fi
 
+  c_git=
   if [ ${HAVE_GIT_PS1:-0} -eq 1 ]; then
     git=$(__git_ps1 " (%s)")
-    #if [[ "$git" =~ [^-_.a-zA-Z0-9]\) ]]; then
-    #fi
+    if [ -n "$git" ]; then
+      if git diff-index --quiet HEAD -- 2>/dev/null; then
+        c_git=$c_git_clean
+      else
+        c_git=$c_git_dirty
+      fi
+    fi
   fi
 
   if [ "$USER" = "root" ]; then
@@ -45,7 +51,7 @@ set_ps1()
   else
 	  c_path='\[\e[0;37m\]'
   fi
-  echo "${vim}${c_user}\u${c_reset}:${c_path}\w${c_reset}${git}${prompt} "
+  echo "${vim}${c_user}\u${c_reset}:${c_path}\w${c_reset}${c_git}${git}${c_reset}${prompt} "
 }
 export PROMPT_COMMAND='PS1="$(set_ps1)"'
 ##export PROMPT_COMMAND='PS1="${c_user}\h${c_reset}:${c_path}\w${c_reset}$(set_ps1)\$ "'
