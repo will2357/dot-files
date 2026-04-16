@@ -4,6 +4,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BATS_TEST_FILENAME}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 setup_file() {
+    export TERM=xterm
     export TEST_TMPDIR="${TMPDIR:-/tmp}/dot-files-test-$$"
     mkdir -p "$TEST_TMPDIR"
     export TEST_HOME="$TEST_TMPDIR/home"

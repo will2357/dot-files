@@ -97,9 +97,9 @@ stub_get_confirmation_always_no() {
     [ "$status" -eq 1 ]
 }
 
-@test "get_confirmation returns 0 for default empty response" {
+@test "get_confirmation returns 1 for empty response" {
     run bash -c 'source "$1"; echo "" | get_confirmation "Continue?"' _ "$PROJECT_ROOT/_shared_functions.sh"
-    [ "$status" -eq 0 ]
+    [ "$status" -eq 1 ]
 }
 
 @test "prn_error returns 0" {
