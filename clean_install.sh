@@ -100,8 +100,7 @@ else
     compile_ctags
 fi
 
-if [ -z "$(dpkg -l ubuntu-desktop)" ]
-then
+if ! dpkg -l ubuntu-desktop 2>/dev/null | grep -q '^ii'; then
     server="true"
 fi
 
