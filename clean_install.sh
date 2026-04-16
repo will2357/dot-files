@@ -72,7 +72,7 @@ prn_success "Installed basic packages via apt."
 prn_note "Installing universal-ctags from source."
 compile_ctags () {
     cd "$temp_dir" || exit 1
-    if which ctags
+    if command -v ctags
     then
         sudo apt purge -y exuberant-ctags
         sudo dpkg --purge --force-all exuberant-ctags
@@ -122,7 +122,7 @@ if get_confirmation "Are you sure you wish to install Google Chrome?"; then
         sudo apt update
         sudo apt install google-chrome-stable
     }
-    if [ -z "$(which google-chrome-stable)" ]
+    if ! command -v google-chrome-stable >/dev/null 2>&1
     then
         if [ "$server" == "true" ]
         then
@@ -135,9 +135,9 @@ if get_confirmation "Are you sure you wish to install Google Chrome?"; then
     else
         prn_note "'google-chrome-stable' already installed. Skipping."
     fi
-    if which google-chrome-stable
+    if command -v google-chrome-stable >/dev/null 2>&1
     then
-        BROWSER="$(which google-chrome-stable)"
+        BROWSER="$(command -v google-chrome-stable)"
         export BROWSER
     fi
 fi
@@ -224,7 +224,7 @@ Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg" | sudo tee -a /etc/ap
 }
 
 installed_vv=""
-if which vim
+if command -v vim >/dev/null 2>&1
 then
     installed_vv=$(vim --version 2>&1 | awk 'FNR == 1 {print $5}' |  grep -P -o "[0-9]+\.[0-9]+")
 fi
@@ -258,7 +258,7 @@ compile_neovim () {
 }
 
 
-if which nvim
+if command -v nvim >/dev/null 2>&1
 then
     prn_note "Neovim already installed."
     if get_confirmation "Are you sure you wish to continue?"; then
@@ -309,7 +309,7 @@ prn_note "Installing uv via installer script."
 curl -LsSf https://astral.sh/uv/install.sh | sh
 prn_success "Installed uv."
 
-if which vim
+if command -v vim >/dev/null 2>&1
 then
     prn_note "Installing vim plugins."
     vim_plug="$home_dir/.vim/autoload/plug.vim"
@@ -325,7 +325,7 @@ then
     fi
     vim +'PlugInstall --sync' +qa
 
-    if which nvim
+    if command -v nvim >/dev/null 2>&1
     then
         nvim +'PlugInstall --sync' +qa
     fi
@@ -348,7 +348,7 @@ compile_tmux_mem_cpu () {
     prn_success "Finished compiling tmux-mem-cpu-load from source."
 }
 
-if which tmux-mem-cpu-load
+if command -v tmux-mem-cpu-load >/dev/null 2>&1
 then
     prn_note "Latest tmux-mem-cpu-load already installed."
     if get_confirmation "Are you sure you wish to continue?"; then
@@ -374,12 +374,12 @@ prn_note "Installing tmux plugins."
 
 # Install AWS CLI
 # Remove yum and apt versions of AWS CLI if exist
-if which yum; then sudo yum remove awscli; fi
+if command -v yum >/dev/null 2>&1; then sudo yum remove awscli; fi
 sudo apt purge awscli
 cd "$temp_dir" || exit 1
 
 prn_note "Installing AWS CLI from AmazonAWS.com."
-if which aws
+if command -v aws >/dev/null 2>&1
 then
     prn_note "AWS CLI already installed."
     if get_confirmation "Do you wish to update the AWS CLI?"; then
