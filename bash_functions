@@ -29,7 +29,7 @@ set_ps1()
     #fi
   fi
 
-  if [ $USER = "root" ]; then
+  if [ "$USER" = "root" ]; then
 	  c_user='\[\033[0;31m\]'
     prompt='#'
   else
