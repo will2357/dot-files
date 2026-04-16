@@ -97,7 +97,7 @@ make syntax
 # Unit tests (~30 seconds)
 make unit
 
-# Integration tests in Docker (~30 minutes)
+# Integration tests in Docker (~1 minute)
 make integration
 
 # Run all tests (syntax + unit)
@@ -116,16 +116,16 @@ make help
 |---------|-------------|---------|
 | `make syntax` | shellcheck + bash -n on all scripts | ~15 sec |
 | `make unit` | bats-core unit tests for functions/logic | ~15 sec |
-| `make integration` | Full clean_install.sh in Docker (22.04 + 24.04 + 26.04) | ~6 min |
+| `make integration` | Full clean_install.sh in Docker (22.04 + 24.04 + 26.04) | ~1 min |
 | `make test` | Runs syntax + unit tests | ~30 sec |
-| `make all` | Runs syntax, unit, and integration tests | ~6 min |
+| `make all` | Runs syntax, unit, and integration tests | ~1 min |
 
 #### CI
 
 Tests run automatically on GitHub Actions:
 - **syntax**: Every push/PR to main
 - **unit**: Every push/PR to main
-- **integration**: Every push/PR to main + weekly schedule
+- **integration**: Every push/PR to main
 
 #### Dependencies for Testing
 
