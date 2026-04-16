@@ -28,11 +28,11 @@ setup() {
 
 teardown() {
     find "$TEST_HOME" -mindepth 1 -maxdepth 1 -exec rm -rf {} \; 2>/dev/null || true
-    if [ -d "$TEST_PROJECT" ]; then
-        rm -rf "$TEST_PROJECT"
-        cp -a "$PROJECT_ROOT" "$TEST_TMPDIR/"
-        chmod -R u+w "$TEST_PROJECT"
+    if [ -d "$TEST_TMPDIR/dot-files" ]; then
+        rm -rf "$TEST_TMPDIR/dot-files"
     fi
+    cp -a "$PROJECT_ROOT" "$TEST_TMPDIR/dot-files"
+    chmod -R u+w "$TEST_TMPDIR/dot-files"
 }
 
 @test "dot_install.sh -h shows help" {
