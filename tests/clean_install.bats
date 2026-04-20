@@ -119,6 +119,30 @@ teardown_file() {
     which unzip
 }
 
+@test "integration - kubectl installation is present in clean_install.sh" {
+    run bash -c '
+        grep -Eq "(dl[.]k8s[.]io|storage[.]googleapis[.]com/kubernetes-release).*/kubectl" "$PROJECT_ROOT/clean_install.sh" &&
+        grep -Eq "(install|mv|cp|chmod).*[[:<:]]kubectl[[:>:]]" "$PROJECT_ROOT/clean_install.sh"
+    '
+    [ "$status" -eq 0 ]
+}
+
+@test "integration - helm installation is present in clean_install.sh" {
+    run bash -c '
+        grep -Eq "(raw[.]githubusercontent[.]com/helm/helm/.*/get-helm-3|get[.]helm[.]sh/helm-)" "$PROJECT_ROOT/clean_install.sh" &&
+        grep -Eq "([[:<:]]helm[[:>:]]|get-helm-3)" "$PROJECT_ROOT/clean_install.sh"
+    '
+    [ "$status" -eq 0 ]
+}
+
+@test "integration - eksctl installation is present in clean_install.sh" {
+    run bash -c '
+        grep -Eq "github[.]com/.*/eksctl/releases/.*/eksctl_" "$PROJECT_ROOT/clean_install.sh" &&
+        grep -Eq "(tar|unzip|mv|install).*[[:<:]]eksctl[[:>:]]" "$PROJECT_ROOT/clean_install.sh"
+    '
+    [ "$status" -eq 0 ]
+}
+
 @test "integration - Docker environment variables are set" {
     if [ -z "$CI" ] && [ -z "$IN_DOCKER" ]; then skip "Skipping in local unit tests"; fi
     [ -n "$CI" ] || [ -n "$IN_DOCKER" ]

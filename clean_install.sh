@@ -395,6 +395,37 @@ else
     prn_success "Installed AWS CLI."
 fi
 
+# Install kubectl
+if command -v kubectl >/dev/null 2>&1; then
+    prn_note "kubectl already installed."
+else
+    prn_note "Installing kubectl."
+    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+    sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+    rm kubectl
+    prn_success "Installed kubectl."
+fi
+
+# Install helm
+if command -v helm >/dev/null 2>&1; then
+    prn_note "helm already installed."
+else
+    prn_note "Installing helm."
+    curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | sudo bash
+    prn_success "Installed helm."
+fi
+
+# Install eksctl
+if command -v eksctl >/dev/null 2>&1; then
+    prn_note "eksctl already installed."
+else
+    prn_note "Installing eksctl."
+    curl -LO "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_Linux_amd64.tar.gz"
+    sudo tar -xzf eksctl_Linux_amd64.tar.gz -C /usr/local/bin
+    rm eksctl_Linux_amd64.tar.gz
+    prn_success "Installed eksctl."
+fi
+
 # Cleanup
 cd "$home_dir" || exit 1
 sudo rm -rf "$temp_dir"
