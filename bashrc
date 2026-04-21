@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
@@ -93,7 +94,11 @@ esac
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    if [ -r ~/.dircolors ]; then
+        eval "$(dircolors -b ~/.dircolors)"
+    else
+        eval "$(dircolors -b)"
+    fi
     alias ls='ls --color=auto'
     #alias dir='dir --color=auto'
     #alias vdir='vdir --color=auto'
@@ -129,6 +134,7 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 
 if [ -f "$HOME/.bash_aliases" ] || [ -h "$HOME/.bash_aliases" ]
 then
+    # shellcheck disable=SC1091
     source "$HOME/.bash_aliases"
 fi
 
@@ -149,9 +155,11 @@ fi
 # curl -o ~/.git-prompt.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
 if [ "$(uname)" == "Darwin" ]; then
   if [ -f "$HOME/.git-completion.bash" ]; then # MacOS
+    # shellcheck disable=SC1091
     .  "$HOME/.git-completion.bash"
   fi
   if [ -f "$HOME/.git-prompt.sh" ]; then # MacOS
+    # shellcheck disable=SC1091
     .  "$HOME/.git-prompt.sh"
   fi
 fi
@@ -161,12 +169,14 @@ fi
 # NB: Keep bash completion before this so that __git_ps1 is defined
 if [ -f "$HOME/.bash_functions" ] || [ -h "$HOME/.bash_functions" ]
 then
+    # shellcheck disable=SC1091
     source "$HOME/.bash_functions"
 fi
 
 # Additional env vars
 if [ -f "$HOME/.awsenvvars.sh" ] || [ -h "$HOME/.awsenvvars.sh" ]
 then
+    # shellcheck disable=SC1091
     source "$HOME/.awsenvvars.sh"
 fi
 
@@ -243,12 +253,15 @@ if [ -d "/usr/local/go" ] ; then
 fi
 
 if ! type rbenv >&/dev/null && [ -d "$HOME/.rbenv/bin" ] ; then
-    eval "$($HOME/.rbenv/bin/rbenv init - bash)"
+    # shellcheck disable=SC2086
+    eval "$("$HOME"/.rbenv/bin/rbenv init - bash)"
 fi
 
 if ! type nvm >&/dev/null && [ -d "$HOME/.nvm" ]; then
     export NVM_DIR="$HOME/.nvm"
+    # shellcheck disable=SC1091
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+    # shellcheck disable=SC1091
     [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 fi
 
@@ -272,9 +285,11 @@ if command -v uv >/dev/null 2>&1; then
 fi
 
 if command -v eksctl >/dev/null 2>&1; then
+    # shellcheck disable=SC1090
     . <(eksctl completion bash)
 fi
 
 if [ -f "$HOME/.local/bin/env" ]; then
+    # shellcheck disable=SC1091
     . "$HOME/.local/bin/env"
 fi
