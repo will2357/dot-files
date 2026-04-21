@@ -262,8 +262,17 @@ if [ -d "$HOME/.opencode/bin" ]; then
     export PATH="$HOME/.opencode/bin:$PATH"
 fi
 
+if [ -d "$HOME/.aws" ]; then
+    [ -n "${AWS_REGION:-}" ] || export AWS_REGION="us-east-1"
+    [ -n "${AWS_DEFAULT_REGION:-}" ] || export AWS_DEFAULT_REGION="us-east-1"
+fi
+
 if command -v uv >/dev/null 2>&1; then
     eval "$(uv generate-shell-completion bash)"
+fi
+
+if command -v eksctl >/dev/null 2>&1; then
+    . <(eksctl completion bash)
 fi
 
 if [ -f "$HOME/.local/bin/env" ]; then
