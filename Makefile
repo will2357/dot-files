@@ -1,7 +1,7 @@
 .PHONY: syntax unit integration test all help
 
 SHELL := /bin/bash
-SCRIPTS := _shared_functions.sh dot_install.sh clean_install.sh
+SCRIPTS := _shared_functions.sh dot_install.sh clean_install.sh bashrc bash_functions
 TEST_FILES := tests/shared_functions.bats tests/dot_install.bats tests/clean_install.bats
 UBUNTU_VERSIONS := 22.04 24.04 26.04
 

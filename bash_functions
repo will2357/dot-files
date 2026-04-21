@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # Configure colors, if available.
 if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
 	c_reset='\[\e[0m\]'
@@ -14,8 +15,11 @@ else
 fi
 
 # Thy holy prompt.
-type __git_ps1 >/dev/null 2>&1
-export HAVE_GIT_PS1=$([[ $? -eq 0 ]] && echo 1 || echo 0)
+if type __git_ps1 >/dev/null 2>&1; then
+    export HAVE_GIT_PS1=1
+else
+    export HAVE_GIT_PS1=0
+fi
 
 set_ps1()
 {
@@ -24,7 +28,7 @@ set_ps1()
   fi
 
   c_git=
-  if [ ${HAVE_GIT_PS1:-0} -eq 1 ]; then
+  if [ "${HAVE_GIT_PS1:-0}" -eq 1 ]; then
     git=$(__git_ps1 " (%s)")
     if [ -n "$git" ]; then
       if git diff-index --quiet HEAD -- 2>/dev/null; then
