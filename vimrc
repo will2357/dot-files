@@ -4,8 +4,7 @@ call plug#begin('~/.vim/bundle')
 " This plugin manager
 Plug 'junegunn/vim-plug'
 
-Plug 'altercation/vim-colors-solarized'
-Plug 'Tsuzat/NeoSolarized.nvim', { 'branch': 'master' }
+Plug 'lifepillar/vim-solarized8'
 Plug 'dragfire/Improved-Syntax-Highlighting-Vim'
 Plug 'henrik/vim-indexed-search'
 Plug 'kien/rainbow_parentheses.vim'
@@ -58,12 +57,13 @@ call plug#end()
 
 " Solarized Options
 "
+set termguicolors
 set background=dark
 "let g:solarized_termcolors = 256
 "let g:solarized_termcolors = 16
 "let g:solarized_visibility = "high"
 "let g:solarized_contrast = "high"
-colorscheme solarized
+colorscheme solarized8_high
 " Set colors for Ubuntu
 "se t_Co=256
 "se t_Co=16
