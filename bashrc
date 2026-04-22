@@ -134,7 +134,6 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 
 if [ -f "$HOME/.bash_aliases" ] || [ -h "$HOME/.bash_aliases" ]
 then
-    # shellcheck disable=SC1091
     source "$HOME/.bash_aliases"
 fi
 
@@ -155,11 +154,9 @@ fi
 # curl -o ~/.git-prompt.sh https://raw.githubusercontent.com/git/git/master/contrib/completion/git-prompt.sh
 if [ "$(uname)" == "Darwin" ]; then
   if [ -f "$HOME/.git-completion.bash" ]; then # MacOS
-    # shellcheck disable=SC1091
     .  "$HOME/.git-completion.bash"
   fi
   if [ -f "$HOME/.git-prompt.sh" ]; then # MacOS
-    # shellcheck disable=SC1091
     .  "$HOME/.git-prompt.sh"
   fi
 fi
@@ -169,14 +166,12 @@ fi
 # NB: Keep bash completion before this so that __git_ps1 is defined
 if [ -f "$HOME/.bash_functions" ] || [ -h "$HOME/.bash_functions" ]
 then
-    # shellcheck disable=SC1091
     source "$HOME/.bash_functions"
 fi
 
 # Additional env vars
 if [ -f "$HOME/.awsenvvars.sh" ] || [ -h "$HOME/.awsenvvars.sh" ]
 then
-    # shellcheck disable=SC1091
     source "$HOME/.awsenvvars.sh"
 fi
 
@@ -259,9 +254,7 @@ fi
 
 if ! type nvm >&/dev/null && [ -d "$HOME/.nvm" ]; then
     export NVM_DIR="$HOME/.nvm"
-    # shellcheck disable=SC1091
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-    # shellcheck disable=SC1091
     [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 fi
 
@@ -290,6 +283,5 @@ if command -v eksctl >/dev/null 2>&1; then
 fi
 
 if [ -f "$HOME/.local/bin/env" ]; then
-    # shellcheck disable=SC1091
     . "$HOME/.local/bin/env"
 fi
