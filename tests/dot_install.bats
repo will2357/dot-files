@@ -159,3 +159,14 @@ teardown() {
     [[ "$output" == *"Running 'cp"* ]]
     [[ "$output" == *"Running 'ln -sf"* ]]
 }
+
+@test "dot_install.sh prints plugin installation commands" {
+    run bash "$TEST_PROJECT/dot_install.sh" -f bashrc <<< $'y\nn\ny'
+    [ "$status" -eq 0 ]
+
+    [[ "$output" == *"Post-install: Install vim/nvim plugins"* ]]
+    [[ "$output" == *"curl -fLo ~/.vim/autoload/plug.vim"* ]]
+    [[ "$output" == *"vim-colors-solarized"* ]]
+    [[ "$output" == *"vim +'PlugInstall --sync' +qa"* ]]
+    [[ "$output" == *"nvim +'PlugInstall --sync' +qa"* ]]
+}

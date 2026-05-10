@@ -33,6 +33,28 @@ print_options () {
   printf "  -h This help screen\n"
 }
 
+print_plugin_commands() {
+    printf "\n%s\n" "============================================"
+    printf "%s\n" "Post-install: Install vim/nvim plugins"
+    printf "%s\n\n" "============================================"
+
+    printf "vim (or neovim) must be installed first.\n\n"
+
+    printf "1. Install vim-plug:\n"
+    printf "   curl -fLo ~/.vim/autoload/plug.vim --create-dirs \\\\\n"
+    printf "       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim\n\n"
+
+    printf "2. Install solarized colorscheme:\n"
+    printf "   git clone https://github.com/altercation/vim-colors-solarized.git \\\\\n"
+    printf "       ~/.vim/bundle/vim-colors-solarized\n\n"
+
+    printf "3. Install vim plugins:\n"
+    printf "   vim +'PlugInstall --sync' +qa\n\n"
+
+    printf "4. Install neovim plugins (if using neovim):\n"
+    printf "   nvim +'PlugInstall --sync' +qa\n\n"
+}
+
 while getopts 'cdhf:' opt
 do
   case "${opt}" in
@@ -137,6 +159,7 @@ if get_confirmation "Do you wish to link your dot files to these directories?"; 
     fi
 
     link_dot_files
+    print_plugin_commands
     prn_success "SUCCESS: Ran 'dot_install.sh' script without errors."
 fi
 
