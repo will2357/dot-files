@@ -80,6 +80,17 @@ set number	    " Show line numbers
 set ruler	    " Show ruler
 "set autoindent	    " Simple autoindentation
 set cindent	    " Smarter autoindentation - C standard
+
+function! XTermPaste(ret)
+  if a:ret
+    set paste
+  else
+    set nopaste
+  endif
+endfunction
+
+autocmd TermResponse * if v:event.response =~ '\e\[?2004h' | call XTermPaste(v:true) | endif
+autocmd CursorHoldI * if !&paste | call XTermPaste(v:false) | endif
 set hlsearch        " Highlight search results
 set incsearch       " Incremental search
 set ignorecase      " Do case insensitive matching
