@@ -166,7 +166,6 @@ teardown() {
 
     [[ "$output" == *"Post-install: Install vim/nvim plugins"* ]]
     [[ "$output" == *"curl -fLo ~/.vim/autoload/plug.vim"* ]]
-    [[ "$output" == *"vim-colors-solarized"* ]]
     [[ "$output" == *"vim +'PlugInstall --sync' +qa"* ]]
     [[ "$output" == *"nvim +'PlugInstall --sync' +qa"* ]]
 }

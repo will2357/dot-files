@@ -319,10 +319,6 @@ then
             https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     fi
 
-    vim_solar_dir="$home_dir/.vim/bundle/vim-colors-solarized"
-    if [ ! -d "$vim_solar_dir" ]; then
-        git clone https://github.com/altercation/vim-colors-solarized.git "$vim_solar_dir"
-    fi
     vim +'PlugInstall --sync' +qa
 
     if command -v nvim >/dev/null 2>&1
