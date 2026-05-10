@@ -2,7 +2,7 @@
 
 SHELL := /bin/bash
 SCRIPTS := _shared_functions.sh dot_install.sh clean_install.sh bashrc bash_functions
-TEST_FILES := tests/shared_functions.bats tests/dot_install.bats tests/clean_install.bats
+TEST_FILES := tests/shared_functions.bats tests/dot_install.bats tests/clean_install.bats tests/bashrc_functions.bats
 UBUNTU_VERSIONS := 22.04 24.04 26.04
 
 help:
@@ -37,7 +37,7 @@ unit:
 		echo "Or: brew install bats-core"; \
 		exit 1; \
 	fi
-	@bats tests/shared_functions.bats tests/dot_install.bats tests/clean_install.bats
+	@bats $(TEST_FILES)
 	@echo ""
 	@echo "All unit tests passed!"
 

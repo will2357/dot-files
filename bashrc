@@ -186,6 +186,18 @@ unzipd () {
     unzip -d "$zipdir" "$zipfile"
 }
 
+va() {
+    local activate=".venv/bin/activate"
+    if [ ! -f "$activate" ]; then
+        printf "%sError: '%s' not found. Did you run 'uv sync'?%s\n" \
+            "$(tput setaf 1)" "$activate" "$(tput sgr0)" >&2
+        return 1
+    fi
+    source "$activate"
+    printf "%sActivated %s.%s\n" \
+        "$(tput setaf 2)" "$activate" "$(tput sgr0)"
+}
+
 # Should probably just do this manually... but...
 recurse-replace () {
     old_val=$1
