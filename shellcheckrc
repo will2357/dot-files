@@ -1,5 +1,6 @@
 # Allow opening any 'source'd file, even if not specified as input
 external-sources=true
+# SC1090: Cannot follow non-constant source (e.g., "source $activate")
 # SC1091: Disable warning for optional user files that may not exist (e.g., ~/.bash_aliases)
 # These files are guarded with [ -f ] checks before sourcing, so the code is correct.
-disable=SC1091
+disable=SC1090,SC1091
