@@ -54,3 +54,5 @@ get_input () {
         fi
     done
 }
+
+source "${BASH_SOURCE%/*}/is_server.sh"

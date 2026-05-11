@@ -71,13 +71,7 @@ sudo apt install -y ack \
 prn_success "Installed basic packages via apt."
 
 # Detect if we are on a desktop or server
-if dpkg -l ubuntu-desktop 2>/dev/null | grep -q '^ii' || \
-   dpkg -l ubuntu-desktop-minimal 2>/dev/null | grep -q '^ii' || \
-   [ "$(systemctl get-default 2>/dev/null)" == "graphical.target" ]; then
-    server="false"
-else
-    server="true"
-fi
+server=$(is_server)
 
 if [ "$server" != "true"  ]
 then
