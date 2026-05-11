@@ -1,0 +1,6 @@
+tmp/
+*.orig
+*.swp
+*.swo
+*~
+.DS_Store

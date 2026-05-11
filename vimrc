@@ -209,16 +209,21 @@ let g:rainbow_active = 1
 
 " Show trailing whitepace and spaces before a tab:
 highlight ExtraWhitespace ctermbg=red guibg=red
-match ExtraWhitespace /\s\+$\| \+\ze\t/
+augroup MyWhitespaceHighlights
+    autocmd!
+    autocmd BufEnter * if &filetype !=# 'gitcommit' | match ExtraWhitespace /\s\+$\| \+\ze\t/ | endif
+    autocmd FileType gitcommit silent! match none
+    autocmd BufWritePre * if &filetype !=# 'gitcommit' | %s/\s\+$//e | endif
+augroup END
 "highlight ExtraWhitespace ctermbg=darkgreen guibg=lightgreen
 "highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
 
 
-"Automatically remove trailing whitespace
-"
-autocmd BufWritePre * :%s/\s\+$//e
+" Performance safeguards for commit-message buffers
+augroup MyGitCommitPerformance
+    autocmd!
+    autocmd FileType gitcommit setlocal synmaxcol=200
+    autocmd FileType gitcommit let b:rainbow_active = 0
+augroup END
 
-" For editing large data files
-set synmaxcol=500
-set maxmempattern=2000
-set redrawtime=2000
+" Keep Vim global defaults for maxmempattern/redrawtime to avoid global regressions.

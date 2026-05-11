@@ -181,3 +181,15 @@ teardown_file() {
     '
     [ "$status" -eq 0 ]
 }
+
+@test "vimrc scopes whitespace highlighting away from gitcommit buffers" {
+    run grep -Fq "autocmd FileType gitcommit silent! match none" "$PROJECT_ROOT/vimrc"
+    [ "$status" -eq 0 ]
+}
+
+@test "vimrc applies commit-message performance guardrails" {
+    run grep -Fq "autocmd FileType gitcommit setlocal synmaxcol=200" "$PROJECT_ROOT/vimrc"
+    [ "$status" -eq 0 ]
+    run grep -Fq "autocmd FileType gitcommit let b:rainbow_active = 0" "$PROJECT_ROOT/vimrc"
+    [ "$status" -eq 0 ]
+}

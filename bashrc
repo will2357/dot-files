@@ -328,34 +328,63 @@ av() {
         "$(tput setaf 2)" "$activate" "$(tput sgr0)"
 }
 
-# recurse-replace: Performs a global search and replace in the current directory using 'ack' and 'sed'.
+# recurse-replace: Performs a global search and replace in the current directory using 'ack'.
 # Usage: recurse-replace <old_string> <new_string>
 recurse-replace () {
-    old_val=$1
-    new_val=$2
-    if type ack > /dev/null; then
-        color_normal=$(tput sgr0)
-        color_blue=$(tput setaf 4)
-        color_red=$(tput setaf 1)
-        color_bold=$(tput bold)
+    local old_val=${1:-}
+    local new_val=${2:-}
+    local color_normal color_blue color_red color_bold
+    color_normal=$(tput sgr0)
+    color_blue=$(tput setaf 4)
+    color_red=$(tput setaf 1)
+    color_bold=$(tput bold)
 
-        cmd="ack $old_val | grep -e '^\w' | cut -d: -f1 | xargs sed -i 's/$old_val/$new_val/g'"
-        printf "%sAbout to run:\n%s" "$color_blue" "$color_normal"
-        echo "${color_bold}$cmd${color_normal}"
-        printf "\n%sThis will replace the following:\n%s" "$color_blue" "$color_normal"
-        ack "$old_val"
-        echo
-
-        bold_message="${color_bold}Are you sure? (y/N)${color_normal}"
-        read -r -p "$bold_message" yn
-        case $yn in
-            [Yy]* ) printf "\nRunning replace command.\n"; eval "$cmd"; return 0;;
-            [Nn]* ) return 1;;
-            * ) return 1;;
-        esac
-    else
-        printf "%sERROR: 'ack' not found\n%s" "$color_red" "$color_normal"
+    if [ -z "$old_val" ] || [ -z "$new_val" ]; then
+        printf "%sUsage: recurse-replace <old_string> <new_string>%s\n" \
+            "$color_red" "$color_normal" >&2
+        return 1
     fi
+
+    if ! command -v ack >/dev/null 2>&1; then
+        printf "%sERROR: 'ack' not found%s\n" "$color_red" "$color_normal" >&2
+        return 1
+    fi
+
+    local -a files=()
+    local file
+    while IFS= read -r file; do
+        [ -n "$file" ] && files+=("$file")
+    done < <(ack -l -- "$old_val")
+
+    if [ "${#files[@]}" -eq 0 ]; then
+        printf "%sNo matches found for '%s'.%s\n" \
+            "$color_blue" "$old_val" "$color_normal"
+        return 0
+    fi
+
+    printf "%sAbout to replace '%s' with '%s' in:%s\n" \
+        "$color_blue" "$old_val" "$new_val" "$color_normal"
+    printf "%s\n" "${files[@]}"
+    printf "\n%sMatching lines:%s\n" "$color_blue" "$color_normal"
+    ack -- "$old_val"
+    echo
+
+    local yn
+    local bold_message="${color_bold}Are you sure? (y/N)${color_normal}"
+    read -r -p "$bold_message" yn
+    case $yn in
+        [Yy]* )
+            printf "\nRunning replace command.\n"
+            for file in "${files[@]}"; do
+                OLD_VAL="$old_val" NEW_VAL="$new_val" \
+                    perl -pi -e 's/\Q$ENV{OLD_VAL}\E/\Q$ENV{NEW_VAL}\E/g' -- "$file"
+            done
+            return 0
+            ;;
+        * )
+            return 1
+            ;;
+    esac
 }
 
 alias speed-test='curl -s \
