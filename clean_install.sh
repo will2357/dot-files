@@ -62,6 +62,7 @@ sudo apt install -y ack \
     tmux  \
     ubuntu-restricted-addons \
     ubuntu-restricted-extras \
+    universal-ctags \
     unzip \
     xclip \
     zlib1g \
@@ -69,36 +70,12 @@ sudo apt install -y ack \
 
 prn_success "Installed basic packages via apt."
 
-prn_note "Installing universal-ctags from source."
-compile_ctags () {
-    cd "$temp_dir" || exit 1
-    if command -v ctags
-    then
-        sudo apt purge -y exuberant-ctags
-        sudo dpkg --purge --force-all exuberant-ctags
-        sudo apt purge -y ctags
-        sudo dpkg --purge --force-all ctags
-    fi
-    sudo rm -rf ctags
-    git clone https://github.com/universal-ctags/ctags.git
-    cd ctags
-    ./autogen.sh
-    ./configure
-    make
-    sudo checkinstall -y
-    prn_success "Installed universal-ctags."
-}
-if ctags --version | grep Universal
-then
-    prn_note "Universal Ctags is already installed."
-    if get_confirmation "Are you sure you wish to compile it from source?"; then
-        compile_ctags
-    fi
+# Detect if we are on a desktop or server
+if dpkg -l ubuntu-desktop 2>/dev/null | grep -q '^ii' || \
+   dpkg -l ubuntu-desktop-minimal 2>/dev/null | grep -q '^ii' || \
+   [ "$(systemctl get-default 2>/dev/null)" == "graphical.target" ]; then
+    server="false"
 else
-    compile_ctags
-fi
-
-if ! dpkg -l ubuntu-desktop 2>/dev/null | grep -q '^ii'; then
     server="true"
 fi
 
@@ -114,9 +91,10 @@ if get_confirmation "Are you sure you wish to install Google Chrome?"; then
 
         wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo tee /etc/apt/trusted.gpg.d/google.asc >/dev/null
 
-        if ! grep -q 'dl.google.com' "$google_list"
+        # Ensure the repository is restricted to amd64 to prevent i386 warnings
+        if ! grep -q '\[arch=amd64\].*dl.google.com' "$google_list" 2>/dev/null
         then
-            sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> '"$google_list"
+            echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee "$google_list" >/dev/null
         fi
 
         sudo apt update
