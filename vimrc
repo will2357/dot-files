@@ -218,6 +218,7 @@ match ExtraWhitespace /\s\+$\| \+\ze\t/
 "
 autocmd BufWritePre * :%s/\s\+$//e
 
-"For editing large data files (Vim internal default is 3000 lines)
-"
-"set synmaxcol=160
+" For editing large data files
+set synmaxcol=500
+set maxmempattern=2000
+set redrawtime=2000
