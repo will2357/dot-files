@@ -63,3 +63,69 @@ setup() {
     [ "$status" -eq 0 ]
     [[ "$output" == *"VIRTUAL_ENV=$TEST_PROJECT/.venv"* ]]
 }
+
+@test "recurse-replace performs literal replacement after confirmation" {
+    cat > "$TEST_TMPDIR/mock-ack" <<'EOF'
+#!/bin/bash
+set -euo pipefail
+if [ "${1:-}" = "-l" ]; then
+    shift
+fi
+if [ "${1:-}" = "--" ]; then
+    shift
+fi
+pattern=${1:-}
+if [ -z "$pattern" ]; then
+    exit 1
+fi
+grep -R --exclude-dir=.git -l -- "$pattern" .
+EOF
+    chmod +x "$TEST_TMPDIR/mock-ack"
+    mkdir -p "$TEST_TMPDIR/mockbin"
+    mv "$TEST_TMPDIR/mock-ack" "$TEST_TMPDIR/mockbin/ack"
+
+    printf "alpha1\n" > "$TEST_PROJECT/replace_target.txt"
+    run bash -i -c '
+        cd "$TEST_PROJECT"
+        export PATH="$TEST_TMPDIR/mockbin:$PATH"
+        source bashrc
+        printf "y\n" | recurse-replace "alpha1" "beta\$2"
+        cat replace_target.txt
+    '
+    [ "$status" -eq 0 ]
+    [[ "$output" == *'beta$2'* ]]
+}
+
+@test "recurse-replace exits non-zero when canceled" {
+    cat > "$TEST_TMPDIR/mock-ack" <<'EOF'
+#!/bin/bash
+set -euo pipefail
+if [ "${1:-}" = "-l" ]; then
+    shift
+fi
+if [ "${1:-}" = "--" ]; then
+    shift
+fi
+pattern=${1:-}
+if [ -z "$pattern" ]; then
+    exit 1
+fi
+grep -R --exclude-dir=.git -l -- "$pattern" .
+EOF
+    chmod +x "$TEST_TMPDIR/mock-ack"
+    mkdir -p "$TEST_TMPDIR/mockbin"
+    mv "$TEST_TMPDIR/mock-ack" "$TEST_TMPDIR/mockbin/ack"
+
+    printf "keepme\n" > "$TEST_PROJECT/replace_target_cancel.txt"
+    run bash -i -c '
+        cd "$TEST_PROJECT"
+        export PATH="$TEST_TMPDIR/mockbin:$PATH"
+        source bashrc
+        printf "n\n" | recurse-replace "keepme" "changed"
+        echo "status=$?"
+        cat replace_target_cancel.txt
+    '
+    [ "$status" -eq 0 ]
+    [[ "$output" == *"status=1"* ]]
+    [[ "$output" == *"keepme"* ]]
+}
