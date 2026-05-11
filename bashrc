@@ -186,7 +186,7 @@ unzipd () {
     unzip -d "$zipdir" "$zipfile"
 }
 
-va() {
+av() {
     local activate=".venv/bin/activate"
     if [ ! -f "$activate" ]; then
         printf "%sError: '%s' not found. Did you run 'uv sync'?%s\n" \

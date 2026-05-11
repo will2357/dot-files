@@ -25,39 +25,39 @@ setup() {
     export HOME="$TEST_HOME"
 }
 
-@test "va prints error when activate not found" {
+@test "av prints error when activate not found" {
     mkdir -p "$TEST_PROJECT/.venv/bin"
 
     run bash -i -c '
         cd "$TEST_PROJECT"
         source bashrc
-        va 2>&1
+        av 2>&1
     '
     [ "$status" -eq 1 ]
     [[ "$output" == *"Error"* ]]
     [[ "$output" == *"uv sync"* ]]
 }
 
-@test "va prints success with path when activate exists" {
+@test "av prints success with path when activate exists" {
     echo "# fake activate" > "$TEST_PROJECT/.venv/bin/activate"
 
     run bash -i -c '
         cd "$TEST_PROJECT"
         source bashrc
-        va 2>&1
+        av 2>&1
     '
     [ "$status" -eq 0 ]
     [[ "$output" == *".venv/bin/activate"* ]]
     [[ "$output" == *"Activated"* ]]
 }
 
-@test "va sets VIRTUAL_ENV when activated" {
+@test "av sets VIRTUAL_ENV when activated" {
     printf '#!/bin/bash\nVIRTUAL_ENV="%s/.venv"\n' "$TEST_PROJECT" > "$TEST_PROJECT/.venv/bin/activate"
 
     run bash -i -c '
         cd "$TEST_PROJECT"
         source bashrc
-        va 2>&1
+        av 2>&1
         echo "VIRTUAL_ENV=$VIRTUAL_ENV"
     '
     [ "$status" -eq 0 ]
