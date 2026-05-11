@@ -176,16 +176,146 @@ then
     source "$HOME/.awsenvvars.sh"
 fi
 
-# Lazy alias
-alias cvim='ctags -R . && vim .'
-
-# lazy function to unzip to folder of same name
+# unzipd: Unzips a file into a directory with the same name.
 unzipd () {
     zipfile="$1"
     zipdir=${1%%.*}
     unzip -d "$zipdir" "$zipfile"
 }
 
+# git-cleanup: Deletes local branches merged into master/main.
+# Also prunes stale remote-tracking references when remotes exist.
+# Use --aggressive to also delete non-merged branches with no unique patches.
+# Asks for confirmation before performing any destructive actions.
+git-cleanup() {
+    local aggressive=0
+    case "${1:-}" in
+        "")
+            ;;
+        -a|--aggressive)
+            aggressive=1
+            ;;
+        -h|--help)
+            printf "Usage: git-cleanup [-a|--aggressive] [-h|--help]\n"
+            printf "  -a, --aggressive  Also delete non-merged branches with no unique patches.\n"
+            printf "  -h, --help        Show this help message.\n"
+            return 0
+            ;;
+        *)
+            printf "Error: Unknown option '%s'.\n" "$1" >&2
+            printf "Usage: git-cleanup [-a|--aggressive] [-h|--help]\n" >&2
+            return 1
+            ;;
+    esac
+
+    if ! git rev-parse --git-dir >/dev/null 2>&1; then
+        printf "Error: Not inside a git repository.\n" >&2
+        return 1
+    fi
+
+    local main_branch
+    if git show-ref --verify --quiet refs/heads/main; then
+        main_branch="main"
+    elif git show-ref --verify --quiet refs/heads/master; then
+        main_branch="master"
+    else
+        printf "Error: Could not find 'main' or 'master' branch.\n" >&2
+        return 1
+    fi
+
+    printf "Using '%s' as the primary branch.\n" "$main_branch"
+
+    if [ -n "$(git remote)" ]; then
+        if ! git fetch --prune; then
+            printf "Error: Failed to prune remote-tracking references.\n" >&2
+            return 1
+        fi
+        printf "Pruned remote-tracking references.\n"
+    else
+        printf "No remotes configured; skipping remote-tracking prune.\n"
+    fi
+
+    local current_branch
+    current_branch=$(git branch --show-current)
+
+    local merged_local=()
+    local aggressive_local=()
+    local branch
+    local unique_patches
+
+    while IFS= read -r branch; do
+        [ -z "$branch" ] && continue
+        case "$branch" in
+            "$current_branch"|main|master)
+                continue
+                ;;
+        esac
+        merged_local+=("$branch")
+    done < <(git for-each-ref refs/heads --merged "$main_branch" --format='%(refname:short)')
+
+    if [ "$aggressive" -eq 1 ]; then
+        while IFS= read -r branch; do
+            [ -z "$branch" ] && continue
+            case "$branch" in
+                "$current_branch"|main|master)
+                    continue
+                    ;;
+            esac
+            if git merge-base --is-ancestor "$branch" "$main_branch"; then
+                continue
+            fi
+            unique_patches=$(git log --cherry-pick --right-only --no-merges --pretty=format:%H "$main_branch...$branch")
+            if [ -n "$unique_patches" ]; then
+                continue
+            fi
+            aggressive_local+=("$branch")
+        done < <(git for-each-ref refs/heads --format='%(refname:short)')
+    fi
+
+    if [ "${#merged_local[@]}" -eq 0 ] && [ "${#aggressive_local[@]}" -eq 0 ]; then
+        printf "No local branches to clean up.\n"
+        return 0
+    fi
+
+    if [ "${#merged_local[@]}" -ne 0 ]; then
+        printf "\nThe following merged local branches will be deleted:\n"
+        printf "%s\n" "${merged_local[@]}"
+    fi
+
+    if [ "${#aggressive_local[@]}" -ne 0 ]; then
+        printf "\nAggressive mode: the following non-merged branches have no unique patches and will be deleted:\n"
+        printf "%s\n" "${aggressive_local[@]}"
+    fi
+
+    local yn
+    printf "\n"
+    read -r -p "$(tput bold)Delete these local branches? (y/N) $(tput sgr0)" yn
+    case $yn in
+        [Yy]* )
+            local delete_failed=0
+            for branch in "${merged_local[@]}"; do
+                if ! git branch -d "$branch"; then
+                    delete_failed=1
+                fi
+            done
+            for branch in "${aggressive_local[@]}"; do
+                if ! git branch -D "$branch"; then
+                    delete_failed=1
+                fi
+            done
+            if [ "$delete_failed" -ne 0 ]; then
+                printf "Cleanup completed with errors.\n" >&2
+                return 1
+            fi
+            printf "Cleanup complete.\n"
+            ;;
+        * )
+            printf "Cleanup aborted.\n"
+            ;;
+    esac
+}
+
+# av: Activates the Python virtual environment (.venv) created by 'uv'.
 av() {
     local activate=".venv/bin/activate"
     if [ ! -f "$activate" ]; then
@@ -198,7 +328,8 @@ av() {
         "$(tput setaf 2)" "$activate" "$(tput sgr0)"
 }
 
-# Should probably just do this manually... but...
+# recurse-replace: Performs a global search and replace in the current directory using 'ack' and 'sed'.
+# Usage: recurse-replace <old_string> <new_string>
 recurse-replace () {
     old_val=$1
     new_val=$2

@@ -5,9 +5,8 @@ call plug#begin('~/.vim/bundle')
 Plug 'junegunn/vim-plug'
 
 Plug 'lifepillar/vim-solarized8'
-Plug 'dragfire/Improved-Syntax-Highlighting-Vim'
 Plug 'henrik/vim-indexed-search'
-Plug 'kien/rainbow_parentheses.vim'
+Plug 'luochen1990/rainbow'
 Plug 'lifepillar/vim-mucomplete'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/nerdtree'
@@ -19,15 +18,8 @@ Plug 'tpope/vim-fugitive'
 " Ruby
 Plug 'vim-ruby/vim-ruby'
 
-" Python
-Plug 'Vimjas/vim-python-pep8-indent'
-
 " Go
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-
-" Flutter (Dart also recommended)
-Plug 'dart-lang/dart-vim-plugin'
-Plug 'thosakwe/vim-flutter'
 
 " JavaScript
 Plug 'pangloss/vim-javascript'
@@ -39,21 +31,10 @@ Plug 'peitalin/vim-jsx-typescript'
 " SCSS
 Plug 'cakebaker/scss-syntax.vim'
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""
 call plug#end()
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"""""""""""""""""""""""""""""""" Github Copilot """"""""""""""""""""""""""""""""
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" per https://github.com/github/copilot.vim
-" Installed via:
-" git clone https://github.com/github/copilot.vim \
-"   ~/.vim/pack/github/start/copilot.vim
-"
-" Disable Github Copilot
-"if exists("*Copilot")
-  "autocmd VimEnter * Copilot disable
-"endif
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Solarized Options
 "
@@ -79,18 +60,6 @@ set encoding=utf-8
 set number	    " Show line numbers
 set ruler	    " Show ruler
 "set autoindent	    " Simple autoindentation
-set cindent	    " Smarter autoindentation - C standard
-
-function! XTermPaste(ret)
-  if a:ret
-    set paste
-  else
-    set nopaste
-  endif
-endfunction
-
-autocmd TermResponse * if v:event.response =~ '\e\[?2004h' | call XTermPaste(v:true) | endif
-autocmd CursorHoldI * if !&paste | call XTermPaste(v:false) | endif
 set hlsearch        " Highlight search results
 set incsearch       " Incremental search
 set ignorecase      " Do case insensitive matching
@@ -119,7 +88,7 @@ set mouse=a
 
 " Allows Deletion with Backspace
 "
-set backspace=2
+set backspace=indent,eol,start
 
 " Turn Off Tool Tips in Mac/GVim
 "
@@ -142,9 +111,8 @@ let NERDTreeShowHidden=1
 "
 "set noswapfile
 set swapfile
-set dir=~/.vim_tmp,~/tmp,/var/tmp,/tmp
-set backupdir=~/.vim_tmp,~/tmp,/var/tmp,/tmp
 set directory=~/.vim_tmp,~/tmp,/var/tmp,/tmp
+set backupdir=~/.vim_tmp,~/tmp,/var/tmp,/tmp
 
 " Show Whitepace
 "
@@ -153,31 +121,36 @@ nmap <silent> <leader>s :set nolist!<CR>
 
 " Filetype Configuration
 "
+filetype plugin indent on
 syntax on
-filetype on
-filetype plugin on
-filetype indent on
-filetype detect
 
-" Powder Key Bindings
+" Language Specific Configurations
 "
-au FileType ruby,ruby-sinatra,haml,sass,html,css map <leader>p :!powder restart<cr>
-au FileType ruby,ruby-sinatra,haml,sass,html,css map <leader>o :!powder open<cr>
+augroup MyLanguageSpecific
+    autocmd!
+    " Ruby/Rails Key Bindings
+    autocmd FileType ruby,ruby-sinatra nnoremap <buffer> <leader>r :!ruby -c %<CR>
+    autocmd FileType haml nnoremap <buffer> <leader>r :!haml -c %<CR>
+    autocmd FileType sass nnoremap <buffer> <leader>r :!sass -c %<CR>
+    autocmd BufNewFile,BufRead *.hive set filetype=sql
+    autocmd BufNewFile,BufRead *.sql set filetype=sql
+    autocmd BufNewFile,BufRead *.psql set filetype=sql
+    autocmd BufNewFile,BufRead *.hamlc set ft=haml
 
-" Ruby/Rails Key Bindings
-"
-au FileType ruby,ruby-sinatra map <leader>r :!ruby -c %<cr>
-au FileType haml map <leader>r :!haml -c %<cr>
-au FileType sass map <leader>r :!sass -c %<cr>
-au BufNewFile,BufRead *.hive set filetype=sql
-au BufNewFile,BufRead *.sql set filetype=sql
-au BufNewFile,BufRead *.psql set filetype=sql
-au BufNewFile,BufRead *.hamlc set ft=haml
+    " Pig Script Syntax
+    autocmd BufNewFile,BufRead *.pig set filetype=pig syntax=pig
 
-" Pig Script Syntax
-"
-augroup filetypedetect
-  au BufNewFile,BufRead *.pig set filetype=pig syntax=pig
+    " Default spacing for Golang
+    autocmd FileType go setlocal shiftwidth=4 tabstop=4 noexpandtab
+
+    " Spacing for shell scripts
+    autocmd FileType sh setlocal shiftwidth=4 tabstop=4 expandtab
+
+    " For crontab -e to work with vim
+    autocmd filetype crontab setlocal nobackup nowritebackup
+
+    " Highlighting for systemd .service files
+    autocmd BufNewFile,BufRead *.service* set ft=systemd
 augroup END
 
 " Set 2 space tabs as default (for Ruby, etc.)
@@ -185,25 +158,6 @@ augroup END
 "
 set tabstop=2 shiftwidth=2 expandtab
 
-" Default spacing for Golang
-"
-autocmd FileType go setlocal shiftwidth=4 tabstop=4 noexpandtab
-
-" Spacing for shell scripts
-"
-autocmd FileType sh setlocal shiftwidth=4 tabstop=4 expandtab
-
-"For crontab -e to work with vim
-"
-autocmd filetype crontab setlocal nobackup nowritebackup
-
-"Highlighting for systemd .service files
-"
-autocmd BufNewFile,BufRead *.service* set ft=systemd
-
-" Tagbar Toggle
-"
-nmap <leader>t :TagbarToggle<CR>
 " Change Tab and Pane Keys
 " NOTE: C = Control, M = Option, D = Command
 "
@@ -226,15 +180,6 @@ nmap <leader>t :TagbarToggle<CR>
 "
 set clipboard=unnamedplus
 
-" Code Folding Settings
-"
-"set foldmethod=indent   "fold based on indent
-"set foldnestmax=10      "deepest fold is 10 levels
-"set nofoldenable        "dont fold by default
-"set foldlevel=1         "this is just what i use
-set nofoldenable        "disable folding
-
-
 " Highlight over 80 characters
 "
 "highlight OverLength ctermbg=red ctermfg=white guibg=#592929
@@ -252,38 +197,15 @@ hi Visual term=reverse cterm=reverse guibg=White ctermbg=White
 
 " Change cursor shape Gnome Terminal 3.x
 "
-let &t_SI = "\<Esc>[6 q"
-let &t_SR = "\<Esc>[4 q"
-let &t_EI = "\<Esc>[2 q"
+if !has('nvim')
+    let &t_SI = "\<Esc>[6 q"
+    let &t_SR = "\<Esc>[4 q"
+    let &t_EI = "\<Esc>[2 q"
+endif
 
 " Rainbow parentheses
 "
-let g:rbpt_colorpairs = [
-    \ ['brown',       'RoyalBlue3'],
-    \ ['darkred',     'DarkOrchid3'],
-    \ ['Darkblue',    'SeaGreen3'],
-    \ ['darkgreen',   'firebrick3'],
-    \ ['darkcyan',    'RoyalBlue3'],
-    \ ['darkred',     'SeaGreen3'],
-    \ ['darkmagenta', 'DarkOrchid3'],
-    \ ['brown',       'firebrick3'],
-    \ ['gray',        'RoyalBlue3'],
-    \ ['darkmagenta', 'DarkOrchid3'],
-    \ ['Darkblue',    'firebrick3'],
-    \ ['darkgreen',   'RoyalBlue3'],
-    \ ['darkcyan',    'SeaGreen3'],
-    \ ['red',         'firebrick3'],
-    \ ]
-let g:rbpt_max = 16
-let g:rbpt_loadcmd_toggle = 0
-
-au VimEnter * RainbowParenthesesToggle
-au Syntax * RainbowParenthesesLoadRound
-au Syntax * RainbowParenthesesLoadSquare
-au Syntax * RainbowParenthesesLoadBraces
-
-" Tmux conf for vim-slime
-let g:slime_target = "tmux"
+let g:rainbow_active = 1
 
 " Show trailing whitepace and spaces before a tab:
 highlight ExtraWhitespace ctermbg=red guibg=red
@@ -296,10 +218,6 @@ match ExtraWhitespace /\s\+$\| \+\ze\t/
 "
 autocmd BufWritePre * :%s/\s\+$//e
 
-"Neo Completeion with Cache for Scala autocomplete
+"For editing large data files (Vim internal default is 3000 lines)
 "
-let g:neocomplcache_enable_at_startup = 1
-
-"For editing large data files
-"
-set synmaxcol=160
+"set synmaxcol=160
