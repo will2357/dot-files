@@ -226,4 +226,7 @@ augroup MyGitCommitPerformance
     autocmd FileType gitcommit let b:rainbow_active = 0
 augroup END
 
-" Keep Vim global defaults for maxmempattern/redrawtime to avoid global regressions.
+" Global performance safeguards for large/complex files
+set synmaxcol=500
+set maxmempattern=2000
+set redrawtime=2000
