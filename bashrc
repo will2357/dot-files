@@ -458,3 +458,9 @@ fi
 if [ -f "$HOME/.local/bin/env" ]; then
     . "$HOME/.local/bin/env"
 fi
+
+
+# Added by Antigravity CLI installer
+if [ -d "$HOME/.local/bin" ]; then
+    case ":$PATH:" in *":$HOME/.local/bin:"*) : ;; *) export PATH="$HOME/.local/bin:$PATH" ;; esac
+fi
