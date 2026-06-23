@@ -461,6 +461,8 @@ fi
 
 
 # Added by Antigravity CLI installer
-if [ -d "$HOME/.local/bin" ]; then
-    case ":$PATH:" in *":$HOME/.local/bin:"*) : ;; *) export PATH="$HOME/.local/bin:$PATH" ;; esac
-fi
+export PATH="/home/will/.local/bin:$PATH"
+
+# CUDA Toolkit 13.3
+export PATH=/usr/local/cuda-13.3/bin${PATH:+:${PATH}}
+export LD_LIBRARY_PATH=/usr/local/cuda-13.3/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
