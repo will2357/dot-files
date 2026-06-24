@@ -448,6 +448,7 @@ fi
 
 if command -v uv >/dev/null 2>&1; then
     eval "$(uv generate-shell-completion bash)"
+    alias uva="source .venv/bin/activate"
 fi
 
 if command -v eksctl >/dev/null 2>&1; then
