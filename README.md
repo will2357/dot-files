@@ -3,11 +3,9 @@ Clean Install and Dot Files Setup Scripts
 
 ## Information
 
-A `clean_install.sh` script to install some basic packages via `apt`,
-Google Chrome web browser from the latest `deb`, configure git, compile vim from
-source (with clipboard options), compile neovim from source, and setup dot files
-(using the standalone `dot_install.sh` script below) with plugin installation
-for `vim` and `tmux`.
+A `clean_install.sh` script to automate system setup, install base packages,
+and configure dot files (using the standalone `dot_install.sh` script below)
+with plugin installation for `vim` and `tmux`.
 
 A `dot_install.sh` shell script is included to create symbolic links in the
 user's `$HOME` directory. Backups are made as follows:
@@ -38,7 +36,7 @@ _* Installed by default_
 
 ## Features
 
-- **Automated setup** - One command installs packages, compiles vim/neovim, and configures git
+- **Automated setup** - One command installs packages, configures git, and installs: Google Chrome, vim, neovim, tmux-mem-cpu-load, rbenv, nvm, uv, AWS CLI, kubectl, helm, and eksctl
 - **Safe** - Creates backups (`.BAK`) before overwriting existing files
 - **Dry run mode** - Preview changes without making them (`-d` flag)
 - **Copy or link** - Choose between symlinks or copies (`-c` flag)
