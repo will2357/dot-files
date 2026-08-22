@@ -105,7 +105,10 @@ if get_confirmation "Are you sure you wish to install Google Chrome?"; then
             install_chrome
         fi
     else
-        prn_note "'google-chrome-stable' already installed. Skipping."
+        if get_confirmation "'google-chrome-stable' already installed. Do you want to update it?"
+        then
+            install_chrome
+        fi
     fi
     if command -v google-chrome-stable >/dev/null 2>&1
     then
@@ -198,9 +201,15 @@ Signed-By: /usr/share/keyrings/ubuntu-archive-keyring.gpg" | sudo tee -a /etc/ap
 installed_vv=""
 if command -v vim >/dev/null 2>&1
 then
-    installed_vv=$(vim --version 2>&1 | awk 'FNR == 1 {print $5}' |  grep -P -o "[0-9]+\.[0-9]+")
+    installed_vv=$(vim --version 2>&1 | awk 'FNR == 1 {print $5}' |  grep -P -o "[0-9]+\.[0-9]+" || echo "local_error")
 fi
-latest_vv=$(curl -s https://api.github.com/repos/vim/vim/tags | grep "name.*v" | awk 'FNR == 1 {print $2}' | grep -P -o "[0-9]+\.[0-9]+")
+
+latest_vv=$(curl -s https://api.github.com/repos/vim/vim/tags | grep "name.*v" | awk 'FNR == 1 {print $2}' | grep -P -o "[0-9]+\.[0-9]+" || echo "remote_error")
+
+if [ "$installed_vv" == "local_error" ]
+then
+    prn_error "Error with current vim version. Proceeding to install newest version."
+fi
 
 if [ "$latest_vv" == "$installed_vv" ]
 then
