@@ -451,6 +451,10 @@ if command -v uv >/dev/null 2>&1; then
     alias uva="source .venv/bin/activate"
 fi
 
+if command -v docker >/dev/null 2>&1; then
+    alias dls='docker ps --filter "label=devcontainer.local_folder" --format "table {{.Names}}\t{{.Label \"devcontainer.local_folder\"}}"'
+fi
+
 if command -v eksctl >/dev/null 2>&1; then
     # shellcheck disable=SC1090
     . <(eksctl completion bash)
